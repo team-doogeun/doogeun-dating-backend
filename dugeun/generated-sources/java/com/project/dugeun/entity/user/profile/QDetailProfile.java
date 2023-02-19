@@ -2,6 +2,8 @@ package com.project.dugeun.entity.user.profile;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.project.dugeun.model.domain.user.profile.DetailProfile;
+import com.project.dugeun.model.domain.user.profile.category.*;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -19,25 +21,25 @@ public class QDetailProfile extends BeanPath<DetailProfile> {
 
     public static final QDetailProfile detailProfile = new QDetailProfile("detailProfile");
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.AddressType> address = createEnum("address", com.project.dugeun.entity.user.profile.category.AddressType.class);
+    public final EnumPath<AddressType> address = createEnum("address", AddressType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.BodyType> bodyType = createEnum("bodyType", com.project.dugeun.entity.user.profile.category.BodyType.class);
+    public final EnumPath<BodyType> bodyType = createEnum("bodyType", BodyType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.CharacterType> character1 = createEnum("character1", com.project.dugeun.entity.user.profile.category.CharacterType.class);
+    public final EnumPath<CharacterType> character1 = createEnum("character1", CharacterType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.EmotionType> character2 = createEnum("character2", com.project.dugeun.entity.user.profile.category.EmotionType.class);
+    public final EnumPath<EmotionType> character2 = createEnum("character2", EmotionType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.DepartmentType> department = createEnum("department", com.project.dugeun.entity.user.profile.category.DepartmentType.class);
+    public final EnumPath<DepartmentType> department = createEnum("department", DepartmentType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.PriorityCategory> firstPriority = createEnum("firstPriority", com.project.dugeun.entity.user.profile.category.PriorityCategory.class);
+    public final EnumPath<PriorityCategory> firstPriority = createEnum("firstPriority", PriorityCategory.class);
 
     public final NumberPath<Integer> height = createNumber("height", Integer.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.MbtiType> mbti = createEnum("mbti", com.project.dugeun.entity.user.profile.category.MbtiType.class);
+    public final EnumPath<MbtiType> mbti = createEnum("mbti", MbtiType.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.PriorityCategory> secondPriority = createEnum("secondPriority", com.project.dugeun.entity.user.profile.category.PriorityCategory.class);
+    public final EnumPath<PriorityCategory> secondPriority = createEnum("secondPriority", PriorityCategory.class);
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.PriorityCategory> thirdPriority = createEnum("thirdPriority", com.project.dugeun.entity.user.profile.category.PriorityCategory.class);
+    public final EnumPath<PriorityCategory> thirdPriority = createEnum("thirdPriority", PriorityCategory.class);
 
     public QDetailProfile(String variable) {
         super(DetailProfile.class, forVariable(variable));

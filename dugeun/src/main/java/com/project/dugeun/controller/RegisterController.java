@@ -1,9 +1,9 @@
 package com.project.dugeun.controller;
 
 
-import com.project.dugeun.dto.UserSaveRequestDto;
-import com.project.dugeun.dto.UserSaveResponseDto;
-import com.project.dugeun.entity.user.User;
+import com.project.dugeun.model.dto.UserSaveRequestDto;
+import com.project.dugeun.model.dto.UserSaveResponseDto;
+import com.project.dugeun.model.domain.user.User;
 import com.project.dugeun.service.S3Service;
 import com.project.dugeun.service.UserService;
 
@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 @RequestMapping("/users")
 @Controller

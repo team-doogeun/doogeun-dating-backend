@@ -1,16 +1,11 @@
 package com.project.dugeun.service;
 
-import com.project.dugeun.dto.UserSaveRequestDto;
-import com.project.dugeun.entity.user.User;
+import com.project.dugeun.model.dto.UserSaveRequestDto;
+import com.project.dugeun.model.domain.user.User;
 import com.project.dugeun.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
