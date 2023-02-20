@@ -2,7 +2,7 @@ package com.project.dugeun.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.project.dugeun.model.domain.BlindDate;
+import com.project.dugeun.domain.blindDate.domain.BlindDate;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -53,7 +53,7 @@ public class QBlindDate extends EntityPathBase<BlindDate> {
 
     public QBlindDate(Class<? extends BlindDate> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new com.project.dugeun.entity.user.QUser(forProperty("user"), inits.get("user")) : null;
+        this.user = inits.isInitialized("com/project/dugeun/domain/user") ? new com.project.dugeun.entity.user.QUser(forProperty("com/project/dugeun/domain/user"), inits.get("com/project/dugeun/domain/user")) : null;
     }
 
 }

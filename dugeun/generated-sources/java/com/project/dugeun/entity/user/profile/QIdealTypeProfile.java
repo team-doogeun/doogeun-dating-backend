@@ -2,8 +2,8 @@ package com.project.dugeun.entity.user.profile;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.project.dugeun.model.domain.user.profile.IdealTypeProfile;
-import com.project.dugeun.model.domain.user.profile.category.*;
+import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
+import com.project.dugeun.domain.user.domain.profile.category.*;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
