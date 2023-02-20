@@ -1,7 +1,7 @@
 package com.project.dugeun.service;
 
 
-import com.project.dugeun.domain.signup.service.SignupService;
+import com.project.dugeun.domain.signup.application.SignupService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
-package com.project.dugeun.domain.signup.controller;
+package com.project.dugeun.domain.signup.api;
 
 
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.signup.dto.UserSaveResponseDto;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.signup.service.S3Service;
-import com.project.dugeun.domain.signup.service.SignupService;
+import com.project.dugeun.domain.signup.application.S3Service;
+import com.project.dugeun.domain.signup.application.SignupService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

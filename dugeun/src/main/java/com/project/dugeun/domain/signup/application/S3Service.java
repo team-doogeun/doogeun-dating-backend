@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.signup.service;
+package com.project.dugeun.domain.signup.application;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
