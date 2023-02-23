@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Entity
-public class BlindDateResult {
+public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,14 +39,14 @@ public class BlindDateResult {
         return String.format("(%d,%d)", user.getId(), anotherUser.getId());
     }
 
-    public static List<BlindDateResult> getResultsFrom(List<Pair<User, User>> matchingPairs, LocalDate localDate) {
+    public static List<Match> getResultsFrom(List<Pair<User, User>> matchingPairs, LocalDate localDate) {
 
-        List<BlindDateResult> matchingResults = new ArrayList<>();
+        List<Match> matchingResults = new ArrayList<>();
 
         Iterator<Pair<User, User>> iterator = matchingPairs.iterator();
         while (iterator.hasNext()) {
             Pair<User, User> next = iterator.next();
-            BlindDateResult build =  BlindDateResult.builder()
+            Match build =  Match.builder()
                     .user(next.getFirst())
                     .anotherUser(next.getSecond())
                     .matchingDate(localDate)

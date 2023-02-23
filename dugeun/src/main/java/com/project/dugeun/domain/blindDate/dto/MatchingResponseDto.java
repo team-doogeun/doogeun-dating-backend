@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.blindDate.dto;
 
-import com.project.dugeun.domain.blindDate.domain.BlindDateResult;
+import com.project.dugeun.domain.blindDate.domain.Match;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -10,7 +10,7 @@ public class MatchingResponseDto {
     private Boolean isMatching;
     private String otherExternalId;
 
-    public MatchingResponseDto(Optional<BlindDateResult> blindDateResult, String userId){
+    public MatchingResponseDto(Optional<Match> blindDateResult, String userId){
 
         if(!blindDateResult.isPresent()){
             isMatching = true;

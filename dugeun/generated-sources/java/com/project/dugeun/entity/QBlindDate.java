@@ -2,7 +2,6 @@ package com.project.dugeun.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
-import com.project.dugeun.domain.blindDate.domain.BlindDate;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
