@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface MatchService {
 
-public void match();
+public void processMatching();
 public Optional<Match> findMatch(String userId);
 
 

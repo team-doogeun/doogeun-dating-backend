@@ -9,6 +9,7 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 
 @Entity
@@ -65,6 +66,8 @@ public class User {
     private String secondFilePath;
     @Column(name = "third_profile_image")
     private String thirdFilePath;
+
+    private LocalDate lastMatchDate;
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
