@@ -18,7 +18,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Comparable<User>{
 
     @Id
     @Column(name="id", unique = true)
@@ -108,6 +108,10 @@ public class User {
         return user;
     }
 
+    @Override
+    public int compareTo(User o) {
+        return this.getUserId().compareTo(o.userId);
     }
+}
 
 

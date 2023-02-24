@@ -32,7 +32,7 @@ public class MatchServiceImpl implements MatchService {
 
     @Transactional
     @Override
-    public void processMatching() { // 실제 모든 참가자들에 대한 매칭 진행
+    public void processMatching() { //  모든 참가자들에 대한 매칭 진행
         List<Participant> all = participantRepository.findAll();
 
         // 참여한 유저들의 List
@@ -42,6 +42,7 @@ public class MatchServiceImpl implements MatchService {
 
 
       //  List<Pair<User,User>> matchPair = matchFilter에서의 조작
+
     }
 
 

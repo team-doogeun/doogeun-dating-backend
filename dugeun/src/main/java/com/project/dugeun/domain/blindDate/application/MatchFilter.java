@@ -22,6 +22,9 @@ public class MatchFilter {
 //
 //    }
 
+    // 위치가 같으면
+
+
     // 다음 매칭 날 구하기
     public LocalDate getNextMatchDate(LocalDate now){
         int next = MATCH_DAY  - now.getDayOfWeek().getValue();

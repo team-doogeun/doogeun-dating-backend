@@ -4,7 +4,7 @@ package com.project.dugeun.domain.user.domain.profile;
 import com.project.dugeun.domain.user.domain.profile.category.*;
 
 import lombok.*;
-import user.domain.profile.category.*;
+
 
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;

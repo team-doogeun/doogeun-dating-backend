@@ -32,4 +32,10 @@ public enum AddressType {
         return value;
     }
 
+    
+    // 점수 계산 알고리즘
+    // 일단 같은 지역 -> 10점, 아니면 0점 부여
+    public int getMatchScore(AddressType other){
+        return value == other.value ? 10 : 0;
+    }
     }
