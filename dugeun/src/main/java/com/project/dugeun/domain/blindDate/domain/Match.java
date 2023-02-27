@@ -34,27 +34,5 @@ public class Match {
 
     private LocalDate matchingDate;
 
-    @Override
-    public String toString(){
-        return String.format("(%d,%d)", user.getId(), anotherUser.getId());
-    }
 
-    public static List<Match> getResultsFrom(List<Pair<User, User>> matchingPairs, LocalDate localDate) {
-
-        List<Match> matchingResults = new ArrayList<>();
-
-        Iterator<Pair<User, User>> iterator = matchingPairs.iterator();
-        while (iterator.hasNext()) {
-            Pair<User, User> next = iterator.next();
-            Match build =  Match.builder()
-                    .user(next.getFirst())
-                    .anotherUser(next.getSecond())
-                    .matchingDate(localDate)
-                    .build();
-
-            matchingResults.add(build);
-        }
-
-        return matchingResults;
-    }
 }

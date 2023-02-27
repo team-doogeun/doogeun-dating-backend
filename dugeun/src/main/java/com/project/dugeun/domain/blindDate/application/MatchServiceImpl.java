@@ -32,11 +32,11 @@ public class MatchServiceImpl implements MatchService {
         List<User> all = userRepository.findAll();
 
         // 참여한 유저들의 id리스트
-        List usersId = all.stream().map(
+        List<String> usersId = all.stream().map(
                 (x) -> x.getUserId()).collect(Collectors.toList());
 
 
-      //  List<Pair<User,User>> matchPair = matchFilter에서의 조작
+
 
     }
 
