@@ -16,7 +16,6 @@ public enum SmokeType {
     SmokeType(String value){
         this.value = value;
     }
-
     @JsonCreator
     public static SmokeType from(String value){
         for(SmokeType smokeType: SmokeType.values()){
@@ -26,7 +25,6 @@ public enum SmokeType {
         }
         return null;
     }
-
     @JsonValue
     public String getValue(){
         return value;
