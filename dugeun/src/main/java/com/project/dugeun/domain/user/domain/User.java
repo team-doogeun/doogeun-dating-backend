@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.user.domain;
 
 
+import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -67,7 +68,8 @@ public class User implements Comparable<User>{
     @Column(name = "third_profile_image")
     private String thirdFilePath;
 
-    private LocalDate lastMatchDate;
+    @ManyToOne
+    private Match match;
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
@@ -107,6 +109,8 @@ public class User implements Comparable<User>{
                 .build();
         return user;
     }
+
+
 
     @Override
     public int compareTo(User o) {

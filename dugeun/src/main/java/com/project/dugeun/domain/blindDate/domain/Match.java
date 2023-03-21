@@ -24,14 +24,8 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name="user_id")
-    private User user;
+    @OneToMany(mappedBy = "match", cascade = CascadeType.REMOVE)
+    private List<User> userList = new ArrayList<>();
 
-    @OneToOne
-    @JoinColumn(name="another_user_id")
-    private User anotherUser;
-
-    private LocalDate matchingDate;
 
 }
