@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.user.domain;
 
 
+import com.project.dugeun.domain.blindDate.domain.Like;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -70,6 +73,10 @@ public class User implements Comparable<User>{
 
     @ManyToOne
     private Match match;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Like> likeList = new ArrayList<>();
+
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
