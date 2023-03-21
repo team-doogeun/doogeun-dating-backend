@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface MatchRepository extends JpaRepository<Match,Long> {
 
-    Optional<Match> findByUserIdAndMatchDate(String userId, LocalDate matchDate);
-    Optional<Match> findByAnotherUserIdAndMatchDate(String userId, LocalDate matchDate);
+
 }

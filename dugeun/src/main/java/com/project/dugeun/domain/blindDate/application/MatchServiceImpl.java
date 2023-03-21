@@ -1,61 +1,26 @@
 package com.project.dugeun.domain.blindDate.application;
 
-import com.project.dugeun.domain.blindDate.dao.MatchRepository;
+import com.project.dugeun.domain.blindDate.domain.Filter;
 import com.project.dugeun.domain.blindDate.domain.Match;
-import com.project.dugeun.domain.signup.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
-public class MatchServiceImpl implements MatchService {
-
-
-    private final MatchFilter matchFilter;
-    private final UserRepository userRepository;
-    private final MatchRepository matchRepository;
-
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
-
-    @Transactional
+public class MatchServiceImpl implements MatchService{
     @Override
-    public void processMatching() { //  모든 참가자들에 대한 매칭 진행
-        List<User> all = userRepository.findAll();
+    public List<Match> getAllMatches(String userId) {
+        return null;
+    }
 
-        // 참여한 유저들의 id리스트
-        List<String> usersIds = all.stream().map(
-                (x) -> x.getUserId()).collect(Collectors.toList());
-
-
-
+    @Override
+    public void saveMatch(Match match) {
 
     }
 
-
-    @Transactional
     @Override
-    public Optional<Match> findMatch(String userId) { // 특정 참가자의 매칭 조회
-
-        //
-        User user = userRepository.findByUserId(userId);
-
-        // 마지막 매칭 날을 확인해서 없으면 오류 처리
-
-
-        Match match = matchRepository.findByAnotherUserIdAndMatchDate(user.getUserId(), user.getLastMatchDate()).
-                orElseGet(() ->
-                        matchRepository.findByUserIdAndMatchDate(user.getUserId(),user.getLastMatchDate())
-                                .orElse(null));
-
-        return Optional.ofNullable(match);
+    public List<User> getPotentialMatches(String userId, List<Filter> filters) {
+        return null;
     }
 }
