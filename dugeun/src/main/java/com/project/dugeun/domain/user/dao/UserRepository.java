@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.signup.dao;
+package com.project.dugeun.domain.user.dao;
 
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -25,15 +25,35 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime created;
+    @OneToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "match", cascade = CascadeType.REMOVE)
-    private List<User> userList = new ArrayList<>();
+    @OneToOne
+    @JoinColumn(name="another_user_id")
+    private User anotherUser;
 
-    // User을 Match에 추가하는 코드 (객체지향적으로)
-    public void addUser(User a){
-        a.setMatch(this);
-        userList.add(a);
+    private LocalDate matchingDate;
+
+
+    // 매칭된 페어들과 다음 매칭 날자를 매개변수로 받아 돌아가며 matchResults에 추가를 함
+    public static List<Match> getResults(List<Pair<User,User>> matchPairs, LocalDate localDate){
+        List<Match> matchResults = new ArrayList<>();
+
+        Iterator<Pair<User,User>> iterator = matchPairs.iterator();
+        while(iterator.hasNext()){
+            Pair<User,User> next = iterator.next();
+            Match build = Match.builder()
+                    .user(next.getFirst())
+                    .anotherUser(next.getSecond())
+                    .matchingDate(localDate)
+                    .build();
+
+            matchResults.add(build);
+
+        }
+
+        return matchResults;
+
     }
-
 }

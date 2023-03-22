@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Comparable<User>{
+public class User {
 
     @Id
     @Column(name="id", unique = true)
@@ -119,10 +119,7 @@ public class User implements Comparable<User>{
 
 
 
-    @Override
-    public int compareTo(User o) {
-        return this.getUserId().compareTo(o.userId);
-    }
+
 
 
 }
