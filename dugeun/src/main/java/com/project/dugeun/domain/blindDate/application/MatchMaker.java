@@ -42,6 +42,7 @@ public class MatchMaker {
 
 
     // TODO - 점수 계산 로직 작성할 것.
+    // return a score
     private int calculateCompatibility(User user1, User user2){
         return 0;
     }
