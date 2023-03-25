@@ -1,8 +1,6 @@
 package com.project.dugeun.domain.user.domain;
 
 
-import com.project.dugeun.domain.blindDate.domain.Like;
-import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -11,7 +9,6 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,11 +68,11 @@ public class User {
     @Column(name = "third_profile_image")
     private String thirdFilePath;
 
-    @ManyToOne
-    private Match match;
+//    @ManyToOne
+//    private Match match;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    private List<Like> likeList = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    private List<Like> likeList = new ArrayList<>();
 
 
     @Builder
