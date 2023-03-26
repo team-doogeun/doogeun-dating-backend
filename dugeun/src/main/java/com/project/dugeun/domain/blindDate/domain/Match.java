@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table(name = "match")
+@Table(name = "blind_date")
 @Getter
 @Setter
 @Entity
@@ -23,6 +23,7 @@ public class Match {
 
     @ManyToOne
     private User user2;
+
 
     @Column(name="score")
     private int compatibilityScore;

@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.blindDate.api;
 
 import com.project.dugeun.domain.blindDate.application.MatchMaker;
+import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.blindDate.domain.dto.MatchResponseDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -24,15 +25,16 @@ public class MatchController {
 
     // get a list of matches for a given user
     @GetMapping("/users/{userId}/matches")
-    public List<User> getMatches(@PathVariable String userId) {
+    public ResponseEntity getMatches(@PathVariable String userId) {
 
         // TODO - 예외처리
         User user = userRepository.findByUserId(userId);
         List<User> matches = matchMaker.findMatches(user);
+        User matchedUser = matches.get(0);
+        EntityModel<MatchResponseDto> entityModel = EntityModel.of(new MatchResponseDto(matchedUser));
+        return ResponseEntity.ok(entityModel);
 
-        EntityModel<MatchResponseDto> entityModel = EntityModel.of(new MatchResponseDto(matches));
 
-        return (List<User>) ResponseEntity.ok(entityModel);
 //        return matches;
 
     }
