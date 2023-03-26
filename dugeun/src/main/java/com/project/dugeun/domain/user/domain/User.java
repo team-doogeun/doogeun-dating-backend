@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.user.domain;
 
 
+import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name= "com/project/dugeun/domain/user")
+//@Table(name= "com/project/dugeun/domain/user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,7 +50,7 @@ public class User {
     private Integer age;
 
     @Column(name="gender")
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @Embedded
@@ -65,8 +66,9 @@ public class User {
     private String secondFilePath;
     @Column(name = "third_profile_image")
     private String thirdFilePath;
-
-//    @ManyToOne
+//
+//
+//    @OneToMany
 //    private Match match;
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
