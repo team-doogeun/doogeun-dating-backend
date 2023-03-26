@@ -2,6 +2,7 @@ package com.project.dugeun.domain.user.domain;
 
 
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -52,6 +53,11 @@ public class User {
     @Column(name="gender")
 //    @Enumerated(EnumType.STRING)
     private GenderType gender;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private GroupBlindRoom groupBlindRoom;
+
 
     @Embedded
     private DetailProfile detailProfile;

@@ -5,23 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b70c92a-dc23-4282-a63f-26cf05c4b128" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules/dugeun.querydsl.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/application/MatchMaker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/dto/MatchResponseDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/api/MatchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/api/MatchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/application/MatchService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/application/MatchServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/dao/MatchRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/dao/MatchRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/Filter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/Like.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/Like.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/Match.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/domain/Match.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/dto/MatchingResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/blindDate/dto/MatchingResponseDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/CustomAuthenticationEntryPoint.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/signup/application/SignupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/signup/application/SignupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/signup/dao/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/dao/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/profile/category/GenderType.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/profile/category/GenderType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +63,15 @@
         </projects_view>
       </state>
     </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -148,7 +146,7 @@
       <workItem from="1679473641141" duration="1413000" />
       <workItem from="1679475173281" duration="4997000" />
       <workItem from="1679624600230" duration="1817000" />
-      <workItem from="1679801067495" duration="6035000" />
+      <workItem from="1679801067495" duration="17887000" />
     </task>
     <servers />
   </component>

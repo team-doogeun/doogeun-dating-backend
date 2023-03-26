@@ -32,7 +32,4 @@ public enum GenderType {
     public String getValue(){
         return value;
     }
-
-
-
 }

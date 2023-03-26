@@ -1,29 +1,74 @@
 package com.project.dugeun.config;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@AllArgsConstructor
+public class SecurityConfig {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-        // POST 메서드 가능 , 403 에러처리
-        http.csrf().disable();
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").authenticated()
-                .antMatchers("/com/project/dugeun/domain/user/**").permitAll();
+                .antMatchers("/User/logout").authenticated()
+                .antMatchers("/User/").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.POST.name(), "/blind").authenticated()
+                .antMatchers(HttpMethod.PUT.name(), "/blind-date/{user_id}").authenticated()
+                .antMatchers(HttpMethod.DELETE.name(), "/blind-date/{user_id}").authenticated()
+                .and()
+                .formLogin().disable().csrf().disable().cors()
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+
+        http.authorizeRequests()
+                .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                .mvcMatchers("/", "/users/**").permitAll()
+                .anyRequest().authenticated()
+        ;
+//
+//        http.exceptionHandling()
+//                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//        ;
+        return http.build();
+
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/users/new").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/blindDate", "/groupDate").hasRole("SUPER")
+//                .antMatchers("/").hasRole("GENERAL")
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .defaultSuccessUrl("/user_access")
+//                .failureUrl("/access_denied")
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/")
+//                .invalidateHttpSession(true)
+//                .and()
+//                .exceptionHandling()
+//                .accessDeniedPage("/accessDenied")
+//        ;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
