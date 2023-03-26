@@ -36,7 +36,19 @@ public class DetailProfile {
     private EmotionType character2;
 
     @Enumerated(EnumType.STRING)
+    private HobbyType hobby1;
+
+    @Enumerated(EnumType.STRING)
+    private HobbyType hobby2;
+
+    @Enumerated(EnumType.STRING)
     private MbtiType mbti;
+
+    @Enumerated(EnumType.STRING)
+    private SmokeType smoke;
+
+    @Enumerated(EnumType.STRING)
+    private DrinkType drink;
 
 
     @Enumerated(EnumType.STRING)
