@@ -1,9 +1,9 @@
 // querydsl 추가
-buildscript {
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
+//buildscript {
+//	ext {
+//		queryDslVersion = "5.0.0"
+//	}
+//}
 
 
 
@@ -12,7 +12,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.6'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	//querydsl 플러그인 추가
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.project'
@@ -45,8 +45,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	//querydsl 추가
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+//	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+//	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-test'
@@ -75,23 +75,23 @@ tasks.named('test') {
 }
 
 //querydsl 추가 시작
-def querydslDir = "./generated-sources/java"
+//def querydslDir = "./generated-sources/java"
 
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-sourceSets {
-	main.java.srcDir querydslDir
-}
-compileQuerydsl{
-	options.annotationProcessorPath = configurations.querydsl
-}
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//compileQuerydsl{
+//	options.annotationProcessorPath = configurations.querydsl
+//}
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	querydsl.extendsFrom compileClasspath
+//	querydsl.extendsFrom compileClasspath
 }
 //querydsl 추가 끝

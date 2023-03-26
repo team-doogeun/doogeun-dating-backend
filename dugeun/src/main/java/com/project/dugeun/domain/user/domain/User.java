@@ -1,7 +1,6 @@
 package com.project.dugeun.domain.user.domain;
 
 
-import com.project.dugeun.domain.blindDate.domain.Like;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
@@ -11,13 +10,10 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
-@Table(name= "com/project/dugeun/domain/user")
+//@Table(name= "com/project/dugeun/domain/user")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -54,7 +50,7 @@ public class User {
     private Integer age;
 
     @Column(name="gender")
-    @Enumerated(EnumType.STRING)
+//    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @Embedded
@@ -70,10 +66,11 @@ public class User {
     private String secondFilePath;
     @Column(name = "third_profile_image")
     private String thirdFilePath;
-
-//    @ManyToOne
-//    private Match match;
 //
+//
+//    @OneToMany
+//    private Match match;
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<Like> likeList = new ArrayList<>();
 
@@ -116,15 +113,6 @@ public class User {
                 .build();
         return user;
     }
-
-
-
-//    @Override
-//    public int compareTo(User o) {
-//        return this.getUserId().compareTo(o.userId);
-//    }
-
-
 }
 
 
