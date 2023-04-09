@@ -24,8 +24,7 @@ public class MatchMaker {
     private MatchRepository matchRepository;
 
     // find matches for a given user
-    public List<User> findMatches(User user){
-
+    public void manageMatches(User user){
 
         // 주어진 유저를 제외한 모두 유저들 불러오기
         List<User> users = userRepository.findAllByUserIdNot(user.getUserId());
@@ -33,14 +32,24 @@ public class MatchMaker {
 
         for(User otherUser: users){
             int compatibilityScore = calculateCompatibility(user,otherUser);
+
+            // TODO - 유저간 점수를 비교하는 알고리즘 작성  ( 점수 높은 최종 2명 )
+
             System.out.println(compatibilityScore);
-            // 점수가 60점 이상이면
-            if(compatibilityScore >= 20){
+
+            // 점수가 100점 이상이면
+            if(compatibilityScore >= 80){
+
                 matches.add(otherUser);
+
+                // match(blind_date 디비)에 저장
                 saveMatch(user,otherUser, compatibilityScore);
+
+
             }
         }
-        return matches;
+
+
     }
 
 
@@ -58,8 +67,11 @@ public class MatchMaker {
         ArrayList<String> targetHobbies = new ArrayList<>();
 
         // ** 점수 내는 로직 **
-
-
+        // 다른 성별 소개 못하도록 조치
+        if(user1.getGender().getValue() == user2.getGender().getValue())
+        {
+            score -= 100;
+        }
         // 나이
         String idealAgeType = user1.getIdealTypeProfile().getIdealAge().getValue();
         Integer targetedAge = user2.getAge();
@@ -289,7 +301,6 @@ public class MatchMaker {
 
 
 
-
             if(user1.getIdealTypeProfile().getIdealMbti().getValue() == user2.getDetailProfile().getMbti().getValue()){
                 score += 10;
                 if(user1.getDetailProfile().getFirstPriority().getValue() == "MBTI"){
@@ -308,12 +319,30 @@ public class MatchMaker {
     }
 
     // save a match between two users
-    private void saveMatch(User user1, User user2, int compatibilitySocre){
+    private void saveMatch(User user1, User user2, int compatibilityScore){
         Match match = new Match();
         match.setUser1(user1);
         match.setUser2(user2);
-        match.setCompatibilityScore(compatibilitySocre);
+        match.setCompatibilityScore(compatibilityScore);
+        match.setMatched(false);
+
+        // 양방향 매핑
+//        user1.getMatchings().add(match);
+
+        // 양방향 매칭
+        user1.addToMatchings(match);
+        user2.addToMatchings(match);
+
+
         matchRepository.save(match);
+        List<Match> allMatches = matchRepository.findAll();
+        for(Match selected: allMatches){
+
+            System.out.println("COMPATIBILITY SCORE!!");
+            System.out.println(selected.getCompatibilityScore());
+
+        }
+        System.out.println(allMatches);
 
     }
 }

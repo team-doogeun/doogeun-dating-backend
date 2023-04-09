@@ -41,8 +41,30 @@ public class MatchResponseDto {
      private String thirdFilePath;
 
 
+    private String userIdSec;
+    private String nameSec;
 
-    public MatchResponseDto(User user){
+    private Integer ageSec;
+
+
+    private BodyType bodyTypeSec;
+
+    private AddressType addressTypeSec;
+
+    private DepartmentType departmentTypeSec;
+
+    private CharacterType characterTypeSec;
+
+    private EmotionType emotionTypeSec;
+
+    private MbtiType mbtiTypeSec;
+
+    private String basicFilePathSec;
+    private String secondFilePathSec;
+    private String thirdFilePathSec;
+
+
+    public MatchResponseDto(User user,User userSec){
         this.userId = user.getUserId();
         this.name = user.getName();
         this.age =user.getAge();
@@ -56,6 +78,19 @@ public class MatchResponseDto {
         this.secondFilePath = user.getSecondFilePath();
         this.thirdFilePath = user.getThirdFilePath();
 
+        this.userIdSec = userSec.getUserId();
+        this.nameSec = userSec.getName();
+        this.ageSec =userSec.getAge();
+        this.bodyTypeSec = userSec.getDetailProfile().getBodyType();
+        this.addressTypeSec = userSec.getDetailProfile().getAddress();
+        this.departmentTypeSec = userSec.getDetailProfile().getDepartment();
+        this.characterTypeSec = userSec.getDetailProfile().getCharacter1();
+        this.emotionTypeSec = userSec.getDetailProfile().getCharacter2();;
+        this.mbtiTypeSec = userSec.getDetailProfile().getMbti();
+        this.basicFilePathSec = userSec.getBasicFilePath();
+        this.secondFilePathSec = userSec.getSecondFilePath();
+        this.thirdFilePathSec = userSec.getThirdFilePath();
+
 
     }
 
@@ -63,7 +98,13 @@ public class MatchResponseDto {
     , Integer age, BodyType bodyType, AddressType addressType,
                                               DepartmentType departmentType, CharacterType characterType,
                                               EmotionType emotionType, MbtiType mbtiType,
-                                              String basicFilePath, String secondFilePath, String thirdFilePath){
+                                              String basicFilePath, String secondFilePath, String thirdFilePath,
+                                              String userIdSec, String nameSec, String externalIdSec
+            , Integer ageSec, BodyType bodyTypeSec, AddressType addressTypeSec,
+                                              DepartmentType departmentTypeSec, CharacterType characterTypeSec,
+                                              EmotionType emotionTypeSec, MbtiType mbtiTypeSec,
+                                              String basicFilePathSec, String secondFilePathSec, String thirdFilePathSec
+                                              ){
         return MatchResponseDto.builder()
                 .userId(userId)
                 .name(name)
@@ -77,6 +118,21 @@ public class MatchResponseDto {
                 .basicFilePath(basicFilePath)
                 .secondFilePath(secondFilePath)
                 .thirdFilePath(thirdFilePath)
+
+                .userIdSec(userIdSec)
+                .nameSec(nameSec)
+                .ageSec(ageSec)
+                .bodyTypeSec(bodyTypeSec)
+                .addressTypeSec(addressTypeSec)
+                .departmentTypeSec(departmentTypeSec)
+                .characterTypeSec(characterTypeSec)
+                .emotionTypeSec(emotionTypeSec)
+                .mbtiTypeSec(mbtiTypeSec)
+                .basicFilePathSec(basicFilePathSec)
+                .secondFilePathSec(secondFilePathSec)
+                .thirdFilePathSec(thirdFilePathSec)
+
+
                 .build();
 
     }

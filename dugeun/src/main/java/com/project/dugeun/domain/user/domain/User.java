@@ -10,13 +10,14 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 //@Table(name= "com/project/dugeun/domain/user")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
@@ -74,6 +75,20 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private List<Like> likeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.REMOVE)
+    @OrderBy("score desc") // 점수 높은 순으로 정렬
+    @Builder.Default
+    private List<Match> matchings = new ArrayList<>();
+
+
+    public void addToMatchings(Match match){
+
+        // 인덱스가 0인것은 앞에다가 넣는다는 뜻 .역순 정렬이라 점수가 높은 것이 앞에 들어가도록
+        matchings.add(0,match);
+    }
+
+    public User() {
+    }
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
