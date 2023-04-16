@@ -2,6 +2,7 @@ package com.project.dugeun.domain.user.domain;
 
 
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -79,6 +80,19 @@ public class User {
     @OrderBy("score desc") // 점수 높은 순으로 정렬
     @Builder.Default
     private List<Match> matchings = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "fromUser")
+    @OrderBy("createDate desc") // 최근순으로
+    @Builder.Default
+    private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "toUser")
+    @OrderBy("createDate desc") // 최근순으로
+    @Builder.Default
+    private List<LikeablePerson> toLikeablePerson = new ArrayList<>();
+
 
 
     public void addToMatchings(Match match){
