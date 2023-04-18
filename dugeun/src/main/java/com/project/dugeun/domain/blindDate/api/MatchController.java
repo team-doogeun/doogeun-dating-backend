@@ -41,13 +41,6 @@ public class MatchController {
 
 
 
-//        User matchedUser = targetUsers.get(0);
-//        List<Match> matchesPerUser1 = matchedUser.getMatchings();
-//
-//
-//        User matchedUser2 = targetUsers.get(1);
-//        List<Match> matchesPerUser2 = matchedUser2.getMatchings();
-
         User matchedUser = matches.get(0).getUser2();
         User matchedUser2 = matches.get(1).getUser2();
 

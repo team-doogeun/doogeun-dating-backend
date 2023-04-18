@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface FinalMatchRepository extends JpaRepository<FinalMatch, Long> {
 
-    List<FinalMatch> findByFirstUser(User user1);
+    List<FinalMatch> findByUser1(User user1);
 
-    List<FinalMatch> findBySecondUser(User user2);
+    List<FinalMatch> findByUser2(User user2);
+
+    FinalMatch findByUser1AndUser1(User user1, User user2);
 
 
 }
