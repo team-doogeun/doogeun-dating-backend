@@ -13,10 +13,12 @@
     - [ ] Match 데이터의 isMatched(db의 result) 속성 확인해서 1이면 소개 시키지 않기 
 - [x] 하루에 2명식 소개
   - [x] 응답으로 2명씩 소개해주기 
+- [ ] 소개해준 상대에 대해 두근 버튼을 누르면 LikeablePerson 디비에 저장
+  - [ ] DTO코드 작성하여 좋아요 누른 상대 정보 넘겨주기 
+  - [ ] LikeablePersonRepository에 저장 
 - [ ]finalMatch에 서로 선호 표시한 커플 저장
   - [ ]Match의 두 명의 유저 모두 like 누르면 finalMatch에 저장 
   - [ ]Match엔티티의 matched의 boolean값을 true로 변경
-  - [ ]
 - [ ] 예외처리 
 - [ ] 로그인 된 유저만 사용하도록
   - [ ] @PreAuthorize 적용 

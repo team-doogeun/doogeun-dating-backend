@@ -28,7 +28,7 @@ public class MatchController {
     private MatchRepository matchRepository;
 
     // get a list of matches for a given user
-    @GetMapping("/users/{userId}/matches")
+    @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity getMatches(@PathVariable String userId) {
 
 

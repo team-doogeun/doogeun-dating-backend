@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Getter
-
 public class LikeablePerson {
 
     @Id
