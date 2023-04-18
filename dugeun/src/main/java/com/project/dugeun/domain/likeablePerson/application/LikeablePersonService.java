@@ -1,5 +1,6 @@
 package com.project.dugeun.domain.likeablePerson.application;
 
+import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.user.dao.UserRepository;
@@ -43,5 +44,7 @@ public class LikeablePersonService {
 
 
     }
+
+
 
 }

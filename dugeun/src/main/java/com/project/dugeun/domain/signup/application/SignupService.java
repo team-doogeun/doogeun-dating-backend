@@ -6,14 +6,17 @@ import com.project.dugeun.domain.user.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class SignupService {
 
 private final UserRepository userRepository;
 private  final PasswordEncoder passwordEncoder;
 
+@Transactional
 public User saveUser(UserSaveRequestDto user){
     User byUserId = userRepository.findByUserId(user.getUserId());
     if(byUserId != null){

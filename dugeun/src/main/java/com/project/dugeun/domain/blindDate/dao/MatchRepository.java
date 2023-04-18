@@ -16,4 +16,7 @@ public interface MatchRepository extends JpaRepository<Match,Long> {
 
     Match findByUser1AndUser2(User user1, User user2);
 
+    boolean existsByUser1AndUser2(User user1, User user2);
+
+
 }

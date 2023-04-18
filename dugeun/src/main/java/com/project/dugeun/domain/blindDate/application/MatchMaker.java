@@ -2,28 +2,42 @@ package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.HobbyType;
 import com.project.dugeun.domain.user.domain.profile.category.PriorityCategory;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MatchMaker {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private MatchRepository matchRepository;
+    private final UserRepository userRepository;
+
+
+    private final MatchRepository matchRepository;
+    private final LikeablePersonService likeablePersonService;
+
+
+
+    public boolean canMatch(User user1,User user2){
+
+        return matchRepository.existsByUser1AndUser2(user1,user2);
+    }
 
     // find matches for a given user
+    @Transactional
     public void manageMatches(User user){
 
         // 주어진 유저를 제외한 모두 유저들 불러오기
@@ -33,12 +47,14 @@ public class MatchMaker {
         for(User otherUser: users){
             int compatibilityScore = calculateCompatibility(user,otherUser);
 
-            // TODO - 유저간 점수를 비교하는 알고리즘 작성  ( 점수 높은 최종 2명 )
+            // 유저간 점수를 비교하는 알고리즘 작성  ( 점수 높은 최종 2명 )
 
             System.out.println(compatibilityScore);
 
+
             // 점수가 100점 이상이면
-            if(compatibilityScore >= 80){
+            // TODO - 이전에 미지 저장된 Match에 대해서는 저장하지 않아야 함
+            if(compatibilityScore >= 80 && !canMatch(user,otherUser)){
 
                 matches.add(otherUser);
 
@@ -55,6 +71,7 @@ public class MatchMaker {
 
     // TODO - 점수 계산 로직 작성할 것.
     // return a score
+
     private int calculateCompatibility(User user1, User user2){
 
         int score = 0 ;
@@ -319,6 +336,7 @@ public class MatchMaker {
     }
 
     // save a match between two users
+    @Transactional
     private void saveMatch(User user1, User user2, int compatibilityScore){
         Match match = new Match();
         match.setUser1(user1);
@@ -339,6 +357,8 @@ public class MatchMaker {
         for(Match selected: allMatches){
 
             System.out.println("COMPATIBILITY SCORE!!");
+            System.out.println(selected.getUser1().getUserId() + " AND " + selected.getUser2().getUserId());
+
             System.out.println(selected.getCompatibilityScore());
 
         }
