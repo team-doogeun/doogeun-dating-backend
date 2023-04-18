@@ -14,6 +14,6 @@ public interface MatchRepository extends JpaRepository<Match,Long> {
 
     List<Match> findByUser1OrUser2(User user1, User user2);
 
-    List<Match> findByUser1AndUser2(User user1, User user2);
+    Match findByUser1AndUser2(User user1, User user2);
 
 }

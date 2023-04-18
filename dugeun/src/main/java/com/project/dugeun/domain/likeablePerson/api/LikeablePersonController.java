@@ -22,7 +22,7 @@ public class LikeablePersonController {
         String userId = likeRequest.getUserId(); // 사용자 id
         String targetUserId = likeRequest.getTargetUserId(); // 좋아요를 받은 사용자 id
 
-
-        // 데이터 베이스에 좋아요 정보 저장 또는 업데이트 
+        // 데이터 베이스에 좋아요 정보 저장 또는 업데이트
+        likeablePersonService.saveLike(userId,targetUserId);
     }
 }
