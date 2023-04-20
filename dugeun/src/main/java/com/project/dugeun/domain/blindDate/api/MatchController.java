@@ -4,6 +4,7 @@ import com.project.dugeun.domain.blindDate.application.MatchMaker;
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.blindDate.domain.dto.MatchResponseDto;
+import com.project.dugeun.domain.blindDate.domain.dto.OneMatchResponseDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,23 +35,33 @@ public class MatchController {
 
 
         // TODO - 예외처리
+
         User user = userRepository.findByUserId(userId);
 
         matchMaker.manageMatches(user);
+        // 일단 가장 점수가 높은 순으로 소개해주기 (변경 가능)
         List<Match> matches = matchRepository.findByUser1(user);
 
+        EntityModel<MatchResponseDto> twoPersonEntityModel = null;
+        EntityModel<OneMatchResponseDto> onePersonEntityModel = null;
 
 
-        User matchedUser = matches.get(0).getUser2();
-        User matchedUser2 = matches.get(1).getUser2();
+        // TODO - 소개될 최소 2명의 유저가 없을 때 예외 처리
+        if (matches.size()>=2) {
+            User matchedUser = matches.get(0).getUser2();
+            User matchedUser2 = matches.get(1).getUser2();
+            twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
 
-        EntityModel<MatchResponseDto> entityModel = EntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
-        return ResponseEntity.ok(entityModel);
+            return ResponseEntity.ok(twoPersonEntityModel);
+        }
+        else if (matches.size()==1) {
+            User matchedUser = matches.get(0).getUser2();
+            onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
+
+            return ResponseEntity.ok(onePersonEntityModel);
+        }
 
 
-//        return matches;
-
+        return null;
     }
-
-
 }

@@ -54,7 +54,7 @@ public class MatchMaker {
 
             // 점수가 100점 이상이면
             // TODO - 이전에 미지 저장된 Match에 대해서는 저장하지 않아야 함
-            if(compatibilityScore >= 80 && !canMatch(user,otherUser)){
+            if(compatibilityScore >= 50 && !canMatch(user,otherUser)){
 
                 matches.add(otherUser);
 

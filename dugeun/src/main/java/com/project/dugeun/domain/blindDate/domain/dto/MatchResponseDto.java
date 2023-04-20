@@ -94,47 +94,6 @@ public class MatchResponseDto {
 
     }
 
-    public static MatchResponseDto fromEntity(String userId, String name, String externalId
-    , Integer age, BodyType bodyType, AddressType addressType,
-                                              DepartmentType departmentType, CharacterType characterType,
-                                              EmotionType emotionType, MbtiType mbtiType,
-                                              String basicFilePath, String secondFilePath, String thirdFilePath,
-                                              String userIdSec, String nameSec, String externalIdSec
-            , Integer ageSec, BodyType bodyTypeSec, AddressType addressTypeSec,
-                                              DepartmentType departmentTypeSec, CharacterType characterTypeSec,
-                                              EmotionType emotionTypeSec, MbtiType mbtiTypeSec,
-                                              String basicFilePathSec, String secondFilePathSec, String thirdFilePathSec
-                                              ){
-        return MatchResponseDto.builder()
-                .userId(userId)
-                .name(name)
-                .age(age)
-                .bodyType(bodyType)
-                .addressType(addressType)
-                .departmentType(departmentType)
-                .characterType(characterType)
-                .emotionType(emotionType)
-                .mbtiType(mbtiType)
-                .basicFilePath(basicFilePath)
-                .secondFilePath(secondFilePath)
-                .thirdFilePath(thirdFilePath)
 
-                .userIdSec(userIdSec)
-                .nameSec(nameSec)
-                .ageSec(ageSec)
-                .bodyTypeSec(bodyTypeSec)
-                .addressTypeSec(addressTypeSec)
-                .departmentTypeSec(departmentTypeSec)
-                .characterTypeSec(characterTypeSec)
-                .emotionTypeSec(emotionTypeSec)
-                .mbtiTypeSec(mbtiTypeSec)
-                .basicFilePathSec(basicFilePathSec)
-                .secondFilePathSec(secondFilePathSec)
-                .thirdFilePathSec(thirdFilePathSec)
-
-
-                .build();
-
-    }
 
 }
