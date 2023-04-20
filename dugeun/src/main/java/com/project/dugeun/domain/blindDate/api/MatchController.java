@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -39,12 +40,16 @@ public class MatchController {
         User user = userRepository.findByUserId(userId);
 
         matchMaker.manageMatches(user);
-        // 일단 가장 점수가 높은 순으로 소개해주기 (변경 가능)
+
         List<Match> matches = matchRepository.findByUser1(user);
 
         EntityModel<MatchResponseDto> twoPersonEntityModel = null;
         EntityModel<OneMatchResponseDto> onePersonEntityModel = null;
 
+
+        // 나중에 MatchMaker 서비스단으로 옮기기
+        // 일단 가장 점수가 높은 순으로 소개해주기 (나중에 이 부분은 변경 가능)
+        matches.stream().sorted(Comparator.comparing(Match::getCompatibilityScore));
 
         // TODO - 소개될 최소 2명의 유저가 없을 때 예외 처리
         if (matches.size()>=2) {
