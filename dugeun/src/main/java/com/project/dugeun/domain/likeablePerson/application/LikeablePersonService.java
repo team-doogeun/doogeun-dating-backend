@@ -21,7 +21,6 @@ public class LikeablePersonService {
 
     private final UserRepository userRepository;
 
-   private final FinalMatchRepository finalMatchRepository;
    private  final LikeablePersonRepository likeablePersonRepository;
 
 

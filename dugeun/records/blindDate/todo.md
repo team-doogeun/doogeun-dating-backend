@@ -8,8 +8,8 @@
 - [x] 점수가 높은 순으로 상대에게 먼저 소개해주기 
 - [x] 성별 (남->여, 여->남)에 따른 소개 
 - [ ] 하루에 한번 소개 상대 업데이트 ( 소개 주기 설정&매칭 데이터 일괄 처리 )
-  - [ ] spring scheduler 도입 
-    - [ ] likeablePerson 디비에서 쌍방 매칭인 경우 찾아서 finalMatch에 저장하는 함수 
+  - [x] likeablePerson 디비에서 쌍방 매칭인 경우 찾아서 finalMatch에 저장하는 함수 
+  - [ ] spring scheduler 적용 
 
 - [x] 한번 소개한 상대는 다시 소개 안 해주기 
  
