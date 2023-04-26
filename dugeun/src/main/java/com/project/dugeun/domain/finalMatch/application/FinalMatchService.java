@@ -22,40 +22,27 @@ public class FinalMatchService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
 
-    @Transactional
-    public void saveFinalMatch(String userId, String anotherUserId){
+    @Transactional(readOnly = false)
+    public void saveFinalMatch(String userId){
 
         User user = userRepository.findByUserId(userId);
-        User anotherUser = userRepository.findByUserId(anotherUserId);
 
-        // 모든 선호 리스트를 탐색하는 것보다는 빠를 것으로 예상
         List<LikeablePerson> likeablePeople  = likeablePersonRepository.findByFromUser(user);
-        for(LikeablePerson pair:likeablePeople){
-        if(pair.getFromUser().getUserId() == userId)
-        {
-            if(pair.getToUser().getUserId() == anotherUserId){
-                // 최종매칭완료
-                FinalMatch finalMatch = new FinalMatch();
-                finalMatch.setUser(pair.getFromUser(),pair.getToUser());
-                finalMatchRepository.save(finalMatch);
-            }
+        for(LikeablePerson pair: likeablePeople){
+
+          User toUser = pair.getToUser();
+          List<LikeablePerson> toUserLikeablePeople =  likeablePersonRepository.findByFromUser(toUser);
+
+          toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
+              if(toUserLikeablePerson.getToUser().getUserId() == userId){
+                  FinalMatch finalMatch = new FinalMatch();
+                  finalMatch.setUser1(user);
+                  finalMatch.setUser2(toUser);
+                  finalMatchRepository.save(finalMatch);
+              }
+          });
 
         }
-
-        else if(pair.getToUser().getUserId() == userId){
-            if(pair.getFromUser().getUserId() == anotherUserId){
-                // 최종매칭완료
-                FinalMatch finalMatch = new FinalMatch();
-                finalMatch.setUser(pair.getToUser(),pair.getFromUser());
-                finalMatchRepository.save(finalMatch);
-            }
-        }
-
-        }
-
-
-
-
 
     }
 
