@@ -7,9 +7,13 @@
 - [x] 동일한 상대들에 대한 매칭은 db에 저장하지 않기 
 - [x] 점수가 높은 순으로 상대에게 먼저 소개해주기 
 - [x] 성별 (남->여, 여->남)에 따른 소개 
-- [ ] 하루에 한번 소개 상대 업데이트 ( 소개 주기 설정&매칭 데이터 일괄 처리 )
+- [x] 하루에 한번 소개 상대 업데이트 ( 소개 주기 설정&매칭 데이터 일괄 처리 )
   - [x] likeablePerson 디비에서 쌍방 매칭인 경우 찾아서 finalMatch에 저장하는 함수 
-  - [ ] spring scheduler 적용 
+  - [x] spring scheduler 적용 
+
+- [ ] db에 중복으로 저장되는 것 처리
+  - [ ] likeable_person 중복 저장 무효 처리
+  - [ ] final_match 중복 처리 무효 처리 
 
 - [x] 한번 소개한 상대는 다시 소개 안 해주기 
  
@@ -18,8 +22,8 @@
 - [x] 소개해준 상대에 대해 두근 버튼을 누르면 LikeablePerson 디비에 저장
   - [x] DTO코드 작성하여 좋아요 누른 상대 정보 넘겨주기 
   - [x] LikeablePersonRepository에 저장 
-- [ ]finalMatch에 서로 선호 표시한 커플 저장
-  - [ ]Match의 두 명의 유저 모두 like 누르면 finalMatch에 저장 
+[x]finalMatch에 서로 선호 표시한 커플 저장
+  - [x]Match의 두 명의 유저 모두 like 누르면 finalMatch에 저장 
 
 - [x] 특정 점수를 넘는 유저가 없어 소개해 줄 상대가 부족한 경우 처리 
   - [x] 기준 점수를 넘지 못했지만 그래도 가장 높은 매칭 점수를 가지고 있는 상대 소개 

@@ -6,6 +6,7 @@ import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,7 +25,8 @@ public class DataProcessorScheduler {
     }
 
 //    @Scheduled(cron = "0 0 10 * * *") // 매일 오전 10시에 실행되도록 설정
-    @Scheduled(cron = "0 0/1 * * * *") // 매일 1분마다 실행
+    @Transactional
+    @Scheduled(cron = "0 0/1 * * * *") // 매일 5분마다 실행
     public void processDate(){
 
         // user 디비에 있는 모든 유저들 로드해서 수행
@@ -32,9 +34,10 @@ public class DataProcessorScheduler {
        for(User user: users){
 
            finalMatchService.saveFinalMatch(user.getUserId());
-           System.out.println("Data processing job executed");
+
        }
 
+        System.out.println("Data processing job executed!!!!!!!!");
 
 
     }
