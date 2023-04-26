@@ -1,8 +1,10 @@
 package com.project.dugeun.domain.blindDate.domain;
 
 import com.project.dugeun.domain.user.domain.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -28,8 +30,13 @@ public class Match {
     @Column(name="score")
     private int compatibilityScore;
 
+    @Builder.Default
     @Column(name="result")
-    private Boolean matched;
+    private Boolean matched = false;
+
+    // 초기화하고자 하는 칼럼
+
+
 
     public void setUser(User user1,User user2){
         this.user1 = user1;

@@ -52,15 +52,18 @@ public class MatchController {
         matches.stream().sorted(Comparator.comparing(Match::getCompatibilityScore));
 
         // TODO - 소개될 최소 2명의 유저가 없을 때 예외 처리
-        if (matches.size()>=2) {
+        if (matches.size()>=2 && matches.get(0).getMatched()!=true && matches.get(1).getMatched()!=true) {
             User matchedUser = matches.get(0).getUser2();
+            matches.get(0).setMatched(true); // 소개되면 matched를 true로
             User matchedUser2 = matches.get(1).getUser2();
+            matches.get(1).setMatched(true); // 소개되면 matched를 true로
             twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
 
             return ResponseEntity.ok(twoPersonEntityModel);
         }
-        else if (matches.size()==1) {
+        else if (matches.size()==1 && matches.get(0).getMatched()!=true) {
             User matchedUser = matches.get(0).getUser2();
+            matches.get(0).setMatched(true); // 소개되면 matched를 true로
             onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
 
             return ResponseEntity.ok(onePersonEntityModel);

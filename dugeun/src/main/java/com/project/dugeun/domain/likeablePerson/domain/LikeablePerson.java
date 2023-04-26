@@ -24,9 +24,11 @@ public class LikeablePerson {
     private Long id;
 
     @ManyToOne
+    @Setter
     private User fromUser; // 호감을 표시한 사람
 
     @ManyToOne
+    @Setter
     private User toUser; // 호감을 받은 사람
 
     @CreatedDate
