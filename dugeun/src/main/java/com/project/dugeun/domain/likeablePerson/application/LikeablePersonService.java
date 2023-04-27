@@ -27,26 +27,25 @@ public class LikeablePersonService {
    @Transactional
     public void saveLike(String userId, String targetUserId) {
 
-//        FinalMatch actualMatch = new FinalMatch();
-       LikeablePerson likeResult = new LikeablePerson();
 
         User user1 = userRepository.findByUserId(userId);
         User user2 = userRepository.findByUserId(targetUserId);
 
-        if(user1!=null && user2!= null){
-            
-                likeResult.setFromUser(user1);
-                likeResult.setToUser(user2);
-                likeablePersonRepository.save(likeResult);
+       if(user1 == null || user2 == null){
+           throw new IllegalStateException("id에 해당하는 회원이 없습니다.");
+       }
 
-        }
-        else{
+       // 이미 likeablePerson이 있는지 확인
+       LikeablePerson existingLike = likeablePersonRepository.findByFromUserAndToUser(user1, user2);
+       if(existingLike != null){
+           return; // 이미 저장된 데이터라면 더 이상 진행하지 않고 메소드를 종료합니다.
+       }
 
-            throw new IllegalStateException("id에 해당하는 회원이 없습니다.");
-        }
+       // likeablePerson 저장
+       LikeablePerson likeResult = new LikeablePerson();
+       likeResult.setFromUser(user1);
+       likeResult.setToUser(user2);
+       likeablePersonRepository.save(likeResult);
 
-
-    }
-
-
+}
 }
