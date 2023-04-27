@@ -2,6 +2,8 @@ package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.blindDate.domain.dto.MatchResponseDto;
+import com.project.dugeun.domain.blindDate.domain.dto.OneMatchResponseDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -10,11 +12,13 @@ import com.project.dugeun.domain.user.domain.profile.category.PriorityCategory;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -67,6 +71,44 @@ public class MatchMaker {
 
 
     }
+
+
+    @Transactional
+    public List<User> getMatch(String userId){
+        List<User> pair = null;
+        User user = userRepository.findByUserId(userId);
+        manageMatches(user);
+        List<Match> matches = matchRepository.findByUser1(user);
+
+
+
+        // 일단 가장 점수가 높은 순으로 소개해주기 (나중에 이 부분은 변경 가능)
+        matches = (List<Match>) matches.stream().sorted(Comparator.comparing(Match::getCompatibilityScore));
+
+        if (matches.size()>=2 && matches.get(0).getMatched()!=true && matches.get(1).getMatched()!=true) {
+            User matchedUser = matches.get(0).getUser2();
+            matches.get(0).setMatched(true); // 소개되면 matched를 true로
+            User matchedUser2 = matches.get(1).getUser2();
+            matches.get(1).setMatched(true); // 소개되면 matched를 true로
+            pair.add(matchedUser);
+            pair.add(matchedUser2);
+
+            return pair;
+
+        }
+        else if (matches.size()==1 && matches.get(0).getMatched()!=true) {
+            User matchedUser = matches.get(0).getUser2();
+            matches.get(0).setMatched(true); // 소개되면 matched를 true로
+            pair.add(matchedUser);
+
+            return pair;
+        }
+
+
+    return null;
+    }
+
+
 
 
     // TODO - 점수 계산 로직 작성할 것.
@@ -335,6 +377,9 @@ public class MatchMaker {
 
     }
 
+
+
+
     // save a match between two users
     @Transactional
     private void saveMatch(User user1, User user2, int compatibilityScore){
@@ -365,4 +410,7 @@ public class MatchMaker {
         System.out.println(allMatches);
 
     }
+
+
+
 }

@@ -37,37 +37,32 @@ public class MatchController {
 
         // TODO - 예외처리
 
-        User user = userRepository.findByUserId(userId);
+        List<User> pair = null;
+        pair = matchMaker.getMatch(userId);
 
-        matchMaker.manageMatches(user);
 
-        List<Match> matches = matchRepository.findByUser1(user);
 
         EntityModel<MatchResponseDto> twoPersonEntityModel = null;
         EntityModel<OneMatchResponseDto> onePersonEntityModel = null;
 
 
-        // 나중에 MatchMaker 서비스단으로 옮기기
-        // 일단 가장 점수가 높은 순으로 소개해주기 (나중에 이 부분은 변경 가능)
-        matches.stream().sorted(Comparator.comparing(Match::getCompatibilityScore));
-
-        // TODO - 소개될 최소 2명의 유저가 없을 때 예외 처리
-        if (matches.size()>=2 && matches.get(0).getMatched()!=true && matches.get(1).getMatched()!=true) {
-            User matchedUser = matches.get(0).getUser2();
-            matches.get(0).setMatched(true); // 소개되면 matched를 true로
-            User matchedUser2 = matches.get(1).getUser2();
-            matches.get(1).setMatched(true); // 소개되면 matched를 true로
+        if(pair.size() == 2){
+            User matchedUser = pair.get(0);
+            User matchedUser2 = pair.get(1);
             twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
 
             return ResponseEntity.ok(twoPersonEntityModel);
         }
-        else if (matches.size()==1 && matches.get(0).getMatched()!=true) {
-            User matchedUser = matches.get(0).getUser2();
-            matches.get(0).setMatched(true); // 소개되면 matched를 true로
+        else if (pair.size() ==1)
+        {
+            User matchedUser = pair.get(0);
             onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
 
             return ResponseEntity.ok(onePersonEntityModel);
+
+
         }
+
 
 
         return null;

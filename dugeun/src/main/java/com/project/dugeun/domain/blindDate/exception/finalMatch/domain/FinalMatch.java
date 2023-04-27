@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.finalMatch.domain;
+package com.project.dugeun.domain.blindDate.exception.finalMatch.domain;
 
 
 import com.project.dugeun.domain.user.domain.User;

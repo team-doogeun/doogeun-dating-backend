@@ -1,7 +1,7 @@
-package com.project.dugeun.domain.finalMatch.application;
+package com.project.dugeun.domain.blindDate.exception.finalMatch.application;
 
-import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
-import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.blindDate.exception.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.blindDate.exception.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
