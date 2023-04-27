@@ -34,8 +34,7 @@ public class LikeablePersonService {
         User user2 = userRepository.findByUserId(targetUserId);
 
         if(user1!=null && user2!= null){
-
-
+            
                 likeResult.setFromUser(user1);
                 likeResult.setToUser(user2);
                 likeablePersonRepository.save(likeResult);
@@ -47,10 +46,7 @@ public class LikeablePersonService {
         }
 
 
-
-
     }
-
 
 
 }

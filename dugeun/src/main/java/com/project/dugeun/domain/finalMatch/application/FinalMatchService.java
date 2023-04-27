@@ -33,21 +33,27 @@ public class FinalMatchService {
         List<LikeablePerson> likeablePeople  = likeablePersonRepository.findByFromUser(user);
         for(LikeablePerson pair: likeablePeople){
 
-          User toUser = pair.getToUser();
-          List<LikeablePerson> toUserLikeablePeople =  likeablePersonRepository.findByFromUser(toUser);
-        if(toUserLikeablePeople == null){
-            throw new RuntimeException("LikeablePerson not found with tmUser: " + user);
-        }
+            User toUser = pair.getToUser();
+            List<LikeablePerson> toUserLikeablePeople =  likeablePersonRepository.findByFromUser(toUser);
+            if(toUserLikeablePeople == null){
+                throw new RuntimeException("LikeablePerson not found with tmUser: " + user);
+            }
 
 
-          toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
-              if(toUserLikeablePerson.getToUser().getUserId().equals(userId)){
-                  FinalMatch finalMatch = new FinalMatch();
-                  finalMatch.setUser1(user);
-                  finalMatch.setUser2(toUser);
-                  finalMatchRepository.save(finalMatch);
-              }
-          });
+            toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
+                if(toUserLikeablePerson.getToUser().getUserId().equals(userId)){
+
+                    // check if FinalMatch already exists
+                    FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser1(user, toUser);
+                    if(existingMatch == null){
+                        // create new FinalMatch and save it
+                        FinalMatch finalMatch = new FinalMatch();
+                        finalMatch.setUser1(user);
+                        finalMatch.setUser2(toUser);
+                        finalMatchRepository.save(finalMatch);
+                    }
+                }
+            });
 
         }
 
