@@ -1,7 +1,6 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
-import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,8 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalTime;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -43,8 +41,8 @@ public class GroupBlindRoom {
     @Enumerated(EnumType.STRING)
     private GroupBlindStatus groupBlindStatus;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     @Embedded
     private GroupBlindIntroduction groupBlindIntroduction;

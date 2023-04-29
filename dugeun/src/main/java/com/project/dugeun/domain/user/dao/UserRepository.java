@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     List<User> findAllByUserIdNot(String userId);
 
+    User updateUserPassword(String userId, String pw);
+
 }

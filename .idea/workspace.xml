@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b70c92a-dc23-4282-a63f-26cf05c4b128" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/CustomAuthenticationEntryPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/CustomAuthenticationEntryPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/signup/application/SignupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/signup/application/SignupService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/profile/category/GenderType.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/domain/profile/category/GenderType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/MailConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/config/MailConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/api/GroupBlindController.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/api/GroupBlindController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/application/GroupBlindService.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/application/GroupBlindService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/domain/GroupBlindRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/domain/GroupBlindRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/domain/UserBlindDateStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/groupblind/domain/UserGroupBlindStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/dao/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/dugeun/src/main/java/com/project/dugeun/domain/user/dao/UserRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,6 +88,9 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
+  </component>
   <component name="ProjectId" id="2NMGuku12r1pE4ZbURDWVMft96E" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
@@ -101,9 +108,9 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="add_unversioned_files" value="$PROJECT_DIR$/dugeun/src/main/resources/application.yml" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/dugeun/src/main" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
@@ -147,6 +154,14 @@
       <workItem from="1679475173281" duration="4997000" />
       <workItem from="1679624600230" duration="1817000" />
       <workItem from="1679801067495" duration="17887000" />
+      <workItem from="1680511552883" duration="2460000" />
+      <workItem from="1681014309910" duration="14313000" />
+      <workItem from="1681353560946" duration="2128000" />
+      <workItem from="1682225716270" duration="23000" />
+      <workItem from="1682240241101" duration="943000" />
+      <workItem from="1682401165614" duration="24396000" />
+      <workItem from="1682582104405" duration="6024000" />
+      <workItem from="1682747494699" duration="2657000" />
     </task>
     <servers />
   </component>

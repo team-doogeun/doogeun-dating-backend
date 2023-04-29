@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.groupblind.domain;
 
-public enum UserBlindDateStatus {
+public enum UserGroupBlindStatus {
 
     PARTICIPATED, REJECTED
 }

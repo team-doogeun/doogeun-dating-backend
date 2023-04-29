@@ -1,0 +1,5 @@
+
+
+java:S4601"†Reorder the URL patterns from most to less specific, the pattern "/blind-date/{user_id}" should occurs before "/blind-date/{user_id}".(½Œ©Ï
+V	java:S125."<This block of commented-out lines of code should be removed.(ŸÂãúÿÿÿÿ
+V	java:S125C"<This block of commented-out lines of code should be removed.(ŸÂãúÿÿÿÿ
