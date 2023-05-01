@@ -33,7 +33,7 @@ public class DataProcessorScheduler {
     public void processDate(){
 
         // 이전의 finalMatch에 저장된 것들 다 지우기
-        finalMatchRepository.deleteAll();
+//        finalMatchRepository.deleteAll();
 
         // user 디비에 있는 모든 유저들 로드해서 수행
        List<User> users = userRepository.findAll();

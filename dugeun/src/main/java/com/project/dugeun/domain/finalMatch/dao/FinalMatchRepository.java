@@ -13,7 +13,7 @@ public interface FinalMatchRepository extends JpaRepository<FinalMatch, Long> {
     List<FinalMatch> findByUser2(User user2);
 
 
-    FinalMatch findByUser1AndUser1(User user1, User user2);
+    FinalMatch findByUser1AndUser2(User user1, User user2);
 
 
 

@@ -40,11 +40,16 @@ public class FinalMatchService {
             }
 
 
+            if(finalMatchRepository.findByUser1AndUser2(user, toUser) != null || finalMatchRepository.findByUser1AndUser2(toUser, user) != null){
+                continue;
+            }
+
+
             toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
                 if(toUserLikeablePerson.getToUser().getUserId().equals(userId)){
 
                     // check if FinalMatch already exists
-                    FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser1(user, toUser);
+                    FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
                     if(existingMatch == null){
                         // create new FinalMatch and save it
                         FinalMatch finalMatch = new FinalMatch();
