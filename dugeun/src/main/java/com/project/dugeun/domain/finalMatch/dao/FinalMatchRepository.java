@@ -1,6 +1,6 @@
-package com.project.dugeun.domain.blindDate.exception.finalMatch.dao;
+package com.project.dugeun.domain.finalMatch.dao;
 
-import com.project.dugeun.domain.blindDate.exception.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

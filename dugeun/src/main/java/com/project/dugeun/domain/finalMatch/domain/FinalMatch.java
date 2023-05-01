@@ -1,10 +1,11 @@
-package com.project.dugeun.domain.blindDate.exception.finalMatch.domain;
+package com.project.dugeun.domain.finalMatch.domain;
 
 
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class FinalMatch {
 
 
