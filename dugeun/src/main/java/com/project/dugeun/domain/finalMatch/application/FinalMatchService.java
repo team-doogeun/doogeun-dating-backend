@@ -1,5 +1,7 @@
 package com.project.dugeun.domain.finalMatch.application;
 
+import com.project.dugeun.domain.blindDate.dao.MatchRepository;
+import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
@@ -21,6 +23,7 @@ public class FinalMatchService {
     private final FinalMatchRepository finalMatchRepository;
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
+    private final MatchRepository matchRepository;
 
     @Transactional(readOnly = false)
     public void saveFinalMatch(String userId){
@@ -50,12 +53,17 @@ public class FinalMatchService {
 
                     // check if FinalMatch already exists
                     FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
+                    Match introduceMatch = matchRepository.findByUser1AndUser2(user,toUser);
+
                     if(existingMatch == null){
                         // create new FinalMatch and save it
                         FinalMatch finalMatch = new FinalMatch();
                         finalMatch.setUser1(user);
                         finalMatch.setUser2(toUser);
                         finalMatchRepository.save(finalMatch);
+                        introduceMatch.setMatched(true);
+
+
                     }
                 }
             });

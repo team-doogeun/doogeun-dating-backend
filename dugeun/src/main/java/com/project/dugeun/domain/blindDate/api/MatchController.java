@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -37,9 +38,15 @@ public class MatchController {
 
         // TODO - 예외처리
 
-        List<User> pair = null;
-        pair = matchMaker.getMatch(userId);
+        User user = userRepository.findByUserId(userId);
+//        List<User> pair = null;
+//
+//        pair = matchMaker.getMatch(userId);
+//
+//
 
+        List<Match> pair = new ArrayList<>();
+        pair = matchRepository.findByUser1(user);
 
 
         EntityModel<MatchResponseDto> twoPersonEntityModel = null;
@@ -47,15 +54,17 @@ public class MatchController {
 
 
         if(pair.size() == 2){
-            User matchedUser = pair.get(0);
-            User matchedUser2 = pair.get(1);
+            User matchedUser = pair.get(0).getUser2();
+            User matchedUser2 = pair.get(1).getUser2();
+//            User matchedUser = pair.get(0);
+//            User matchedUser2 = pair.get(1);
             twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
 
             return ResponseEntity.ok(twoPersonEntityModel);
         }
         else if (pair.size() ==1)
         {
-            User matchedUser = pair.get(0);
+            User matchedUser = pair.get(0).getUser2();
             onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
 
             return ResponseEntity.ok(onePersonEntityModel);

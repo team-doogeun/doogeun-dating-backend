@@ -1,5 +1,6 @@
 package com.project.dugeun.config;
 
+import com.project.dugeun.domain.blindDate.application.MatchMaker;
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
@@ -17,12 +18,14 @@ public class DataProcessorScheduler {
     private final FinalMatchService finalMatchService;
     private final LikeablePersonRepository likeablePersonRepository;
 
+    private final MatchMaker matchMaker;
     private final FinalMatchRepository finalMatchRepository;
     private final UserRepository userRepository;
 
-    public DataProcessorScheduler(FinalMatchService finalMatchService,LikeablePersonRepository likeablePersonRepository,FinalMatchRepository finalMatchRepository, UserRepository userRepository){
+    public DataProcessorScheduler(FinalMatchService finalMatchService, LikeablePersonRepository likeablePersonRepository, MatchMaker matchMaker, FinalMatchRepository finalMatchRepository, UserRepository userRepository){
         this.finalMatchService = finalMatchService;
         this.likeablePersonRepository = likeablePersonRepository;
+        this.matchMaker = matchMaker;
         this.finalMatchRepository = finalMatchRepository;
         this.userRepository = userRepository;
     }
@@ -35,10 +38,15 @@ public class DataProcessorScheduler {
         // 이전의 finalMatch에 저장된 것들 다 지우기
 //        finalMatchRepository.deleteAll();
 
+
+
+
         // user 디비에 있는 모든 유저들 로드해서 수행
        List<User> users = userRepository.findAll();
        for(User user: users){
-
+           // 모든 사용자에 대해 소개 상대 소개 초기화
+           matchMaker.manageMatches(user);
+           // 최종 매칭 저장
            finalMatchService.saveFinalMatch(user.getUserId());
 
        }
