@@ -2,6 +2,8 @@ package com.project.dugeun.entity.user;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.project.dugeun.domain.user.domain.User;
+import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
@@ -20,7 +22,7 @@ public class QUser extends EntityPathBase<User> {
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QUser user = new QUser("user");
+    public static final QUser user = new QUser("com/project/dugeun/domain/user");
 
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
@@ -34,7 +36,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath externalId = createString("externalId");
 
-    public final EnumPath<com.project.dugeun.entity.user.profile.category.GenderType> gender = createEnum("gender", com.project.dugeun.entity.user.profile.category.GenderType.class);
+    public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
