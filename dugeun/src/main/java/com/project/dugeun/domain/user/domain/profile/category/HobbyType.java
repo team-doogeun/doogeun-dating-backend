@@ -19,7 +19,54 @@ public enum HobbyType {
     UDO("유도"),
     TAEKON("태권도"),
     BOXING("복싱"),
-    DANCE("댄스");
+    DANCE("댄스"),
+
+    WALK("산책"),
+    SWIM("수영"),
+    SKI("스키"),
+    BOARD("보드"),
+    SURFING("서핑"),
+    BOARDGAME("보드게임"),
+    TENNIS("테니스"),
+    BADMINTEN("배드민턴"),
+    YOGA("요가"),
+    MAKING("공예"),
+    DRAWING("그리기"),
+    COOKING("요리"),
+    SEWING("자수"),
+    KNITTING("뜨개질"),
+    PHOTO("사진찍기"),
+    SEOYEAH("서예"),
+    WRITING("글쓰기"),
+    FASHION("패션"),
+    SHOPPING("쇼핑"),
+    BLOG("블로그"),
+    COLLECTING("물건 수집"),
+    EATING("맛집 탐방"),
+    MONEY("재테크"),
+    VIOLIN("바이올린"),
+    GUITAR("기타"),
+    DRUM("드럼"),
+    PIANO("피아노"),
+    COINSING("코인노래방"),
+    OVERWATCH("오버워치"),
+    ROLE("롤"),
+    VALOANT("발로란트"),
+    MAPLE("메이플"),
+    CARTRIDER("카트라이더"),
+    ROLETOCHES("롤토체이스"),
+    SUDDENATTACK("서든어택"),
+    MINECRAFT("마인크래프트"),
+    DRINK("술"),
+
+    Futsal("풋살"),
+    BATTLEGROUND("배틀그라운드"),
+    SPORTWATCHING("스포츠경기관람"),
+    HEARING("노래 감상"),
+    READING("독서");
+    
+
+
 
 
 

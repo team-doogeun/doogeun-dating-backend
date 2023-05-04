@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -15,6 +17,11 @@ public class SignupService {
 
 private final UserRepository userRepository;
 private  final PasswordEncoder passwordEncoder;
+
+
+// 프론트 단에서  konkuk.ac.kr을 박아둬서 이 코드는 필요 x
+// public boolean isValidEmail(String email){
+//}
 
 @Transactional
 public User saveUser(UserSaveRequestDto user){
