@@ -1,14 +1,10 @@
-package com.project.dugeun.domain.email.api;
+package com.project.dugeun.domain.mailcheck.api;
 
-import com.project.dugeun.domain.email.application.MailService;
-import com.project.dugeun.domain.email.application.SendEmailService;
-import com.project.dugeun.domain.email.dto.MailDto;
+import com.project.dugeun.domain.mailcheck.application.MailService;
+import com.project.dugeun.domain.mailcheck.application.SendEmailService;
+import com.project.dugeun.domain.mailcheck.dto.MailDto;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +17,7 @@ public class MailController {
     private final MailService mailService;
     private final SendEmailService sendEmailService;
 
-    @GetMapping("check/findPw")
+    @GetMapping("/check/findPw")
     public @ResponseBody Map<String, Boolean> pw_find(String userEmail, String userName) {
         Map<String, Boolean> json = new HashMap<>();
 
@@ -30,7 +26,7 @@ public class MailController {
         return json;
     }
 
-    @PostMapping("check/findPw/sendEmail")
+    @PostMapping("/check/findPw/sendEmail")
     public @ResponseBody void sendMail(String userEmail, String userName) {
 
         MailDto mailDto = sendEmailService.createMailAndChangePassword(userEmail, userName);

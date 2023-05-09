@@ -72,6 +72,7 @@ public class User {
     private String secondFilePath;
     @Column(name = "third_profile_image")
     private String thirdFilePath;
+
 //
 //
 //    @OneToMany

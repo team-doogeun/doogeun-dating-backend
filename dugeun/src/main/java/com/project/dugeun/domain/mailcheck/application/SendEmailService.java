@@ -1,25 +1,26 @@
-package com.project.dugeun.domain.email.application;
+package com.project.dugeun.domain.mailcheck.application;
 
-import com.project.dugeun.domain.email.dto.MailDto;
+import com.project.dugeun.domain.mailcheck.dto.MailDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.project.dugeun.domain.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SendEmailService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JavaMailSender mailSender;
 
-    private BCryptPasswordEncoder passwordEncoder;
-    private JavaMailSender mailSender;
     private static final String FROM_ADDRESS = "doogeunS2@gmail.com";
 
+    @Transactional
     public MailDto createMailAndChangePassword(String userEmail, String userName) {
 
         String str = getTempPassword();
@@ -32,10 +33,11 @@ public class SendEmailService {
         return dto;
     }
 
+    @Transactional
     public void updatePassword(String str,String userEmail){
         String pw = passwordEncoder.encode(str);
-        String id = userRepository.findByUserId(userEmail).getUserId();
-        userRepository.updateUserPassword(id,pw);
+        User user = userRepository.findByUserId(userEmail);
+        user.setPassword(pw);
     }
 
     public String getTempPassword() {

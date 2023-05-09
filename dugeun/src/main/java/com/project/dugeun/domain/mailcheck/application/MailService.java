@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.email.application;
+package com.project.dugeun.domain.mailcheck.application;
 
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;

@@ -13,11 +13,13 @@ import java.util.Collection;
 public class DoogeunUserDetails implements UserDetails {
 
     private String email;
-    private Long userId;
+    private String name;
+    private String userId;
     private String password;
 
-    public DoogeunUserDetails(String email, Long userId, String password) {
+    public DoogeunUserDetails(String email, String name, String userId, String password) {
         this.email = email;
+        this.name = name;
         this.userId = userId;
         this.password = password;
     }
@@ -34,10 +36,11 @@ public class DoogeunUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return name;
     }
 
-    public Long getUserId() {
+
+    public String getUserId() {
         return userId;
     }
 

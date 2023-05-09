@@ -16,8 +16,8 @@
 //public class GroupBlindController {
 //
 //    //    private final GroupBlindRepository groupBlindRepository;
-//    @Autowired
-//    private GroupndService groupBliBlindService;
+////    @Autowired
+////    private GroupndService groupBliBlindService;
 //    @Autowired
 //    private GroupBlindRepository groupBlindRepository;
 //
@@ -31,8 +31,8 @@
 //            @RequestParam(value = "capacity") int capacity,
 //            @RequestParam(value = "gendertype") GenderType genderType) {
 //
-//        GroupBlindRoom groupBlindRoom = groupBlindService.createGroupBlind(capacity, genderType);
-//        return ResponseEntity.ok(groupBlindRoom);
+////        GroupBlindRoom groupBlindRoom = groupBlindService.createGroupBlind(capacity, genderType);
+////        return ResponseEntity.ok(groupBlindRoom);
 //    }
 //
 ////    @GetMapping("/list")
@@ -45,6 +45,6 @@
 //    @GetMapping("/{id}")
 //    public GroupBlindRoom getGroupBlindRoom(@PathVariable Long id) {
 //
-//        return groupBlindService.getGroupBlind();
+////        return groupBlindService.getGroupBlind();
 //    }
 //}

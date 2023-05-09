@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.email.dto;
+package com.project.dugeun.domain.mailcheck.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,6 @@
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 //import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
-//import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Component;
 //import org.springframework.web.socket.CloseStatus;
 //import org.springframework.web.socket.TextMessage;
