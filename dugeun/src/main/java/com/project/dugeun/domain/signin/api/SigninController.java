@@ -48,22 +48,6 @@ public class SigninController {
         }
     }
 
-//    private final AuthenticationManager authenticationManager;
-//
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody UserSigninRequestDto loginRequest) {
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(loginRequest.getUserId(), loginRequest.getPassword())
-//            );
-//
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            return ResponseEntity.ok().body("로그인에 성공하였습니다.");
-//        } catch (AuthenticationException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패하였습니다.");
-//        }
-//    }
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
         SecurityContextHolder.clearContext();

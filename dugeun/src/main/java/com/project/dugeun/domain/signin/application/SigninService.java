@@ -1,5 +1,6 @@
 package com.project.dugeun.domain.signin.application;
 
+import com.project.dugeun.config.DoogeunUserDetails;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +27,17 @@ public class SigninService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findUserByname(name)
+        User user = userRepository.findUserByUserId(name)
                 .orElseThrow(() -> new UsernameNotFoundException("name"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-//        return new DoogeunUserDetails(user.getEmail(), user.getUserId(), user.getPassword());
+        return new DoogeunUserDetails(user.getEmail(), user.getName(), user.getUserId(), user.getPassword());
 
-        return new org
-                .springframework
-                .security
-                .core
-                .userdetails
-                .User(user.getName(), user.getPassword(), grantedAuthorities);
+//        return new org
+//                .springframework
+//                .security
+//                .core
+//                .userdetails
+//                .User(user.getName(), user.getPassword(), grantedAuthorities);
     }
 }
