@@ -34,8 +34,6 @@ public class MatchController {
     @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity getMatches(@PathVariable String userId) {
 
-
-
         // TODO - 예외처리
 
         User user = userRepository.findByUserId(userId);
@@ -76,4 +74,16 @@ public class MatchController {
 
         return null;
     }
+
+
+   //  소개받은 상대에 대한 디테일 정보 확인
+//    @GetMapping("/blindDate/{userId}/detail")
+//    public ResponseEntity getDetails(@PathVariable String userId) {
+//
+//        User  user = userRepository.findByUserId(userId);
+//        Integer age =  user.getAge();
+//        String name = user.getName();
+//
+//    }
+
 }

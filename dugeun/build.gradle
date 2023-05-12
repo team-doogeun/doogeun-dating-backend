@@ -46,7 +46,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
-
 	//querydsl 추가
 //	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 //	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
@@ -68,6 +67,7 @@ dependencies {
 	// RDS
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	implementation 'mysql:mysql-connector-java'}
+
 
 
 

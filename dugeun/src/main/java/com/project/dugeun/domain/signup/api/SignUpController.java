@@ -9,6 +9,7 @@ import com.project.dugeun.domain.signup.application.SignupService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -38,18 +39,19 @@ public class SignUpController {
         return 0;
     }
 
-    @PostMapping(value =  "/signup")
+    @PostMapping(value =  "/signup", consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity signup(
-            @Valid @RequestPart UserSaveRequestDto user,
-            @RequestPart(required = false) MultipartFile basicFilePath,
-            @RequestPart(required = false) MultipartFile secondFilePath,
-            @RequestPart(required = false) MultipartFile thirdFilePath,
+            @Valid @RequestPart(value="user", required=false) UserSaveRequestDto user,
+            Errors errors,
+            @RequestPart(value="basicFilePath", required = false) MultipartFile basicFilePath,
+            @RequestPart(value="secondFilePath", required = false) MultipartFile secondFilePath,
+            @RequestPart(value="thirdFilePath", required = false) MultipartFile thirdFilePath
 
-            Errors errors
     ) throws IOException {
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().body(errors);
         }
+
 
         String imgPath1 = s3Service.upload(basicFilePath);
         user.setBasicFilePath(imgPath1);
@@ -63,6 +65,8 @@ public class SignUpController {
         EntityModel<UserSaveResponseDto> entityModel = EntityModel.of(new UserSaveResponseDto(savedUser));
         entityModel.add(linkTo(SignUpController.class).slash("signup").withRel("signup"));
         return ResponseEntity.ok(entityModel);
+
+
     }
 
 
