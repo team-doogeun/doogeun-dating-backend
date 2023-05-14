@@ -9,6 +9,7 @@ import com.project.dugeun.domain.signup.application.SignupService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
@@ -38,14 +39,13 @@ public class SignUpController {
         return 0;
     }
 
-    @PostMapping(value =  "/signup")
+    @PostMapping(value =  "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity signup(
-            @Valid @RequestPart UserSaveRequestDto user,
-            @RequestPart(required = false) MultipartFile basicFilePath,
-            @RequestPart(required = false) MultipartFile secondFilePath,
-            @RequestPart(required = false) MultipartFile thirdFilePath,
-
-            Errors errors
+            @Valid @RequestPart(value="user", required=true) UserSaveRequestDto user,
+            Errors errors,
+            @RequestPart(value="basicFilePath",required = true) MultipartFile basicFilePath,
+            @RequestPart(value="secondFilePath",required = true) MultipartFile secondFilePath,
+            @RequestPart(value="thirdFilePath",required = true) MultipartFile thirdFilePath
     ) throws IOException {
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().body(errors);
