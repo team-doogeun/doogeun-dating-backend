@@ -6,6 +6,7 @@ import lombok.Getter;
 
 public enum HobbyType {
 
+    WALKING("걷기"),
     TRAVEL("여행"),
     HEALTH("헬스"),
     CLIMB("등산"),
@@ -18,30 +19,34 @@ public enum HobbyType {
     MARATHON("마라톤"),
     UDO("유도"),
     TAEKON("태권도"),
-    BOXING("복싱"),
+    BOXING("권투"),
+    MUETIE("무에타이"),
+    GUMDO("검도"),
     DANCE("댄스"),
 
     WALK("산책"),
     SWIM("수영"),
-    SKI("스키"),
-    BOARD("보드"),
+    WATERSKI("수상스키"),
     SURFING("서핑"),
     BOARDGAME("보드게임"),
+    SKI("스키"),
     TENNIS("테니스"),
     BADMINTEN("배드민턴"),
     YOGA("요가"),
     MAKING("공예"),
-    DRAWING("그리기"),
+    DRAWING("그림"),
     COOKING("요리"),
     SEWING("자수"),
     KNITTING("뜨개질"),
     PHOTO("사진찍기"),
     SEOYEAH("서예"),
     WRITING("글쓰기"),
+
     FASHION("패션"),
     SHOPPING("쇼핑"),
+    GAME("게임"),
     BLOG("블로그"),
-    COLLECTING("물건 수집"),
+    COLLECTING("골동품 수집"),
     EATING("맛집 탐방"),
     MONEY("재테크"),
     VIOLIN("바이올린"),
@@ -49,21 +54,7 @@ public enum HobbyType {
     DRUM("드럼"),
     PIANO("피아노"),
     COINSING("코인노래방"),
-    OVERWATCH("오버워치"),
-    ROLE("롤"),
-    VALOANT("발로란트"),
-    MAPLE("메이플"),
-    CARTRIDER("카트라이더"),
-    ROLETOCHES("롤토체이스"),
-    SUDDENATTACK("서든어택"),
-    MINECRAFT("마인크래프트"),
-    DRINK("술"),
-
-    Futsal("풋살"),
-    BATTLEGROUND("배틀그라운드"),
-    SPORTWATCHING("스포츠경기관람"),
-    HEARING("노래 감상"),
-    READING("독서");
+    FOOT("풋살");
     
 
 

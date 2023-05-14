@@ -9,17 +9,15 @@ import com.project.dugeun.domain.signup.application.SignupService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import javax.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,6 +26,7 @@ import java.io.IOException;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@ResponseBody
 public class SignUpController {
     private final S3Service s3Service;
     private final SignupService signupService;
@@ -38,17 +37,19 @@ public class SignUpController {
         return 0;
     }
 
-    @PostMapping(value =  "/signup")
-    public ResponseEntity signup(
-            @Valid @RequestPart UserSaveRequestDto user,
-            @RequestPart(required = false) MultipartFile basicFilePath,
-            @RequestPart(required = false) MultipartFile secondFilePath,
-            @RequestPart(required = false) MultipartFile thirdFilePath,
 
-            Errors errors
+//    @PostMapping(value =  "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @CrossOrigin(origins =  "http://www.localhost:3000")
+    @PostMapping(value =  "/signup", consumes = {"multipart/form-data"})
+    public ResponseEntity signup(
+            @Valid @RequestPart(value="user", required=true) UserSaveRequestDto user,
+            Errors errors,
+            @RequestPart(value="basicFilePath",required = true) MultipartFile basicFilePath,
+            @RequestPart(value="secondFilePath",required = true) MultipartFile secondFilePath,
+            @RequestPart(value="thirdFilePath",required = true) MultipartFile thirdFilePath
     ) throws IOException {
         if(errors.hasErrors()){
-            return ResponseEntity.badRequest().body(errors);
+            return ResponseEntity.badRequest().body(errors.getAllErrors());
         }
 
         String imgPath1 = s3Service.upload(basicFilePath);
@@ -62,6 +63,7 @@ public class SignUpController {
         User savedUser = signupService.saveUser(user);
         EntityModel<UserSaveResponseDto> entityModel = EntityModel.of(new UserSaveResponseDto(savedUser));
         entityModel.add(linkTo(SignUpController.class).slash("signup").withRel("signup"));
+//        return ResponseEntity.badRequest().body(errors.getAllErrors());
         return ResponseEntity.ok(entityModel);
     }
 
