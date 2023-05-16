@@ -12,18 +12,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SigninController {
 
     @Autowired
@@ -31,14 +31,25 @@ public class SigninController {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @CrossOrigin(origins = "http://www.localhost:3000")
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserSigninRequestDto loginRequest) {
+    public ResponseEntity<?> login(@RequestBody UserSigninRequestDto loginRequest, HttpServletRequest request) {
         try {
             DoogeunUserDetails userDetails = (DoogeunUserDetails) userDetailsService.loadUserByUsername(loginRequest.getUserId());
             if (passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails.getUserId(), userDetails.getPassword(), userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(token);
-                return ResponseEntity.ok().body("로그인에 성공하였습니다.");
+
+                // 세션 ID를 생성하고, 클라이언트에 반환함
+                HttpSession session = request.getSession();
+                String sessionId = session.getId();
+                Map<String, Object> responseBody = new HashMap<>();
+                responseBody.put("sessionId", sessionId);
+                responseBody.put("userId", loginRequest.getUserId());
+                responseBody.put("name", userDetails.getName());
+                return ResponseEntity.ok().body(responseBody);
+
+//                return ResponseEntity.ok().body(token);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패하였습니다.");
             }
@@ -54,20 +65,9 @@ public class SigninController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
+        } else {
+            return ResponseEntity.ok().body("세션이 만료되었습니다.");
         }
         return ResponseEntity.ok().body("로그아웃에 성공하였습니다.");
     }
 }
-
-//    @PostMapping("/login")
-//    pu blic ResponseEntity<UserSigninRequestDto> login(@RequestBody UserSigninRequestDto loginRequest) {
-//        User user = signinService.loginByLoginRequest(loginRequest);
-//        setAuthentication(account);
-//        return ResponseEntity.ok(accountMapper.accountToLoginResponse(user));
-//    }
-//
-//    @PostMapping("/logout")
-//    public ResponseEntity<Object> logout(HttpSession session) {
-//        session.invalidate();
-//        return ResponseEntity.ok(null);
-//    }

@@ -10,4 +10,5 @@ public class UserSigninResponseDto {
     private long id;
     private String UserId;
     private String email;
+    private String name;
 }
