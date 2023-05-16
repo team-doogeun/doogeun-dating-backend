@@ -24,6 +24,7 @@ public class MatchResponseDto {
      private Integer age;
 
 
+     private Integer height;
      private BodyType bodyType;
 
      private AddressType addressType;
@@ -33,6 +34,9 @@ public class MatchResponseDto {
      private CharacterType characterType;
 
      private EmotionType emotionType;
+
+     private HobbyType hobby1;
+     private HobbyType hobby2;
 
      private MbtiType mbtiType;
 
@@ -46,7 +50,7 @@ public class MatchResponseDto {
 
     private Integer ageSec;
 
-
+    private Integer heightSec;
     private BodyType bodyTypeSec;
 
     private AddressType addressTypeSec;
@@ -56,6 +60,9 @@ public class MatchResponseDto {
     private CharacterType characterTypeSec;
 
     private EmotionType emotionTypeSec;
+
+    private HobbyType firstHobbySec;
+    private HobbyType secondHobbySec;
 
     private MbtiType mbtiTypeSec;
 
@@ -68,6 +75,7 @@ public class MatchResponseDto {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.age =user.getAge();
+        this.height = user.getDetailProfile().getHeight();
         this.bodyType = user.getDetailProfile().getBodyType();
         this.addressType = user.getDetailProfile().getAddress();
         this.departmentType = user.getDetailProfile().getDepartment();
@@ -77,10 +85,13 @@ public class MatchResponseDto {
         this.basicFilePath = user.getBasicFilePath();
         this.secondFilePath = user.getSecondFilePath();
         this.thirdFilePath = user.getThirdFilePath();
+        this.hobby1 =user.getDetailProfile().getHobby1();
+        this.hobby2=user.getDetailProfile().getHobby2();
 
         this.userIdSec = userSec.getUserId();
         this.nameSec = userSec.getName();
         this.ageSec =userSec.getAge();
+        this.heightSec= userSec.getDetailProfile().getHeight();
         this.bodyTypeSec = userSec.getDetailProfile().getBodyType();
         this.addressTypeSec = userSec.getDetailProfile().getAddress();
         this.departmentTypeSec = userSec.getDetailProfile().getDepartment();
@@ -90,7 +101,8 @@ public class MatchResponseDto {
         this.basicFilePathSec = userSec.getBasicFilePath();
         this.secondFilePathSec = userSec.getSecondFilePath();
         this.thirdFilePathSec = userSec.getThirdFilePath();
-
+        this.firstHobbySec = userSec.getDetailProfile().getHobby1();
+        this.secondHobbySec = userSec.getDetailProfile().getHobby2();
 
     }
 
