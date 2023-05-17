@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.blindDate.application;
 
-import com.amazonaws.services.s3.transfer.Copy;
+
 import com.project.dugeun.domain.user.domain.User;
 
 import java.util.ArrayList;
