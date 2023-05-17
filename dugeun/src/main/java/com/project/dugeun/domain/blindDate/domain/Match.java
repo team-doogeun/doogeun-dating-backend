@@ -22,6 +22,11 @@ public class Match {
     @ManyToOne
     private User user1;
 
+    // User을 Match에 추가하는 코드 (객체지향적으로)
+//    public void addUser(User a){
+//        a.setMatch(this);
+//        userList.add(a);
+//    }
 
     @ManyToOne
     private User user2;

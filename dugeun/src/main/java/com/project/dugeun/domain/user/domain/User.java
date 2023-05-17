@@ -3,6 +3,7 @@ package com.project.dugeun.domain.user.domain;
 
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -56,6 +57,11 @@ public class User {
 //    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private GroupBlindRoom groupBlindRoom;
+
+
     @Embedded
     private DetailProfile detailProfile;
 
@@ -69,12 +75,6 @@ public class User {
     private String secondFilePath;
     @Column(name = "third_profile_image")
     private String thirdFilePath;
-
-//    @OneToMany
-//    private Match match;
-
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-//    private List<Like> likeList = new ArrayList<>();
 
     @OneToMany(mappedBy = "user1", cascade = CascadeType.REMOVE)
     @OrderBy("score desc") // 점수 높은 순으로 정렬
@@ -142,9 +142,6 @@ public class User {
                 .build();
         return user;
     }
-
-
-
 }
 
 
