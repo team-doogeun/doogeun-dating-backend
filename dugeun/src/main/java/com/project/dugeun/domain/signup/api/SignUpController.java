@@ -5,6 +5,7 @@ import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.signup.dto.UserSaveResponseDto;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.signup.application.S3Service;
+import com.project.dugeun.domain.signup.application.SignupService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class SignUpController {
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().body(errors);
         }
-
+d
         String imgPath1 = s3Service.upload(basicFilePath);
         user.setBasicFilePath(imgPath1);
         String imgPath2 = s3Service.upload(secondFilePath);
