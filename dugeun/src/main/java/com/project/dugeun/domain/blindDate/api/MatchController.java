@@ -37,11 +37,6 @@ public class MatchController {
         // TODO - 예외처리
 
         User user = userRepository.findByUserId(userId);
-//        List<User> pair = null;
-//
-//        pair = matchMaker.getMatch(userId);
-//
-//
 
         List<Match> pair = new ArrayList<>();
         pair = matchRepository.findByUser1(user);
@@ -75,14 +70,5 @@ public class MatchController {
     }
 
 
-   //  소개받은 상대에 대한 디테일 정보 확인
-//    @GetMapping("/blindDate/{userId}/detail")
-//    public ResponseEntity getDetails(@PathVariable String userId) {
-//
-//        User  user = userRepository.findByUserId(userId);
-//        Integer age =  user.getAge();
-//        String name = user.getName();
-//
-//    }
 
 }

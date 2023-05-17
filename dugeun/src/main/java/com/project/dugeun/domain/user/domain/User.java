@@ -16,7 +16,6 @@ import java.util.List;
 
 
 @Entity
-//@Table(name= "com/project/dugeun/domain/user")
 @Getter
 @Setter
 @AllArgsConstructor

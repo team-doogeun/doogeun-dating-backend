@@ -2,24 +2,17 @@ package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
-import com.project.dugeun.domain.blindDate.domain.dto.MatchResponseDto;
-import com.project.dugeun.domain.blindDate.domain.dto.OneMatchResponseDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.domain.profile.category.HobbyType;
-import com.project.dugeun.domain.user.domain.profile.category.PriorityCategory;
-import lombok.NoArgsConstructor;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
+
 import java.util.List;
 
 @Service

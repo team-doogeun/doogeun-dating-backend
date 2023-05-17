@@ -50,21 +50,6 @@ public User saveUser(UserSaveRequestDto user){
 
 }
 
-
-
-
-
-//public User saveUser(User user){
-//validateDuplicateUser(user);
-//return userRepository.save(user);
-//}
-//
-//private void validateDuplicateUser(User user){
-//    User findUser = userRepository.findByExternalId(user.getExternalId());
-//    if(findUser != null){
-//        throw new IllegalStateException("이미 가입된 회원입니다 . ");
-//    }
-//}
 }
 
 
