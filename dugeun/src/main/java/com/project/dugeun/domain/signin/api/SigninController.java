@@ -47,6 +47,7 @@ public class SigninController {
                 responseBody.put("sessionId", sessionId);
                 responseBody.put("userId", loginRequest.getUserId());
                 responseBody.put("name", userDetails.getName());
+                responseBody.put("token", token);
                 return ResponseEntity.ok().body(responseBody);
 
 //                return ResponseEntity.ok().body(token);

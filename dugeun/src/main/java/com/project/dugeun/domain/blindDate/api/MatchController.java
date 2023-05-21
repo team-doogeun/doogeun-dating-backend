@@ -57,18 +57,16 @@ public class MatchController {
         }
         else if (pair.size() ==1)
         {
+
             User matchedUser = pair.get(0).getUser2();
             onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
-
             return ResponseEntity.ok(onePersonEntityModel);
 
 
         }
 
-
         return null;
     }
-
 
 
 }

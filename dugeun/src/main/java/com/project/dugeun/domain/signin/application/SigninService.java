@@ -33,11 +33,6 @@ public class SigninService implements UserDetailsService {
 
         return new DoogeunUserDetails(user.getEmail(), user.getName(), user.getUserId(), user.getPassword());
 
-//        return new org
-//                .springframework
-//                .security
-//                .core
-//                .userdetails
-//                .User(user.getName(), user.getPassword(), grantedAuthorities);
+
     }
 }
