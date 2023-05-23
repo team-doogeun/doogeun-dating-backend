@@ -20,16 +20,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MatchMaker {
 
-
     private final UserRepository userRepository;
-
-
     private final MatchRepository matchRepository;
     private final LikeablePersonService likeablePersonService;
 
-
-
-    public boolean canMatch(User user1,User user2){
+    public boolean checkMatch(User user1,User user2){
 
         return matchRepository.existsByUser1AndUser2(user1,user2);
     }
@@ -49,67 +44,43 @@ public class MatchMaker {
 
             System.out.println(compatibilityScore);
 
-
-            // 점수가 100점 이상이면
-            // TODO - 이전에 미지 저장된 Match에 대해서는 저장하지 않아야 함
-            if(compatibilityScore >= 50 && !canMatch(user,otherUser)){
-
+            // TODO - 점수가 몇 점 이상부터 저장되도록 구현
+            // TODO - 이전에 이미 저장된 Match에 대해서는 저장하지 않아야 함
+            if(compatibilityScore >= 50 && !checkMatch(user,otherUser)){
                 matches.add(otherUser);
-
                 // match(blind_date 디비)에 저장
                 saveMatch(user,otherUser, compatibilityScore);
-
-
             }
+
+        }
+
+
+        List<Match> matchList = matchRepository.findByUser1(user);
+        System.out.println(matchList);
+
+
+       //  소개해줄려는 상대가 2명을 넘지 않으면 임의로 한명 소개해주는 로직
+        if(matchList.size() == 1){
+
+            User randomUser = userRepository.findRandomUser();
+            matches.add(randomUser);
+            saveMatch(user,randomUser,0); // compatibility 점수는 일단 0점으로 부여
+
+        }
+
+
+        if(matchList.size() == 0){
+            User firstRandomUser = userRepository.findRandomUserByGenderNot(user.getGender());
+            User secondRandomUser = userRepository.findRandomUserByGenderNot(user.getGender());
+            matches.add(firstRandomUser);
+            matches.add(secondRandomUser);
+            saveMatch(user,firstRandomUser,0);
+            saveMatch(user,secondRandomUser,0);
+
         }
 
 
     }
-
-
-    @Transactional
-    public List<User> getMatch(String userId){
-        List<User> pair = new ArrayList<>();
-        User user = userRepository.findByUserId(userId);
-        manageMatches(user);
-        List<Match> matches = matchRepository.findByUser1(user);
-
-
-
-        // 일단 가장 점수가 높은 순으로 소개해주기 (나중에 이 부분은 변경 가능)
-//         matches = (List<Match>) matches.stream().sorted(Comparator.comparing(Match::getCompatibilityScore));
-
-
-        if (matches.size()>=2 && matches.get(0).getMatched()!=true && matches.get(1).getMatched()!=true) {
-            User matchedUser = matches.get(0).getUser2();
-            matches.get(0).setMatched(true); // 소개되면 matched를 true로
-            User matchedUser2 = matches.get(1).getUser2();
-            matches.get(1).setMatched(true); // 소개되면 matched를 true로
-            pair.add(matchedUser);
-            pair.add(matchedUser2);
-
-            return pair;
-
-        }
-        else if (matches.size()==1 && matches.get(0).getMatched()!= true) {
-            User matchedUser = matches.get(0).getUser2();
-            matches.get(0).setMatched(true); // 소개되면 matched를 true로
-            pair.add(matchedUser);
-
-            return pair;
-        }
-
-
-        return new ArrayList<>();
-    }
-
-
-
-
-    // TODO - 점수 계산 로직 작성할 것.
-    // return a score
-
-
 
 
     // save a match between two users

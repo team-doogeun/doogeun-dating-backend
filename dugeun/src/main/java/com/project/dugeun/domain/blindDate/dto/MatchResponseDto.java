@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.blindDate.domain.dto;
+package com.project.dugeun.domain.blindDate.dto;
 
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.User;
@@ -23,6 +23,7 @@ public class MatchResponseDto {
 
      private Integer age;
 
+     private String studentId;
 
      private Integer height;
      private BodyType bodyType;
@@ -48,6 +49,7 @@ public class MatchResponseDto {
     private String userIdSec;
     private String nameSec;
 
+    private String studentIdSec;
     private Integer ageSec;
 
     private Integer heightSec;
@@ -75,6 +77,7 @@ public class MatchResponseDto {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.age =user.getAge();
+        this.studentId = user.getStudentId();
         this.height = user.getDetailProfile().getHeight();
         this.bodyType = user.getDetailProfile().getBodyType();
         this.addressType = user.getDetailProfile().getAddress();
@@ -91,6 +94,7 @@ public class MatchResponseDto {
         this.userIdSec = userSec.getUserId();
         this.nameSec = userSec.getName();
         this.ageSec =userSec.getAge();
+        this.studentIdSec = userSec.getStudentId();
         this.heightSec= userSec.getDetailProfile().getHeight();
         this.bodyTypeSec = userSec.getDetailProfile().getBodyType();
         this.addressTypeSec = userSec.getDetailProfile().getAddress();

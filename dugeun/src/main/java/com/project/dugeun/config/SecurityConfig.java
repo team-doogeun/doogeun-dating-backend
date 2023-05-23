@@ -20,11 +20,11 @@ public class SecurityConfig {
     @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/user/logout").authenticated()
-                .antMatchers("/user/login").permitAll()
+                .antMatchers("/users/logout").authenticated()
+                .antMatchers("/users/login").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").authenticated()
-                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").authenticated()
+                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
+                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").permitAll()
                 .and()
                 .formLogin().disable().csrf().disable().cors()
                 .and()

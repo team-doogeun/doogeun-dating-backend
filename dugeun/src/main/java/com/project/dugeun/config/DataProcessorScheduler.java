@@ -31,9 +31,13 @@ public class DataProcessorScheduler {
     }
 
 //    @Scheduled(cron = "0 0 10 * * *") // 매일 오전 10시에 실행되도록 설정
+
+
+//    @Scheduled(cron = "0 */2 * * * *") // 매일 2분 마다
     @Transactional
     @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
     public void processDate(){
+
 
 
         // user 디비에 있는 모든 유저들 로드해서 수행
