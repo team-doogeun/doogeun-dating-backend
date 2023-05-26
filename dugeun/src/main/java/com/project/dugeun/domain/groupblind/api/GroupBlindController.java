@@ -3,20 +3,18 @@ package com.project.dugeun.domain.groupblind.api;
 import com.project.dugeun.domain.base.rq.RequestUser;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+import com.project.dugeun.domain.groupblind.dto.ExitRoomResponseDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -48,6 +46,21 @@ public class GroupBlindController {
         String responseMessage = "미팅방에 입장하였습니다";
         return ResponseEntity.ok(responseMessage);
                  }
+
+
+
+   @PreAuthorize("isAuthenticated()")
+   @PostMapping("/{title}/exit")
+    public ResponseEntity exit(@PathVariable String title){
+
+        groupBlindService.exit(groupBlindRepository.findByTitle(title), requestUser.getMember());
+
+        // 응답처리
+       EntityModel<ExitRoomResponseDto> entityModel = EntityModel.of(new ExitRoomResponseDto((requestUser.getMember())));
+       return ResponseEntity.ok(entityModel);
+
+   }
+
 
     }
 

@@ -31,6 +31,19 @@ public class GroupBlindService {
 
     }
 
+    public void exit(GroupBlindRoom blindRoom, User user){
+
+        if(user.getGender().equals("남")){
+
+            blindRoom.setPresentMale(blindRoom.getPresentMale() - 1);
+
+        } else if (user.getGender().equals("여")) {
+            blindRoom.setPresentFemale(blindRoom.getPresentFemale() - 1);
+
+        }
+
+    }
+
 
 
 
