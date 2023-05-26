@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
+import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,8 +25,8 @@ public class GroupBlindRoom {
     @Column(nullable = false)
     private String title;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<User> participants;
+    @OneToMany
+    private List<User> participants;
 
     @Column(nullable = false)
     private int capacity;
@@ -32,8 +34,8 @@ public class GroupBlindRoom {
     @Enumerated(EnumType.STRING)
     @Column GenderType genderType;
 
-//    private int presentMale;
-//    private int presentFemale;
+    private int presentMale;
+    private int presentFemale;
 
     @Enumerated(EnumType.STRING)
     private GroupBlindCategory groupBlindCategory;

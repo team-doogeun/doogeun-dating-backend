@@ -10,6 +10,7 @@ import com.project.dugeun.domain.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+//@PreAuthorize("isAuthenticated()")
 @RestController
 public class MatchController {
 
@@ -61,14 +63,7 @@ public class MatchController {
             onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
 
             return ResponseEntity.ok(onePersonEntityModel);
-
-
         }
-
-
         return null;
     }
-
-
-
 }

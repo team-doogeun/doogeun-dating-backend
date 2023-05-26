@@ -19,30 +19,28 @@ public class SecurityConfig {
 
     @Bean
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/user/logout").authenticated()
-                .antMatchers("/user/login").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.POST.name(), "/blind").authenticated()
-                .antMatchers(HttpMethod.PUT.name(), "/blind-date/{user_id}").authenticated()
-                .antMatchers(HttpMethod.DELETE.name(), "/blind-date/{user_id}").authenticated()
-                .and()
-                .formLogin().disable().csrf().disable().cors()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+            http.authorizeRequests()
+                    .antMatchers("/user/logout").authenticated()
+                    .antMatchers("/user/login").permitAll()
+                    .antMatchers("/").permitAll()
+                    .antMatchers(HttpMethod.GET, "/blindDate/{userId}/matches").permitAll()
+                    .antMatchers(HttpMethod.POST, "/blindDate/like").permitAll()
+                    .and()
+                    .formLogin().disable().csrf().disable().cors()
+                    .and()
+                    .exceptionHandling()
+                    .authenticationEntryPoint(authenticationEntryPoint)
+                    .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
                 .mvcMatchers("/", "/users/**").permitAll()
-                .anyRequest().authenticated()
-        ;
-
+                .anyRequest().authenticated();
         return http.build();
+
     }
 
     @Bean
