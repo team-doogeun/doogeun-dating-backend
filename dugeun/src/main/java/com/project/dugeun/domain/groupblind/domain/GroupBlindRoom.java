@@ -23,17 +23,16 @@ public class GroupBlindRoom {
     @Column(nullable = false)
     private String title;
 
-//    @OneToMany(mappedBy = "user")
-//    private List<User> participants;
+    @Column(nullable = false)
+    private int presentMale;
+    @Column(nullable = false)
+    private int presentFemale;
 
     @Column(nullable = false)
-    private int capacity;
+    private int capacityMale;
+    @Column(nullable = false)
+    private int capacityFemale;
 
-    @Enumerated(EnumType.STRING)
-    @Column GenderType genderType;
-
-//    private int presentMale;
-//    private int presentFemale;
 
     @Enumerated(EnumType.STRING)
     private GroupBlindCategory groupBlindCategory;
@@ -44,13 +43,8 @@ public class GroupBlindRoom {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @Embedded
-    private GroupBlindIntroduction groupBlindIntroduction;
+    private String groupBlindIntroduction;
 
-    @Builder
-    public GroupBlindRoom(String title, int capacity, GenderType genderType) {
-        this.title = title;
-        this.capacity = capacity;
-        this.genderType = genderType;
-    }
+
+
 }

@@ -27,6 +27,7 @@ public class MatchMaker {
     public boolean checkMatch(User user1,User user2){
 
         return matchRepository.existsByUser1AndUser2(user1,user2);
+
     }
 
     // find matches for a given user
@@ -69,7 +70,8 @@ public class MatchMaker {
         }
 
 
-        if(matchList.size() == 0){
+        if(matchList.size() == 0)
+        {
             User firstRandomUser = userRepository.findRandomUserByGenderNot(user.getGender());
             User secondRandomUser = userRepository.findRandomUserByGenderNot(user.getGender());
             matches.add(firstRandomUser);

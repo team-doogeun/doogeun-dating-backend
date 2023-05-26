@@ -9,4 +9,8 @@ import java.util.List;
 public interface GroupBlindRepository extends JpaRepository<GroupBlindRoom, Long> {
 
     List<GroupBlindRoom> findByCapacityAndGenderType(int capacity, GenderType genderType);
+
+    GroupBlindRoom findByRoomId(String roomId);
+
+    GroupBlindRoom findByTitle(String title);
 }

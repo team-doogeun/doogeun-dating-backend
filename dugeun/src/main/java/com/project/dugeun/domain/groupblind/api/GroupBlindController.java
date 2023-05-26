@@ -1,50 +1,53 @@
-//package com.project.dugeun.domain.groupblind.api;
-//
-//
-//import com.project.dugeun.domain.groupblind.application.GroupBlindService;
-//import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
-//import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
-//import com.project.dugeun.domain.user.domain.profile.category.GenderType;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import java.util.List;
-//
-//@RestController
-//@RequestMapping("/group_blind")
-//public class GroupBlindController {
-//
-//    //    private final GroupBlindRepository groupBlindRepository;
-////    @Autowired
-////    private GroupndService groupBliBlindService;
-//    @Autowired
-//    private GroupBlindRepository groupBlindRepository;
-//
-////    @Autowired
-////    public GroupBlindController(GroupBlindRepository groupBlindRepository) {
-////        this.groupBlindRepository = groupBlindRepository;
-////    }
-//
-//    @PostMapping("/create")
-//    public ResponseEntity<GroupBlindRoom> createRoom(
-//            @RequestParam(value = "capacity") int capacity,
-//            @RequestParam(value = "gendertype") GenderType genderType) {
-//
-////        GroupBlindRoom groupBlindRoom = groupBlindService.createGroupBlind(capacity, genderType);
-////        return ResponseEntity.ok(groupBlindRoom);
-//    }
-//
-////    @GetMapping("/list")
-////    public List<GroupBlindRoom> listGroupBlindRooms(@RequestParam int capacity, @RequestParam GenderType genderType) {
-////
-////
-//////        return groupBlindRepository.findByCapacityAndGenderType(capacity, genderType);
-////    }
-//
-//    @GetMapping("/{id}")
-//    public GroupBlindRoom getGroupBlindRoom(@PathVariable Long id) {
-//
-////        return groupBlindService.getGroupBlind();
-//    }
-//}
+package com.project.dugeun.domain.groupblind.api;
+
+import com.project.dugeun.domain.base.rq.RequestUser;
+import com.project.dugeun.domain.groupblind.application.GroupBlindService;
+import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+import com.project.dugeun.domain.user.dao.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+
+@RestController
+@RequestMapping("/group")
+@RequiredArgsConstructor
+@Setter
+public class GroupBlindController {
+
+
+    private final RequestUser requestUser;
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private GroupBlindRepository groupBlindRepository;
+
+    @Autowired
+    private GroupBlindService groupBlindService;
+
+
+    @PreAuthorize("isAuthenticated()") // 인증된 사용자만 접근 가능
+    @GetMapping("/{title}")
+    public ResponseEntity enterRoom(@PathVariable String title){
+
+        groupBlindService.enter(groupBlindRepository.findByTitle(title),requestUser.getMember());
+
+
+        // 응답처리
+        String responseMessage = "미팅방에 입장하였습니다";
+        return ResponseEntity.ok(responseMessage);
+                 }
+
+    }
+
