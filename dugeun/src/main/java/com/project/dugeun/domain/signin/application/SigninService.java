@@ -19,13 +19,13 @@ import java.util.Set;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly=true)
 public class SigninService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         User user = userRepository.findUserByUserId(name)
                 .orElseThrow(() -> new UsernameNotFoundException("name"));
