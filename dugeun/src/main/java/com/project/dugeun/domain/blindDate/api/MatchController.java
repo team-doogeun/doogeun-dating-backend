@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-//@PreAuthorize("isAuthenticated()")
 @RestController
 public class MatchController {
 
@@ -35,8 +34,6 @@ public class MatchController {
     // get a list of matches for a given user
     @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity getMatches(@PathVariable String userId) {
-
-        // TODO - 예외처리
 
         User user = userRepository.findByUserId(userId);
 

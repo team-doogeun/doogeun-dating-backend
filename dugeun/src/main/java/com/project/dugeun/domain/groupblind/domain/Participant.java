@@ -34,5 +34,5 @@ public class Participant {
     @ManyToOne
     private GroupBlindRoom groupBlindRoom;
 
-    private String Role; // 역할 ( 방장, 참가자 )
+    private GroupBlindRole groupBlindRole;// 역할 ( 방장, 참가자 )
 }

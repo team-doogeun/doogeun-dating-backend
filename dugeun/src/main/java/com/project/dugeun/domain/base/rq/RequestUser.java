@@ -38,7 +38,7 @@ public class RequestUser {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if(authentication.getPrincipal() instanceof User){
-            this.user= (DoogeunUserDetails) authentication.getPrincipal();
+            this.user = (DoogeunUserDetails) authentication.getPrincipal();
         }else{
             this.user = null;
         }

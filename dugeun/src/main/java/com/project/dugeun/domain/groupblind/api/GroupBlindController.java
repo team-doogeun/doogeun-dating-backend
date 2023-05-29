@@ -2,66 +2,57 @@ package com.project.dugeun.domain.groupblind.api;
 
 
 import com.project.dugeun.domain.base.rq.RequestUser;
-import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
+import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dto.CreateGroupBlindRequest;
-import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-
-
 @RestController
-@RequestMapping("/groubBlind")
+@RequestMapping("/groupBlind")
 @RequiredArgsConstructor
 public class GroupBlindController {
 
     private final RequestUser requestUser;
+    private final GroupBlindService groupBlindService;
 
-    @Autowired
-    private UserRepository userRepository;
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{userId}/new")
+    public ResponseEntity<Long> create(@RequestBody CreateGroupBlindRequest request) {
+        // Check if the user is authenticated
+//        if (!requestUser.isLogin()) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+//        }
 
-    @Autowired
-    private GroupBlindRepository groupBlindRepository;
+        // Create the meeting room
+        Long roomId = groupBlindService.createMeetingRoom(request);
 
-    @PostMapping("/new/{userId}")
-    public ResponseEntity<String> createMeetingRoom(@RequestBody CreateGroupBlindRequest request) {
-        // 요청 데이터 처리
-        String title = request.getTitle();
-        int capacity = request.getCapacity();
-        GenderType genderType = request.getGenderType();
-
-        // 유효성 검사
-        if (title == null || title.isEmpty()) {
-            return ResponseEntity.badRequest().body("Meeting room title is required.");
-        }
-
-        if (capacity < 2 || capacity % 2 != 0) {
-            return ResponseEntity.badRequest().body("Capacity should be an even number greater than or equal to 2.");
-        }
-
-        // 미팅방 생성
-        GroupBlindRoom meetingRoom = GroupBlindRoom.builder()
-                .title(title)
-                .capacity(capacity)
-                .genderType(genderType)
-                .build();
-
-        // 참여자 정보 처리
-        com.project.dugeun.domain.user.domain.User host = requestUser.getMember();
-        if (host == null) {
-            return ResponseEntity.badRequest().body("Host information is missing.");
-        }
-
-        meetingRoom.setParticipants(Collections.singletonList(host));
-
-        // 미팅방 저장
-        groupBlindRepository.save(meetingRoom);
-
-        return ResponseEntity.ok("Meeting room created successfully.");
+        return ResponseEntity.ok().body(roomId);
     }
+
+        @DeleteMapping("/delete/{roomId}")
+        public ResponseEntity<String> deleteMeetingRoom(@PathVariable Long roomId) {
+            // Check if the user is authenticated
+            if (requestUser == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+            }
+
+            // Delete the meeting room
+            boolean deleted = groupBlindService.deleteMeetingRoom(roomId, requestUser.getMember());
+
+            if (deleted) {
+                return ResponseEntity.ok("Meeting room deleted successfully");
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+
+//        @PostMapping("/{roomId}/start")
+//        public ResponseEntity<String> startMeetingRoom(@PathVariable Long roomId) {
+//            groupBlindService.startMeetingRoom(roomId);
+//            return ResponseEntity.ok("Meeting room started successfully");
+//        }
+
 }

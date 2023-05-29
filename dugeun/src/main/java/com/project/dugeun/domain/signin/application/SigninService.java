@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,6 @@ import java.util.Set;
 public class SigninService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -33,11 +31,5 @@ public class SigninService implements UserDetailsService {
 
         return new DoogeunUserDetails(user.getEmail(), user.getName(), user.getUserId(), user.getPassword());
 
-//        return new org
-//                .springframework
-//                .security
-//                .core
-//                .userdetails
-//                .User(user.getName(), user.getPassword(), grantedAuthorities);
     }
 }

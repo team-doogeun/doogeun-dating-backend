@@ -38,9 +38,8 @@ public class DoogeunUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return userId;
     }
-
 
     public String getUserId() {
         return userId;
