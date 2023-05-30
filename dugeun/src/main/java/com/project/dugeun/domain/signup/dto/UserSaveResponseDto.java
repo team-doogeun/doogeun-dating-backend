@@ -19,11 +19,5 @@ public class UserSaveResponseDto {
         this.userId = user.getUserId();
         this.name = user.getName();
     }
-    public static UserSaveResponseDto fromEntity(String userId,
-                                                 String name){
-        return UserSaveResponseDto.builder()
-                .userId(userId)
-                .name(name)
-                .build();
-    }
+
 }

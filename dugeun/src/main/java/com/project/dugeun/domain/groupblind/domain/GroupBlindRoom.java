@@ -2,10 +2,7 @@ package com.project.dugeun.domain.groupblind.domain;
 
 
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class GroupBlindRoom {
 
     @Id
@@ -21,16 +22,19 @@ public class GroupBlindRoom {
     private Long id;
 
     @Column(nullable = false)
+    private String roomId;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name="present_male")
     private int presentMale;
-    @Column(nullable = false)
+    @Column(name="present_female")
     private int presentFemale;
 
-    @Column(nullable = false)
+    @Column(name="capacity_male",nullable = false)
     private int capacityMale;
-    @Column(nullable = false)
+    @Column(name="capacity_female",nullable = false)
     private int capacityFemale;
 
 
@@ -44,6 +48,7 @@ public class GroupBlindRoom {
     private LocalDateTime endTime;
 
     private String groupBlindIntroduction;
+
 
 
 

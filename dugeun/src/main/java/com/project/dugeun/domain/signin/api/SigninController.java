@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.signin.api;
 
 import com.project.dugeun.config.DoogeunUserDetails;
+import com.project.dugeun.domain.signin.application.SigninService;
 import com.project.dugeun.domain.signin.dto.UserSigninRequestDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ import java.util.Map;
 public class SigninController {
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private SigninService userDetailsService;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
@@ -39,15 +40,18 @@ public class SigninController {
             if (passwordEncoder.matches(loginRequest.getPassword(), userDetails.getPassword())) {
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails.getUserId(), userDetails.getPassword(), userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(token);
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
                 // 세션 ID를 생성하고, 클라이언트에 반환함
                 HttpSession session = request.getSession();
                 String sessionId = session.getId();
                 Map<String, Object> responseBody = new HashMap<>();
                 responseBody.put("sessionId", sessionId);
-                responseBody.put("userId", loginRequest.getUserId());
-                responseBody.put("name", userDetails.getName());
-                responseBody.put("token", token);
+//                responseBody.put("userId", loginRequest.getUserId());
+//                responseBody.put("name", userDetails.getName());
+                responseBody.put("userId", authentication.getPrincipal());
+                responseBody.put("name", authentication.getName());
+                responseBody.put("authentication", authentication);
                 return ResponseEntity.ok().body(responseBody);
 
 //                return ResponseEntity.ok().body(token);
@@ -71,4 +75,5 @@ public class SigninController {
         }
         return ResponseEntity.ok().body("로그아웃에 성공하였습니다.");
     }
+
 }
