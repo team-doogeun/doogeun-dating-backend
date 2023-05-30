@@ -6,6 +6,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -49,6 +51,8 @@ public class GroupBlindRoom {
 
     private String groupBlindIntroduction;
 
+    @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Participant> participants = new ArrayList<>();
 
 
 
