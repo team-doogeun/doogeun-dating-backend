@@ -58,7 +58,7 @@ public class User {
     private GenderType gender;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "group_blind_room")
     private GroupBlindRoom groupBlindRoom;
 
 
@@ -108,7 +108,7 @@ public class User {
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
                 Integer age, GenderType gender, DetailProfile detailProfile, IdealTypeProfile idealTypeProfile,
                 String basicFilePath, String secondFilePath, String thirdFilePath
-                ){
+    ){
         this.userId = userId;
         this.name = name;
         this.externalId = externalId;
@@ -143,5 +143,4 @@ public class User {
         return user;
     }
 }
-
 

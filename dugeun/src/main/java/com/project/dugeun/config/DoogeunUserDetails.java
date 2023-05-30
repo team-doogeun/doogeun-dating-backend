@@ -14,14 +14,11 @@ import java.util.Collection;
 @NoArgsConstructor
 public class DoogeunUserDetails implements UserDetails {
 
-    private String email;
-    private String name;
     private String userId;
     private String password;
 
-    public DoogeunUserDetails(String email, String name, String userId, String password) {
-        this.email = email;
-        this.name = name;
+    public DoogeunUserDetails(String userId, String password) {
+
         this.userId = userId;
         this.password = password;
     }
@@ -38,7 +35,7 @@ public class DoogeunUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return userId;
     }
 
 

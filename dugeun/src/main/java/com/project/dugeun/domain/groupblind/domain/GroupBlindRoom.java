@@ -2,17 +2,20 @@ package com.project.dugeun.domain.groupblind.domain;
 
 
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class GroupBlindRoom {
 
     @Id
@@ -21,19 +24,21 @@ public class GroupBlindRoom {
     private Long id;
 
     @Column(nullable = false)
-    private String title;
-
-//    @OneToMany(mappedBy = "user")
-//    private List<User> participants;
+    private String roomId;
 
     @Column(nullable = false)
-    private int capacity;
+    private String title;
 
-    @Enumerated(EnumType.STRING)
-    @Column GenderType genderType;
+    @Column(name="present_male")
+    private int presentMale;
+    @Column(name="present_female")
+    private int presentFemale;
 
-//    private int presentMale;
-//    private int presentFemale;
+    @Column(name="capacity_male",nullable = false)
+    private int capacityMale;
+    @Column(name="capacity_female",nullable = false)
+    private int capacityFemale;
+
 
     @Enumerated(EnumType.STRING)
     private GroupBlindCategory groupBlindCategory;
@@ -44,13 +49,11 @@ public class GroupBlindRoom {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
-    @Embedded
-    private GroupBlindIntroduction groupBlindIntroduction;
+    private String groupBlindIntroduction;
 
-    @Builder
-    public GroupBlindRoom(String title, int capacity, GenderType genderType) {
-        this.title = title;
-        this.capacity = capacity;
-        this.genderType = genderType;
-    }
+    @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Participant> participants = new ArrayList<>();
+
+
+
 }
