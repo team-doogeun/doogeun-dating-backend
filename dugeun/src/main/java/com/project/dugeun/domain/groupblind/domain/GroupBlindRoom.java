@@ -2,7 +2,8 @@ package com.project.dugeun.domain.groupblind.domain;
 
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,9 +12,12 @@ import java.util.List;
 
 @Data
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@AllArgsConstructor
+@Builder
 public class GroupBlindRoom {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,32 +25,41 @@ public class GroupBlindRoom {
     private Long id;
 
     @Column(nullable = false)
+    private Integer roomId;
+
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
-    private Long roomId;
-
-    @Column(nullable = false)
+    @Column(name="present_male")
     private int presentMale;
-    @Column(nullable = false)
+    @Column(name="present_female")
     private int presentFemale;
 
-    @Column(nullable = false)
+    @Column(name="capacity_male",nullable = false)
     private int capacityMale;
-    @Column(nullable = false)
+    @Column(name="capacity_female",nullable = false)
     private int capacityFemale;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Participant> participants = new ArrayList<>();
+
+    public void addHost(Participant participant) {
+        participants.add(participant);
+    }
+
+    public void addGuest(Participant participant) {
+        participants.add(participant);
+    }
+
+    @Enumerated(EnumType.STRING)
+    private GroupBlindCategory groupBlindCategory;
 
     @Enumerated(EnumType.STRING)
     private GroupBlindStatus groupBlindStatus;
 
-    @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = false)
-    private List<Participant> participants = new ArrayList<>();
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
-    @Column(nullable = false)
     private String groupBlindIntroduction;
-
-
-    private LocalDateTime startTime = LocalDateTime.now();
-    private LocalDateTime endTime = LocalDateTime.now();
 }

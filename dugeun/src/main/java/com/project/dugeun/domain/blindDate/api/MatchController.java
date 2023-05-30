@@ -3,10 +3,11 @@ package com.project.dugeun.domain.blindDate.api;
 import com.project.dugeun.domain.blindDate.application.MatchMaker;
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
-import com.project.dugeun.domain.blindDate.domain.dto.MatchResponseDto;
-import com.project.dugeun.domain.blindDate.domain.dto.OneMatchResponseDto;
+import com.project.dugeun.domain.blindDate.dao.dto.MatchResponseDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
@@ -15,25 +16,30 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-
 @RestController
+@Slf4j
+@RequiredArgsConstructor
 public class MatchController {
+
 
     @Autowired
     private MatchMaker matchMaker;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private MatchRepository matchRepository;
 
+    private  org.springframework.security.core.userdetails.User user;
+
     // get a list of matches for a given user
+
+    @PreAuthorize("isAuthenticated()") // 인증된 사용자만 접근 가능
     @GetMapping("/blindDate/{userId}/matches")
-    public ResponseEntity getMatches(@PathVariable String userId) {
+    public ResponseEntity getMatches(HttpServletRequest request, @PathVariable String userId) {
+
 
         User user = userRepository.findByUserId(userId);
 
@@ -42,25 +48,11 @@ public class MatchController {
 
 
         EntityModel<MatchResponseDto> twoPersonEntityModel = null;
-        EntityModel<OneMatchResponseDto> onePersonEntityModel = null;
 
 
-        if(pair.size() == 2){
-            User matchedUser = pair.get(0).getUser2();
-            User matchedUser2 = pair.get(1).getUser2();
-//            User matchedUser = pair.get(0);
-//            User matchedUser2 = pair.get(1);
-            twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser,matchedUser2));
-
-            return ResponseEntity.ok(twoPersonEntityModel);
-        }
-        else if (pair.size() ==1)
-        {
-            User matchedUser = pair.get(0).getUser2();
-            onePersonEntityModel = onePersonEntityModel.of(new OneMatchResponseDto(matchedUser));
-
-            return ResponseEntity.ok(onePersonEntityModel);
-        }
-        return null;
+        User matchedUser = pair.get(0).getUser2();
+        User matchedUser2 = pair.get(1).getUser2();
+        twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser, matchedUser2));
+        return ResponseEntity.ok(twoPersonEntityModel);
     }
 }

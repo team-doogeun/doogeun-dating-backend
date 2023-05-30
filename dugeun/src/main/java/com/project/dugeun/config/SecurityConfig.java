@@ -18,26 +18,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
-
-        @Bean
-        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    .antMatchers("/user/logout").permitAll()
-                    .antMatchers("/user/login").permitAll()
-                    .antMatchers("/").permitAll()
-                    .antMatchers(HttpMethod.GET, "/blindDate/{userId}/matches").permitAll()
-                    .antMatchers(HttpMethod.POST, "/blindDate/like").permitAll()
-                    .antMatchers(HttpMethod.POST, "/groupBlind/{userId}/new}").permitAll()
-                    .and()
-                    .formLogin().disable().csrf().disable().cors()
-                    .and()
-                    .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint)
-                    .and()
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/users/logout").authenticated()
+                .antMatchers("/users/login").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
+                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").permitAll()
+                .and()
+                .formLogin().disable().csrf().disable().cors()
+                .and()
+                .exceptionHandling()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
 
         http.authorizeRequests()
                 .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()

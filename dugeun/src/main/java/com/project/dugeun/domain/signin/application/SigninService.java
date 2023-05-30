@@ -29,7 +29,8 @@ public class SigninService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("name"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
-        return new DoogeunUserDetails(user.getEmail(), user.getName(), user.getUserId(), user.getPassword());
+        return new DoogeunUserDetails(user.getUserId(), user.getPassword());
+
 
     }
 }
