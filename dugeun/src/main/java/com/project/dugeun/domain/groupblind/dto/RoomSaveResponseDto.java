@@ -13,14 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RoomSaveResponseDto {
 
-
     private double roomId;
     private String title;
     private Integer capacityMale;
     private Integer capacityFemale;
     private String groupBlindIntroduction;
     private GroupBlindStatus status;
-
 
     public RoomSaveResponseDto(GroupBlindRoom groupBlindRoom){
         this.roomId = groupBlindRoom.getRoomId();
@@ -30,8 +28,4 @@ public class RoomSaveResponseDto {
         this.groupBlindIntroduction = groupBlindRoom.getGroupBlindIntroduction();
         this.status = groupBlindRoom.getGroupBlindStatus();
     }
-
-
-
-
 }
