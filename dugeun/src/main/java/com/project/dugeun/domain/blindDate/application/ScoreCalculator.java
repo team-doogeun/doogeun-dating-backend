@@ -203,8 +203,6 @@ public class ScoreCalculator {
             }
         }
 
-
-
         // 체형
         if(user1.getIdealTypeProfile().getIdealBodyType().getValue() == user2.getDetailProfile().getBodyType().getValue())
         {
@@ -270,6 +268,4 @@ public class ScoreCalculator {
         return score;
 
     }
-
-
 }

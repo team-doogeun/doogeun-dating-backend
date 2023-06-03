@@ -26,8 +26,8 @@ public class SigninService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserId(username)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("name"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 

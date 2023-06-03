@@ -58,6 +58,9 @@ public class GroupBlindRoom {
     @Enumerated(EnumType.STRING)
     private GroupBlindStatus groupBlindStatus;
 
+    @Enumerated(EnumType.STRING)
+    private GroupBlindRole groupBlindRole;
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 

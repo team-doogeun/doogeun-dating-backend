@@ -11,6 +11,8 @@ import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -74,28 +76,27 @@ public class GroupBlindService {
 //        );
     }
 
-//    @Transactional
-//    public boolean deleteMeetingRoom(Long roomId, User member) {
-//        // Find the meeting room by ID
-//        Optional<GroupBlindRoom> meetingRoomOptional = groupBlindRepository.findById(roomId);
-//
-//        if (meetingRoomOptional.isPresent()) {
-//            GroupBlindRoom meetingRoom = meetingRoomOptional.get();
-//
-//            // Check if the user is the host of the meeting room
-////            com.project.dugeun.domain.user.domain.User host = userRepository.findByUserId(requestUser.getMember().getUserId());
-//
-//            boolean isHost = meetingRoom.getParticipants().stream()
-//                    .anyMatch(p -> p.getUser().equals(member) && p.getGroupBlindRole() == GroupBlindRole.HOST);
-//
-//            if (isHost) {
-//                // Delete the meeting room
-//                meetingRoomRepository.delete(meetingRoom);
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    @Transactional
+    public boolean deleteMeetingRoom(Integer roomId, String hostUserId) {
+        // Find the meeting room by ID
+        // Find the meeting room by roomId
+        Optional<GroupBlindRoom> groupBlindRoom = Optional.ofNullable(groupBlindRepository.findByRoomId(roomId));
+
+        if (groupBlindRoom.isPresent()) {
+            GroupBlindRoom meetingRoom = groupBlindRoom.get();
+
+            // Check if the user is the host of the meeting room
+            boolean isHost = meetingRoom.getParticipants().stream()
+                    .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(hostUserId));
+
+            if (isHost) {
+                // Delete the meeting room
+                groupBlindRepository.delete(meetingRoom);
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Transactional
     // 해당 미팅방 룸의 인원수를 증가시키고
@@ -108,10 +109,12 @@ public class GroupBlindService {
         } else if (user.getGender().equals("여")) {
             blindRoom.setPresentFemale(blindRoom.getPresentFemale() + 1);
         }
-        Participant guest = new Participant();
-        guest.setGroupBlindRole(GroupBlindRole.GUEST);
-        guest.setGroupBlindRoom(blindRoom);
-        guest.setUser(user);
+        Participant guest = Participant.builder()
+                .user(user)
+                .groupBlindRoom(blindRoom)
+                .groupBlindRole(GroupBlindRole.GUEST)
+                .build();
+
         blindRoom.addGuest(guest);
     }
 
@@ -124,7 +127,8 @@ public class GroupBlindService {
 
         } else if (user.getGender().equals("여")) {
             blindRoom.setPresentFemale(blindRoom.getPresentFemale() - 1);
-
         }
+
+        blindRoom.getParticipants().removeIf(p -> p.getUser().equals(user));
     }
 }

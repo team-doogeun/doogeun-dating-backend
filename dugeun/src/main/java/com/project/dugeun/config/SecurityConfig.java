@@ -18,7 +18,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/logout").authenticated()
+                .antMatchers("/users/logout").permitAll()
                 .antMatchers("/users/login").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
