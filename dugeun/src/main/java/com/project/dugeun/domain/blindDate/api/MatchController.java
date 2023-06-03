@@ -42,6 +42,7 @@ public class MatchController {
     @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity getMatches(Principal principal, @PathVariable String userId) {
 
+
     if(!userId.equals(principal.getName())){
         String responseMessage = "해당하는 소개 상대를 확인할 수 없습니다";
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
@@ -60,6 +61,7 @@ public class MatchController {
 
 
      }
+
 
 
 

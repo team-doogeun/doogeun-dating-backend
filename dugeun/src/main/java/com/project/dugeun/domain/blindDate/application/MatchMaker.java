@@ -27,7 +27,6 @@ public class MatchMaker {
     public boolean checkMatch(User user1,User user2){
 
         return matchRepository.existsByUser1AndUser2(user1,user2);
-
     }
 
     // find matches for a given user
@@ -52,21 +51,17 @@ public class MatchMaker {
                 // match(blind_date 디비)에 저장
                 saveMatch(user,otherUser, compatibilityScore);
             }
-
         }
-
 
         List<Match> matchList = matchRepository.findByUser1(user);
         System.out.println(matchList);
 
-
-       //  소개해줄려는 상대가 2명을 넘지 않으면 임의로 한명 소개해주는 로직
+        //  소개해줄려는 상대가 2명을 넘지 않으면 임의로 한명 소개해주는 로직
         if(matchList.size() == 1){
 
             User randomUser = userRepository.findRandomUser();
             matches.add(randomUser);
             saveMatch(user,randomUser,0); // compatibility 점수는 일단 0점으로 부여
-
         }
 
 
@@ -78,12 +73,8 @@ public class MatchMaker {
             matches.add(secondRandomUser);
             saveMatch(user,firstRandomUser,0);
             saveMatch(user,secondRandomUser,0);
-
         }
-
-
     }
-
 
     // save a match between two users
     @Transactional
@@ -113,9 +104,5 @@ public class MatchMaker {
 
         }
         System.out.println(allMatches);
-
     }
-
-
-
 }

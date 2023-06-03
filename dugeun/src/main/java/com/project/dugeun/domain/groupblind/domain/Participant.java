@@ -1,9 +1,10 @@
 package com.project.dugeun.domain.groupblind.domain;
 
-
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @SuperBuilder
 public class Participant {
@@ -33,8 +35,5 @@ public class Participant {
     @ManyToOne
     private GroupBlindRoom groupBlindRoom;
 
-
-    private GroupBlindRole Role; // 역할 ( 방장, 참가자 )
-
-
+    private GroupBlindRole groupBlindRole;// 역할 ( 방장, 참가자 )
 }

@@ -61,7 +61,6 @@ public class User {
     @JoinColumn(name = "group_blind_room")
     private GroupBlindRoom groupBlindRoom;
 
-
     @Embedded
     private DetailProfile detailProfile;
 
