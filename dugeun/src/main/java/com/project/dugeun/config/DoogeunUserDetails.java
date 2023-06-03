@@ -18,7 +18,6 @@ public class DoogeunUserDetails implements UserDetails {
     private String password;
 
     public DoogeunUserDetails(String userId, String password) {
-
         this.userId = userId;
         this.password = password;
     }

@@ -41,38 +41,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-
-//@Configuration
-//@EnableWebSecurity
-//@RequiredArgsConstructor
-//public class SecurityConfig {
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .antMatchers("/user/logout").authenticated()
-//                .antMatchers("/users/login").permitAll()
-//                .antMatchers("/").permitAll()
-//                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
-//                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").permitAll()
-//                .and()
-//                .formLogin().disable().csrf().disable().cors()
-//                .and()
-//                .exceptionHandling()
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
-//
-//        http.authorizeRequests()
-//                .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
-//                .mvcMatchers("/", "/users/**").permitAll()
-//                .anyRequest().authenticated();
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//}
-
