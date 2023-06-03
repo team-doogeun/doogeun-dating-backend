@@ -38,7 +38,6 @@ public class DoogeunUserDetails implements UserDetails {
         return userId;
     }
 
-
     public String getUserId() {
         return userId;
     }

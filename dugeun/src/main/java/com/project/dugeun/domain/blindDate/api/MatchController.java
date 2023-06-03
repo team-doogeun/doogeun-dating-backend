@@ -42,24 +42,24 @@ public class MatchController {
     @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity getMatches(Principal principal, @PathVariable String userId) {
 
-    if(!userId.equals(principal.getName())){
-        String responseMessage = "해당하는 소개 상대를 확인할 수 없습니다";
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        if(!userId.equals(principal.getName())){
+            String responseMessage = "해당하는 소개 상대를 확인할 수 없습니다";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        }
+
+        User user = userRepository.findByUserId(userId);
+        List<Match> pair = new ArrayList<>();
+        pair = matchRepository.findByUser1(user);
+
+        EntityModel<MatchResponseDto> twoPersonEntityModel = null;
+
+        User matchedUser = pair.get(0).getUser2();
+        User matchedUser2 = pair.get(1).getUser2();
+        twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser, matchedUser2));
+        return ResponseEntity.ok(twoPersonEntityModel);
+
+
     }
-
-            User user = userRepository.findByUserId(userId);
-            List<Match> pair = new ArrayList<>();
-            pair = matchRepository.findByUser1(user);
-
-            EntityModel<MatchResponseDto> twoPersonEntityModel = null;
-
-                User matchedUser = pair.get(0).getUser2();
-                User matchedUser2 = pair.get(1).getUser2();
-                twoPersonEntityModel = twoPersonEntityModel.of(new MatchResponseDto(matchedUser, matchedUser2));
-                return ResponseEntity.ok(twoPersonEntityModel);
-
-
-     }
 
 
 

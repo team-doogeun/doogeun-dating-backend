@@ -30,28 +30,30 @@ public class DataProcessorScheduler {
         this.userRepository = userRepository;
     }
 
-//    @Scheduled(cron = "0 0 10 * * *") // 매일 오전 10시에 실행되도록 설정
-
-
-//    @Scheduled(cron = "0 */2 * * * *") // 매일 2분 마다
     @Transactional
     @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
-    public void processDate(){
-
-
-
+    public void processMatchDate(){
         // user 디비에 있는 모든 유저들 로드해서 수행
        List<User> users = userRepository.findAll();
        for(User user: users){
            // 모든 사용자에 대해 소개 상대 소개 초기화
            matchMaker.manageMatches(user);
-           // 최종 매칭 저장
-           finalMatchService.saveFinalMatch(user.getUserId());
-
        }
-
         System.out.println("Data processing job executed!!!!!!!!");
 
+    }
+    @Transactional
+    @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
+    public void processFinalMatchDate(){
+
+        // user 디비에 있는 모든 유저들 로드해서 수행
+        List<User> users = userRepository.findAll();
+        for(User user: users){
+            // 모든 사용자에 대해 최종 매칭 저장
+            finalMatchService.saveFinalMatch(user.getUserId());
+        }
+
+        System.out.println("Data processing job executed!!!!!!!!");
 
     }
 

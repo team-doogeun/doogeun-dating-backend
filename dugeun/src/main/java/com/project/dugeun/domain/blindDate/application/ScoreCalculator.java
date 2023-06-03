@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class ScoreCalculator {
 
-
     public static int calculateCompatibility(User user1, User user2){
 
         int score = 0 ;

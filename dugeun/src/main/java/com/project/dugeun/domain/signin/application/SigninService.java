@@ -26,13 +26,11 @@ public class SigninService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserId(name)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("name"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         return new DoogeunUserDetails(user.getUserId(), user.getPassword());
-
-
     }
 }

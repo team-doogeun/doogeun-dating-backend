@@ -17,10 +17,6 @@ public class RoomSaveRequestDto {
     @NotEmpty
     private String title;
 
-    @NotEmpty
-    private String roomId;
-
-
     @NotNull
     private Integer capacityMale;
 
@@ -33,7 +29,4 @@ public class RoomSaveRequestDto {
 
     @NotEmpty
     private String groupBlindIntroduction;
-
-
-
 }
