@@ -3,8 +3,8 @@ package com.project.dugeun.domain.signup.application;
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.security.ShaUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,8 @@ import java.util.List;
 public class SignupService {
 
 private final UserRepository userRepository;
-private  final PasswordEncoder passwordEncoder;
+private final ShaUtil shaUtil;
+
 
 
 // 프론트 단에서  konkuk.ac.kr을 박아둬서 이 코드는 필요 x
@@ -53,7 +54,8 @@ public User saveUser(UserSaveRequestDto user){
                     .gender(user.getGender())
                     .detailProfile(user.getDetailProfile())
                     .idealTypeProfile(user.getIdealTypeProfile())
-            .password(passwordEncoder.encode(user.getPassword()))
+//                    .password(shaUtil.sha256Encode(user.getPassword()))
+                    .password(user.getPassword())
             .build());
 
        }

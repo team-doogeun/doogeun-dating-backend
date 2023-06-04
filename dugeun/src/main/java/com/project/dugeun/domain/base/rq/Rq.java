@@ -1,6 +1,5 @@
 package com.project.dugeun.domain.base.rq;
 
-import com.project.dugeun.domain.signin.application.SigninService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +10,6 @@ import org.springframework.web.context.annotation.RequestScope;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 @Component
 @RequestScope
