@@ -30,14 +30,14 @@ public class GroupBlindRoom {
     @Column(nullable = false)
     private String title;
 
-    @Column(name="present_male")
+    @Column(name="present_male", nullable = false)
     private int presentMale;
-    @Column(name="present_female")
+    @Column(name="present_female", nullable = false)
     private int presentFemale;
 
-    @Column(name="capacity_male",nullable = false)
+    @Column(name="capacity_male", nullable = false)
     private int capacityMale;
-    @Column(name="capacity_female",nullable = false)
+    @Column(name="capacity_female", nullable = false)
     private int capacityFemale;
 
     @Builder.Default
@@ -56,6 +56,7 @@ public class GroupBlindRoom {
     private GroupBlindCategory groupBlindCategory;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private GroupBlindStatus groupBlindStatus;
 
     @Enumerated(EnumType.STRING)

@@ -18,11 +18,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/users/logout").permitAll()
-                .antMatchers("/users/login").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
-                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").permitAll()
+//                .antMatchers("/users/logout").permitAll()
+//                .antMatchers("/users/login").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers(HttpMethod.GET.name(), "/blindDate/{userId}/matches").permitAll()
+//                .antMatchers(HttpMethod.POST.name(), "/blindDate/like").permitAll()
+//                .antMatchers(HttpMethod.POST.name(), "/group/{userId}/new").permitAll()
                 .and()
                 .formLogin().disable().csrf().disable().cors()
                 .and()

@@ -11,8 +11,8 @@ import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
-
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +51,7 @@ public class GroupBlindService {
                 .capacityMale(room.getCapacityMale())
                 .capacityFemale(room.getCapacityFemale())
                 .groupBlindIntroduction(room.getGroupBlindIntroduction())
-                .groupBlindStatus(room.getStatus())
+                .startTime(LocalDateTime.now())
                 .build();
         // 방을 만든 사람을 HOST로 지정하여 participant에 추가
         Participant hostParticipant = Participant.builder()

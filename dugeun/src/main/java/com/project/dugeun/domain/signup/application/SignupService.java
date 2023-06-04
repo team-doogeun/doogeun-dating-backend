@@ -55,9 +55,7 @@ public User saveUser(UserSaveRequestDto user){
                     .idealTypeProfile(user.getIdealTypeProfile())
             .password(passwordEncoder.encode(user.getPassword()))
             .build());
-
        }
-
 }
 
 
