@@ -14,17 +14,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RoomSaveRequestDto {
 
-    @NotEmpty
     private String title;
 
-    @NotNull
+
     private Integer capacityMale;
 
-    @NotNull
     private Integer capacityFemale;
 
     private GroupBlindStatus status;
 
-    @NotEmpty
+
     private String groupBlindIntroduction;
 }

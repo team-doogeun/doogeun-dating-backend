@@ -24,7 +24,6 @@ import java.security.Principal;
 
 
 @RestController
-@RequestMapping("/group")
 @RequiredArgsConstructor
 @Setter
 public class GroupBlindController {
@@ -39,7 +38,7 @@ public class GroupBlindController {
     @Autowired
     private JwtProvider jwtProvider;
 
-    @PostMapping("/{userId}/new")
+    @PostMapping("group/{userId}/new")
     public ResponseEntity createRoom(@PathVariable String userId,@RequestHeader(value="Authorization")String token, @Valid @RequestBody RoomSaveRequestDto room){
 
         Claims claims = jwtProvider.parseJwtToken(token);
@@ -51,15 +50,16 @@ public class GroupBlindController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
         }
 
+        EntityModel<RoomSaveResponseDto> entityModel = null;
         GroupBlindRoom savedRoom =  groupBlindService.createMeetingRoom(room, claims.getSubject());
-        EntityModel<RoomSaveResponseDto> entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
+        entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
 
         return ResponseEntity.ok(entityModel);
 
     }
 
 
-    @DeleteMapping("/delete/{roomId}")
+    @DeleteMapping("group/delete/{roomId}")
     public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId,@RequestHeader(value="Authorization")String token) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
@@ -74,7 +74,7 @@ public class GroupBlindController {
     }
 
 
-    @PostMapping("/{roomId}")
+    @PostMapping("group/{roomId}")
     public ResponseEntity enterRoom(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
 
         Claims claims = jwtProvider.parseJwtToken(token);
@@ -88,7 +88,7 @@ public class GroupBlindController {
     }
 
 
-    @PostMapping("/{roomId}/exit")
+    @PostMapping("group/{roomId}/exit")
     public ResponseEntity exit(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
         Claims claims = jwtProvider.parseJwtToken(token);
         groupBlindService.exit(groupBlindRepository.findByRoomId(roomId), userRepository.findByUserId(claims.getSubject()));

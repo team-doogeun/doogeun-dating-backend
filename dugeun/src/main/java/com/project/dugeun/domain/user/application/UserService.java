@@ -21,6 +21,7 @@ public class UserService {
         User user = userRepository.findByUserId(userId);
 
        List<ToLikeablePersonResponseDto> toLikeablePersons = new ArrayList<>();
+
        for (LikeablePerson likeablePerson : user.getToLikeablePerson())
        {
             // 호감을 표시한 상대의 정보를 LikeablePersonDto로 변환하여 리스트로 추가합니다.
@@ -28,6 +29,10 @@ public class UserService {
         toLikeablePersons.add(toLikeablePersonResponseDto);
 
        }
+
+       // 만약 해당 사용자가 호감표시한 사용자가 없다면 에러 처리가 나지 않도로 toLikealbePersons에 null이라도 넣어주기
+
+
         return toLikeablePersons;
     }
 

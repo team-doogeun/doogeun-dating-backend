@@ -2,6 +2,8 @@ package com.project.dugeun.domain.signin.api;
 
 import com.project.dugeun.domain.signin.application.LoginService;
 import com.project.dugeun.domain.signin.dto.UserSigninRequestDto;
+import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ public class LoginController {
     private final LoginService loginService;
     private final JwtProvider jwtProvider;
 
+    private final UserRepository userRepository;
 
     //==토큰 생성 컨트롤러==//
     @PostMapping(value = "/login")
@@ -29,7 +32,9 @@ public class LoginController {
            String token = jwtProvider.createToken(loginRequest.getUserId()); // 토큰 생성
            Claims claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
 
-           TokenDataResponse tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
+           User user= userRepository.findByUserId(claims.getSubject());
+
+           TokenDataResponse tokenDataResponse = new TokenDataResponse(token, user.getName() , claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
            TokenResponse tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 
 
@@ -73,6 +78,7 @@ public class LoginController {
     @AllArgsConstructor
     static class TokenDataResponse {
         private String token;
+        private String name;
         private String subject;
         private String issued_time;
         private String expired_time;
