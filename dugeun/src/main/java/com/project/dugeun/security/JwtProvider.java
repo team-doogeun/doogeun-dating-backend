@@ -39,12 +39,14 @@ public class JwtProvider {
                 .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .parseClaimsJws(token)
                 .getBody();
-    }
+        }
 
     //==토큰 앞 부분('Bearer') 제거 메소드==//
     private String BearerRemove(String token) {
         return token.substring("Bearer ".length());
     }
+
+
 }
 
 

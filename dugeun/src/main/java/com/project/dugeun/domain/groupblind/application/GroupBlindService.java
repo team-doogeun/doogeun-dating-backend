@@ -53,6 +53,7 @@ public class GroupBlindService {
                 .groupBlindIntroduction(room.getGroupBlindIntroduction())
                 .groupBlindStatus(room.getStatus())
                 .build();
+
         // 방을 만든 사람을 HOST로 지정하여 participant에 추가
         Participant hostParticipant = Participant.builder()
                 .user(host)
