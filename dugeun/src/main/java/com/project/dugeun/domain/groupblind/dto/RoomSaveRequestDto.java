@@ -23,6 +23,8 @@ public class RoomSaveRequestDto {
     @NotNull
     private Integer capacityFemale;
 
+    private GroupBlindStatus status;
+
     @NotEmpty
     private String groupBlindIntroduction;
 }

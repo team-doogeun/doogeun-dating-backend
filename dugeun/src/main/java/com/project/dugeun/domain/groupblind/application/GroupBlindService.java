@@ -11,8 +11,9 @@ import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -45,14 +46,18 @@ public class GroupBlindService {
             throw new IllegalStateException("호스트 유저를 찾을 수 없습니다.");
         }
 
+
         GroupBlindRoom groupBlindRoom = GroupBlindRoom.builder()
                 .roomId(randomRoomId())
                 .title(room.getTitle())
                 .capacityMale(room.getCapacityMale())
                 .capacityFemale(room.getCapacityFemale())
                 .groupBlindIntroduction(room.getGroupBlindIntroduction())
-                .startTime(LocalDateTime.now())
+                .groupBlindStatus(room.getStatus())
+                .groupBlindRole(GroupBlindRole.HOST)
+                .hostId(hostUserId)
                 .build();
+
         // 방을 만든 사람을 HOST로 지정하여 participant에 추가
         Participant hostParticipant = Participant.builder()
                 .user(host)
@@ -130,5 +135,10 @@ public class GroupBlindService {
         }
 
         blindRoom.getParticipants().removeIf(p -> p.getUser().equals(user));
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupBlindRoom> getAllMeetingRooms() {
+        return groupBlindRepository.findAll();
     }
 }

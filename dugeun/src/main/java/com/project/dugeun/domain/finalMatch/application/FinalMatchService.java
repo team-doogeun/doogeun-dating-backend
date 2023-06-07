@@ -62,14 +62,9 @@ public class FinalMatchService {
                         finalMatch.setUser2(toUser);
                         finalMatchRepository.save(finalMatch);
                         introduceMatch.setMatched(true);
-
-
                     }
                 }
             });
-
         }
-
     }
-
 }

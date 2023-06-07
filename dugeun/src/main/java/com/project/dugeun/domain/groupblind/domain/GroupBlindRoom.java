@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
+import com.project.dugeun.domain.user.domain.User;
 import lombok.Data;
 
 import lombok.*;
@@ -13,8 +14,6 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Setter
 @AllArgsConstructor
 @Builder
 public class GroupBlindRoom {
@@ -39,6 +38,10 @@ public class GroupBlindRoom {
     private int capacityMale;
     @Column(name="capacity_female", nullable = false)
     private int capacityFemale;
+
+    @Column(name = "host_id", nullable = false)
+    private String hostId;
+
 
     @Builder.Default
     @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
