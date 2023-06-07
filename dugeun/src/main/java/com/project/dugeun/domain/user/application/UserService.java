@@ -52,4 +52,10 @@ public class UserService {
         return fromLikeablePersons;
     }
 
+    public String findExternalId(String targetUserId) {
+       User user =  userRepository.findByUserId(targetUserId);
+
+        return user.getExternalId();
+    }
+
 }

@@ -6,6 +6,7 @@ import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.dto.ExitRoomResponseDto;
+import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import com.project.dugeun.domain.groupblind.dto.RoomSaveResponseDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
@@ -17,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -87,7 +88,6 @@ public class GroupBlindController {
         return ResponseEntity.ok(responseMessage);
     }
 
-
     @PostMapping("group/{roomId}/exit")
     public ResponseEntity exit(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
         Claims claims = jwtProvider.parseJwtToken(token);
@@ -96,6 +96,14 @@ public class GroupBlindController {
         // 응답처리
         EntityModel<ExitRoomResponseDto> entityModel = EntityModel.of(new ExitRoomResponseDto((rq.getMember())));
         return ResponseEntity.ok(entityModel);
+    }
 
+    @GetMapping("/group/info")
+    public ResponseEntity<List<GroupBlindDto>> getMeetingRooms() {
+        List<GroupBlindRoom> meetingRooms = groupBlindService.getAllMeetingRooms();
+        List<GroupBlindDto> roomDto = meetingRooms.stream()
+                .map(GroupBlindDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(roomDto);
     }
 }

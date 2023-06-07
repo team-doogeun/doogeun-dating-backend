@@ -11,6 +11,7 @@ import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -131,5 +132,10 @@ public class GroupBlindService {
         }
 
         blindRoom.getParticipants().removeIf(p -> p.getUser().equals(user));
+    }
+
+    @Transactional(readOnly = true)
+    public List<GroupBlindRoom> getAllMeetingRooms() {
+        return groupBlindRepository.findAll();
     }
 }
