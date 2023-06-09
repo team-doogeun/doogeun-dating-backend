@@ -57,9 +57,7 @@ public User saveUser(UserSaveRequestDto user){
 //                    .password(shaUtil.sha256Encode(user.getPassword()))
                     .password(user.getPassword())
             .build());
-
        }
-
 }
 
 

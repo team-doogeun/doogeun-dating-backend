@@ -4,12 +4,12 @@ package com.project.dugeun.domain.groupblind.api;
 import com.project.dugeun.domain.base.rq.Rq;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindRole;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
-import com.project.dugeun.domain.groupblind.dto.ExitRoomResponseDto;
-import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
-import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
-import com.project.dugeun.domain.groupblind.dto.RoomSaveResponseDto;
+import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.*;
 import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -51,20 +51,34 @@ public class GroupBlindController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
         }
 
-        EntityModel<RoomSaveResponseDto> entityModel = null;
         GroupBlindRoom savedRoom =  groupBlindService.createMeetingRoom(room, claims.getSubject());
-        entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
+
+        EntityModel<RoomSaveResponseDto> entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
 
         return ResponseEntity.ok(entityModel);
 
     }
 
 
-    @DeleteMapping("group/delete/{roomId}")
-    public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId,@RequestHeader(value="Authorization")String token) {
+    @DeleteMapping("group/{roomId}/delete")
+    public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
-        // Delete the meeting room
+
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        if (groupBlindRoom == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // userId가 호스트인지 확인
+        boolean isHost = groupBlindRoom.getParticipants().stream()
+                .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(claims.getSubject()));
+
+        if (!isHost) {
+            String responseMessage = "미팅방을 삭제할 수 있는 권한이 없습니다";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        }
+
         boolean deleted = groupBlindService.deleteMeetingRoom(roomId, claims.getSubject());
 
         if (deleted) {
@@ -89,7 +103,7 @@ public class GroupBlindController {
     }
 
     @PostMapping("group/{roomId}/exit")
-    public ResponseEntity exit(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
+    public ResponseEntity exitroom(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
         Claims claims = jwtProvider.parseJwtToken(token);
         groupBlindService.exit(groupBlindRepository.findByRoomId(roomId), userRepository.findByUserId(claims.getSubject()));
 
@@ -98,12 +112,38 @@ public class GroupBlindController {
         return ResponseEntity.ok(entityModel);
     }
 
-    @GetMapping("/group/info")
+    @GetMapping("/group")
     public ResponseEntity<List<GroupBlindDto>> getMeetingRooms() {
         List<GroupBlindRoom> meetingRooms = groupBlindService.getAllMeetingRooms();
         List<GroupBlindDto> roomDto = meetingRooms.stream()
                 .map(GroupBlindDto::new)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(roomDto);
+    }
+
+    @GetMapping("group/{roomId}/info")
+    public ResponseEntity<GroupInfoResponseDto> getInfo(@PathVariable Integer roomId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        if (groupBlindRoom == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<Participant> participants = groupBlindRoom.getParticipants();
+        List<UserInfoDto> members = participants.stream()
+                .map(participant -> {
+                    User user = participant.getUser();
+                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
+                })
+                .collect(Collectors.toList());
+
+        GroupInfoResponseDto responseDto = new GroupInfoResponseDto(
+                members,
+                groupBlindRoom.getPresentMale(),
+                groupBlindRoom.getPresentFemale(),
+                groupBlindRoom.getGroupBlindIntroduction(),
+                groupBlindRoom.getHostId(),
+                groupBlindRoom.getTitle()
+        );
+        return ResponseEntity.ok(responseDto);
     }
 }

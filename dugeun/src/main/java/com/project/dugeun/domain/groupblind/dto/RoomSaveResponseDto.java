@@ -1,7 +1,9 @@
 package com.project.dugeun.domain.groupblind.dto;
 
+import com.project.dugeun.domain.groupblind.domain.GroupBlindRole;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
+import com.project.dugeun.domain.groupblind.domain.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,6 +21,7 @@ public class RoomSaveResponseDto {
     private Integer capacityFemale;
     private String groupBlindIntroduction;
     private GroupBlindStatus status;
+    private String hostId;
 
     public RoomSaveResponseDto(GroupBlindRoom groupBlindRoom){
         this.roomId = groupBlindRoom.getRoomId();
@@ -27,5 +30,6 @@ public class RoomSaveResponseDto {
         this.capacityFemale = groupBlindRoom.getCapacityFemale();
         this.groupBlindIntroduction = groupBlindRoom.getGroupBlindIntroduction();
         this.status = groupBlindRoom.getGroupBlindStatus();
+        this.hostId = groupBlindRoom.getHostId();
     }
 }

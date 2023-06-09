@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
+import com.project.dugeun.domain.user.domain.User;
 import lombok.Data;
 
 import lombok.*;
@@ -13,8 +14,6 @@ import java.util.List;
 @Data
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
-@Setter
 @AllArgsConstructor
 @Builder
 public class GroupBlindRoom {
@@ -30,15 +29,18 @@ public class GroupBlindRoom {
     @Column(nullable = false)
     private String title;
 
-    @Column(name = "present_male")
+    @Column(name="present_male", nullable = false)
     private int presentMale;
-    @Column(name = "present_female")
+    @Column(name="present_female", nullable = false)
     private int presentFemale;
 
-    @Column(name = "capacity_male", nullable = false)
+    @Column(name="capacity_male", nullable = false)
     private int capacityMale;
-    @Column(name = "capacity_female", nullable = false)
+    @Column(name="capacity_female", nullable = false)
     private int capacityFemale;
+
+    @Column(name = "host_id", nullable = false)
+    private String hostId;
 
 
     @Builder.Default
@@ -57,12 +59,14 @@ public class GroupBlindRoom {
     private GroupBlindCategory groupBlindCategory;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private GroupBlindStatus groupBlindStatus;
 
     @Enumerated(EnumType.STRING)
     private GroupBlindRole groupBlindRole;
 
-    private LocalDateTime startTime; // 미팅방 만들어진 시간
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
     private String groupBlindIntroduction;
 }

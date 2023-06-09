@@ -43,6 +43,4 @@ public enum MbtiType {
     public String getValue(){
         return value;
     }
-
-
 }
