@@ -6,6 +6,7 @@ import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
+import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.RequiredArgsConstructor;
 import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
@@ -62,29 +63,21 @@ public class GroupBlindService {
         Participant hostParticipant = Participant.builder()
                 .user(host)
                 .groupBlindRoom(groupBlindRoom)
-                .groupBlindRole(GroupBlindRole.HOST)
+//                .groupBlindRole(GroupBlindRole.HOST)
                 .build();
 
-        if (groupBlindRoom.getParticipants() == null) {
-            groupBlindRoom.addHost(hostParticipant);
+        groupBlindRoom.addHost(hostParticipant);
+        if (host.getGender().equals(GenderType.MAN)) {
+            groupBlindRoom.setPresentMale(groupBlindRoom.getPresentMale() + 1);
+        } else if (host.getGender().equals(GenderType.WOMAN)) {
+            groupBlindRoom.setPresentFemale(groupBlindRoom.getPresentFemale() + 1);
         }
         return groupBlindRepository.save(groupBlindRoom);
-
-//        return groupBlindRepository.save(GroupBlindRoom.builder()
-//                .roomId(room.getRoomId())
-//                .title(room.getTitle())
-//                .capacityMale(room.getCapacityMale())
-//                .capacityFemale(room.getCapacityFemale())
-//                .groupBlindIntroduction(room.getGroupBlindIntroduction())
-//                .groupBlindStatus(room.getStatus())
-//                .build()
-//        );
     }
 
     @Transactional
     public boolean deleteMeetingRoom(Integer roomId, String hostUserId) {
-        // Find the meeting room by ID
-        // Find the meeting room by roomId
+
         Optional<GroupBlindRoom> groupBlindRoom = Optional.ofNullable(groupBlindRepository.findByRoomId(roomId));
 
         if (groupBlindRoom.isPresent()) {
@@ -140,5 +133,10 @@ public class GroupBlindService {
     @Transactional(readOnly = true)
     public List<GroupBlindRoom> getAllMeetingRooms() {
         return groupBlindRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public GroupBlindRoom getGroupBlindRoom(Integer roomId) {
+        return groupBlindRepository.findByRoomId(roomId);
     }
 }
