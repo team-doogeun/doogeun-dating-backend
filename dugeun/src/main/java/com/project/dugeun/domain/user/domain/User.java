@@ -82,13 +82,13 @@ public class User {
     @OneToMany(mappedBy = "fromUser")
     @OrderBy("createDate desc") // 최근순으로
     @Builder.Default
-    private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
+    private List<LikeablePerson> toLikeablePerson = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "toUser")
     @OrderBy("createDate desc") // 최근순으로
     @Builder.Default
-    private List<LikeablePerson> toLikeablePerson = new ArrayList<>();
+    private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
 
 

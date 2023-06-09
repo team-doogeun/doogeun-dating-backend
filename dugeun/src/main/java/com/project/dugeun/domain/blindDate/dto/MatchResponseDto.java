@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.blindDate.dao.dto;
+package com.project.dugeun.domain.blindDate.dto;
 
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.User;

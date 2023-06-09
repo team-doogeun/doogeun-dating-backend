@@ -26,22 +26,22 @@ public class LoginController {
     public TokenResponse createToken(@RequestBody UserSigninRequestDto loginRequest) throws Exception {
 
 
-        if(loginService.login(loginRequest)){
+       if(loginService.login(loginRequest)){
 
-            // == 토근 생성 진행 ==
-            String token = jwtProvider.createToken(loginRequest.getUserId()); // 토큰 생성
-            Claims claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
+           // == 토근 생성 진행 ==
+           String token = jwtProvider.createToken(loginRequest.getUserId()); // 토큰 생성
+           Claims claims = jwtProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
 
-            User user= userRepository.findByUserId(claims.getSubject());
+           User user= userRepository.findByUserId(claims.getSubject());
 
-            TokenDataResponse tokenDataResponse = new TokenDataResponse(token, user.getName() , claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
-            TokenResponse tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
+           TokenDataResponse tokenDataResponse = new TokenDataResponse(token, user.getName() , claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
+           TokenResponse tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 
 
-            return tokenResponse;
-        }
+           return tokenResponse;
+       }
 
-        return new TokenResponse("444","no token", null);
+       return new TokenResponse("444","no token", null);
     }
 
     //==토큰 인증 컨트롤러==//

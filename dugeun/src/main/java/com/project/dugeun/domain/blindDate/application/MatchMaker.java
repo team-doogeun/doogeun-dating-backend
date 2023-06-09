@@ -103,6 +103,8 @@ public class MatchMaker {
             System.out.println(selected.getCompatibilityScore());
 
         }
+
         System.out.println(allMatches);
     }
+
 }
