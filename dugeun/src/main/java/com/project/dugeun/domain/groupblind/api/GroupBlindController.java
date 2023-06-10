@@ -121,29 +121,78 @@ public class GroupBlindController {
         return ResponseEntity.ok(roomDto);
     }
 
+
     @GetMapping("group/{roomId}/info")
-    public ResponseEntity<GroupInfoResponseDto> getInfo(@PathVariable Integer roomId) {
-        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
-        if (groupBlindRoom == null) {
+    public ResponseEntity<?> getInfo(@PathVariable Integer roomId) {
+        try {
+            GroupInfoResponseDto responseDto = groupBlindService.getGroupInfo(roomId);
+            return ResponseEntity.ok(responseDto);
+        } catch (IllegalStateException e) {
             return ResponseEntity.notFound().build();
         }
-
-        List<Participant> participants = groupBlindRoom.getParticipants();
-        List<UserInfoDto> members = participants.stream()
-                .map(participant -> {
-                    User user = participant.getUser();
-                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
-                })
-                .collect(Collectors.toList());
-
-        GroupInfoResponseDto responseDto = new GroupInfoResponseDto(
-                members,
-                groupBlindRoom.getPresentMale(),
-                groupBlindRoom.getPresentFemale(),
-                groupBlindRoom.getGroupBlindIntroduction(),
-                groupBlindRoom.getHostId(),
-                groupBlindRoom.getTitle()
-        );
-        return ResponseEntity.ok(responseDto);
     }
+
+    @PostMapping("group/{roomId}/start")
+    public ResponseEntity<List<String>> manageMeeting(@PathVariable Integer roomId, @RequestHeader(value="Authorization", required = false) String token) {
+        Claims claims = null;
+        if (token != null) {
+            claims = jwtProvider.parseJwtToken(token);
+        }
+
+        List<String> participantExternalIds = groupBlindService.manageMeeting(roomId, claims != null ? claims.getSubject() : null);
+
+        if (participantExternalIds != null) {
+            return ResponseEntity.ok(participantExternalIds);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+//    @PostMapping("group/{roomId}/start")
+//    public ResponseEntity<List<String>> startMeeting(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
+//        Claims claims = jwtProvider.parseJwtToken(token);
+//        List<String> participantExternalIds = groupBlindService.startMeeting(roomId, claims.getSubject());
+//        if (participantExternalIds != null) {
+//            return ResponseEntity.ok(participantExternalIds);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+//
+//    @GetMapping("group/{roomId}/external-ids")
+//    public ResponseEntity<List<String>> getParticipantExternalIds(@PathVariable Integer roomId) {
+//        List<String> externalIds = groupBlindService.getParticipantExternalIds(roomId);
+//        return ResponseEntity.ok(externalIds);
+//    }
+
 }
+
+
+
+
+
+//    @GetMapping("group/{roomId}/info")
+//    public ResponseEntity<GroupInfoResponseDto> getInfo(@PathVariable Integer roomId) {
+//        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+//        if (groupBlindRoom == null) {
+//            return ResponseEntity.notFound().build();
+//        }
+//
+//        List<Participant> participants = groupBlindRoom.getParticipants();
+//        List<UserInfoDto> members = participants.stream()
+//                .map(participant -> {
+//                    User user = participant.getUser();
+//                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
+//                })
+//                .collect(Collectors.toList());
+//
+//        GroupInfoResponseDto responseDto = new GroupInfoResponseDto(
+//                members,
+//                groupBlindRoom.getPresentMale(),
+//                groupBlindRoom.getPresentFemale(),
+//                groupBlindRoom.getGroupBlindIntroduction(),
+//                groupBlindRoom.getHostId(),
+//                groupBlindRoom.getTitle()
+//        );
+//        return ResponseEntity.ok(responseDto);
+//    }

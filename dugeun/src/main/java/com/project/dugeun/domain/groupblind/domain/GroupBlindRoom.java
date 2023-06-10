@@ -1,7 +1,6 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
-import com.project.dugeun.domain.user.domain.User;
 import lombok.Data;
 
 import lombok.*;

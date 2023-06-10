@@ -4,6 +4,8 @@ import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRole;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
+import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -136,7 +139,55 @@ public class GroupBlindService {
     }
 
     @Transactional(readOnly = true)
-    public GroupBlindRoom getGroupBlindRoom(Integer roomId) {
-        return groupBlindRepository.findByRoomId(roomId);
+    public GroupInfoResponseDto getGroupInfo(Integer roomId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        if (groupBlindRoom == null) {
+            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
+        }
+        List<Participant> participants = groupBlindRoom.getParticipants();
+        List<UserInfoDto> members = participants.stream()
+                .map(participant -> {
+                    User user = participant.getUser();
+                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
+                })
+                .collect(Collectors.toList());
+
+        return new GroupInfoResponseDto(
+                members,
+                groupBlindRoom.getPresentMale(),
+                groupBlindRoom.getPresentFemale(),
+                groupBlindRoom.getGroupBlindIntroduction(),
+                groupBlindRoom.getHostId(),
+                groupBlindRoom.getTitle()
+        );
     }
+
+    @Transactional
+    public List<String> manageMeeting(Integer roomId, String hostUserId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        if (groupBlindRoom == null) {
+            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
+        }
+
+        // Get external IDs of all participants
+        List<String> externalIds = groupBlindRoom.getParticipants().stream()
+                .map(p -> p.getUser().getExternalId())
+                .collect(Collectors.toList());
+
+        // If hostUserId is provided, check if the user is the host of the meeting room
+        if (hostUserId != null) {
+            boolean isHost = groupBlindRoom.getParticipants().stream()
+                    .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(hostUserId));
+
+            if (!isHost) {
+                return null;
+            }
+
+            // Exclude the host from the list of participant external IDs
+            externalIds.removeIf(externalId -> externalId.equals(hostUserId));
+        }
+
+        return externalIds;
+    }
+
 }
