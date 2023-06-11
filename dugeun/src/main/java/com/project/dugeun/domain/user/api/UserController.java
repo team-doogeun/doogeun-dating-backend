@@ -4,6 +4,7 @@ import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
 import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
@@ -110,6 +111,26 @@ public class UserController {
         // 해당 targetUserId를 가진 유저의 externalId 가져오기
         String finalMatchExternalId = userService.findExternalId(targetUserId);
         return ResponseEntity.ok(finalMatchExternalId);
+    }
+
+
+    @GetMapping("/group/{userId}/my-rooms")
+    public ResponseEntity<?> getHostMeetingRooms(@PathVariable String userId, @RequestHeader(value = "Authorization") String token) {
+
+        Claims claims = jwtProvider.parseJwtToken(token);
+
+        // userId가 본인일 겨우에만 조회 가능하도록 검증
+        if (!userId.equals(claims.getSubject())) {
+            String responseMessage = "다른 사용자의 미팅방을 조회할 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        }
+
+        List<GroupBlindRoom> meetingRooms = userService.getHostMeetingRooms(userId);
+        List<GroupBlindDto> roomDto = meetingRooms.stream()
+                .map(GroupBlindDto::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(roomDto);
     }
 }
 

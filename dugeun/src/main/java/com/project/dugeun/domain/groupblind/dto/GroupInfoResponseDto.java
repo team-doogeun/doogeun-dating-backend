@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GroupInfoResponseDto {
     private List<UserInfoDto> members;
+    private Integer roomId;
     private int presentMale;
     private int presentFemale;
     private String groupBlindIntroduction;

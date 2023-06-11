@@ -1,5 +1,7 @@
 package com.project.dugeun.domain.user.application;
 
+import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -18,6 +20,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
+    private final GroupBlindRepository groupBlindRepository;
     public List<ToLikeablePersonResponseDto> getToLikeablePersons(String userId) {
         User user = userRepository.findByUserId(userId);
 
@@ -56,6 +59,12 @@ public class UserService {
        User user =  userRepository.findByUserId(targetUserId);
 
         return user.getExternalId();
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<GroupBlindRoom> getHostMeetingRooms(String hostUserId) {
+        return groupBlindRepository.findByHostId(hostUserId);
     }
 
 }

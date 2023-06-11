@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -40,18 +41,17 @@ public class GroupBlindController {
     private JwtProvider jwtProvider;
 
     @PostMapping("group/{userId}/new")
-    public ResponseEntity createRoom(@PathVariable String userId,@RequestHeader(value="Authorization")String token, @Valid @RequestBody RoomSaveRequestDto room){
+    public ResponseEntity createRoom(@PathVariable String userId, @RequestHeader(value = "Authorization") String token, @Valid @RequestBody RoomSaveRequestDto room) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
 
         // userId가 본인일 겨우에만 해당 방 만들 수 있도록 검증
-        if(!userId.equals(claims.getSubject()))
-        {
+        if (!userId.equals(claims.getSubject())) {
             String responseMessage = "미팅방을 만들 수 없습니다";
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
         }
 
-        GroupBlindRoom savedRoom =  groupBlindService.createMeetingRoom(room, claims.getSubject());
+        GroupBlindRoom savedRoom = groupBlindService.createMeetingRoom(room, claims.getSubject());
 
         EntityModel<RoomSaveResponseDto> entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
 
@@ -60,27 +60,18 @@ public class GroupBlindController {
     }
 
 
-    @DeleteMapping("group/{roomId}/delete")
-    public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
-
+    @PostMapping("group/{roomId}/delete")
+    public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
 
-        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
-        if (groupBlindRoom == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        // userId가 호스트인지 확인
-        boolean isHost = groupBlindRoom.getParticipants().stream()
-                .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(claims.getSubject()));
-
+        // Check if the user is the host of the meeting room
+        boolean isHost = groupBlindService.isHostOfMeetingRoom(roomId, claims.getSubject());
         if (!isHost) {
-            String responseMessage = "미팅방을 삭제할 수 있는 권한이 없습니다";
+            String responseMessage = "미팅방을 삭제할 수 있는 권한이 없습니다.";
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
         }
 
-        boolean deleted = groupBlindService.deleteMeetingRoom(roomId, claims.getSubject());
-
+        boolean deleted = groupBlindService.deleteMeetingRoom(roomId);
         if (deleted) {
             return ResponseEntity.ok("Meeting room deleted successfully");
         } else {
@@ -90,7 +81,7 @@ public class GroupBlindController {
 
 
     @PostMapping("group/{roomId}")
-    public ResponseEntity enterRoom(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
+    public ResponseEntity enterRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
         // userId가 본인일 경우에만 해당 방에 들어갈 수 있도록 검증
@@ -103,7 +94,7 @@ public class GroupBlindController {
     }
 
     @PostMapping("group/{roomId}/exit")
-    public ResponseEntity exitroom(@PathVariable Integer roomId, @RequestHeader(value="Authorization")String token){
+    public ResponseEntity exitroom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
         groupBlindService.exit(groupBlindRepository.findByRoomId(roomId), userRepository.findByUserId(claims.getSubject()));
 
@@ -122,31 +113,33 @@ public class GroupBlindController {
     }
 
 
-    @GetMapping("group/{roomId}/info")
-    public ResponseEntity<?> getInfo(@PathVariable Integer roomId) {
-        try {
-            GroupInfoResponseDto responseDto = groupBlindService.getGroupInfo(roomId);
-            return ResponseEntity.ok(responseDto);
-        } catch (IllegalStateException e) {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/group/{roomId}/info")
+    public ResponseEntity<?> getInfo(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
+
+        Claims claims = jwtProvider.parseJwtToken(token);
+
+        GroupInfoResponseDto responseDto = groupBlindService.getGroupInfo(roomId);
+        return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("group/{roomId}/start")
-    public ResponseEntity<List<String>> manageMeeting(@PathVariable Integer roomId, @RequestHeader(value="Authorization", required = false) String token) {
-        Claims claims = null;
-        if (token != null) {
-            claims = jwtProvider.parseJwtToken(token);
+
+    @PostMapping("/group/{roomId}/achieve")
+    public ResponseEntity<List<Map<String, String>>> startMeeting(@PathVariable Integer roomId, @RequestHeader("Authorization") String token) {
+        Claims claims = jwtProvider.parseJwtToken(token);
+
+        // userId가 본인일 경우에만 미팅 시작 가능하도록 검증
+        if (!roomId.equals(claims.get("roomId"))) {
+            String responseMessage = "미팅을 시작할 수 없습니다.";
+            return (ResponseEntity<List<Map<String, String>>>) ResponseEntity.status(HttpStatus.FORBIDDEN);
         }
 
-        List<String> participantExternalIds = groupBlindService.manageMeeting(roomId, claims != null ? claims.getSubject() : null);
-
-        if (participantExternalIds != null) {
-            return ResponseEntity.ok(participantExternalIds);
-        } else {
+        List<Map<String, String>> participantExternalIds = groupBlindService.startMeeting(roomId);
+        if (participantExternalIds == null) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(participantExternalIds);
     }
+}
 
 //    @PostMapping("group/{roomId}/start")
 //    public ResponseEntity<List<String>> startMeeting(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
@@ -165,7 +158,7 @@ public class GroupBlindController {
 //        return ResponseEntity.ok(externalIds);
 //    }
 
-}
+//}
 
 
 

@@ -14,7 +14,9 @@ import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -66,7 +68,7 @@ public class GroupBlindService {
         Participant hostParticipant = Participant.builder()
                 .user(host)
                 .groupBlindRoom(groupBlindRoom)
-//                .groupBlindRole(GroupBlindRole.HOST)
+                .groupBlindRole(GroupBlindRole.HOST)
                 .build();
 
         groupBlindRoom.addHost(hostParticipant);
@@ -79,24 +81,18 @@ public class GroupBlindService {
     }
 
     @Transactional
-    public boolean deleteMeetingRoom(Integer roomId, String hostUserId) {
+    public boolean deleteMeetingRoom(Integer roomId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
 
-        Optional<GroupBlindRoom> groupBlindRoom = Optional.ofNullable(groupBlindRepository.findByRoomId(roomId));
+        // Delete the meeting room
+        groupBlindRepository.delete(groupBlindRoom);
+        return true;
 
-        if (groupBlindRoom.isPresent()) {
-            GroupBlindRoom meetingRoom = groupBlindRoom.get();
+    }
 
-            // Check if the user is the host of the meeting room
-            boolean isHost = meetingRoom.getParticipants().stream()
-                    .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(hostUserId));
-
-            if (isHost) {
-                // Delete the meeting room
-                groupBlindRepository.delete(meetingRoom);
-                return true;
-            }
-        }
-        return false;
+    public boolean isHostOfMeetingRoom(Integer roomId, String userId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        return groupBlindRoom != null && groupBlindRoom.getHostId().equals(userId);
     }
 
     @Transactional
@@ -141,6 +137,7 @@ public class GroupBlindService {
     @Transactional(readOnly = true)
     public GroupInfoResponseDto getGroupInfo(Integer roomId) {
         GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+
         if (groupBlindRoom == null) {
             throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
         }
@@ -154,6 +151,7 @@ public class GroupBlindService {
 
         return new GroupInfoResponseDto(
                 members,
+                groupBlindRoom.getRoomId(),
                 groupBlindRoom.getPresentMale(),
                 groupBlindRoom.getPresentFemale(),
                 groupBlindRoom.getGroupBlindIntroduction(),
@@ -163,31 +161,32 @@ public class GroupBlindService {
     }
 
     @Transactional
-    public List<String> manageMeeting(Integer roomId, String hostUserId) {
+    public List<Map<String, String>> startMeeting(Integer roomId) {
         GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
         if (groupBlindRoom == null) {
             throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
         }
 
-        // Get external IDs of all participants
-        List<String> externalIds = groupBlindRoom.getParticipants().stream()
-                .map(p -> p.getUser().getExternalId())
-                .collect(Collectors.toList());
-
-        // If hostUserId is provided, check if the user is the host of the meeting room
-        if (hostUserId != null) {
-            boolean isHost = groupBlindRoom.getParticipants().stream()
-                    .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(hostUserId));
-
-            if (!isHost) {
-                return null;
-            }
-
-            // Exclude the host from the list of participant external IDs
-            externalIds.removeIf(externalId -> externalId.equals(hostUserId));
+        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
+                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
+            throw new IllegalStateException("아직 충분한 참여자가 모이지 않았습니다.");
         }
 
-        return externalIds;
-    }
+        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
+                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
+            throw new IllegalStateException("남성 및 여성 참여자 수가 일치하지 않습니다.");
+        }
 
+        List<Map<String, String>> participantExternalIds = groupBlindRoom.getParticipants().stream()
+                .filter(p -> !p.getGroupBlindRole().equals(GroupBlindRole.HOST))
+                .map(p -> {
+                    Map<String, String> participantMap = new HashMap<>();
+                    participantMap.put("userId", p.getUser().getUserId());
+                    participantMap.put("externalId", p.getUser().getExternalId());
+                    return participantMap;
+                })
+                .collect(Collectors.toList());
+
+        return participantExternalIds;
+    }
 }
