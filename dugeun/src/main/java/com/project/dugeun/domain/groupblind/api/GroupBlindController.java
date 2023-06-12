@@ -4,7 +4,6 @@ package com.project.dugeun.domain.groupblind.api;
 import com.project.dugeun.domain.base.rq.Rq;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindRole;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.groupblind.dto.*;
@@ -84,23 +83,73 @@ public class GroupBlindController {
     public ResponseEntity enterRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
-        // userId가 본인일 경우에만 해당 방에 들어갈 수 있도록 검증
-        // 해당 미팅방에는 본인만이 접근할 수 있도록 보장
-        groupBlindService.enter(groupBlindRepository.findByRoomId(roomId),
-                userRepository.findByUserId(claims.getSubject()));
+        String userId = claims.getSubject();
 
-        String responseMessage = "미팅방에 입장하였습니다";
+        // Find the user
+        User user = userRepository.findByUserId(userId);
+        if (user == null) {
+            String responseMessage = "유저를 찾을 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+
+        // Find the meeting room
+        GroupBlindRoom meetingRoom = groupBlindRepository.findByRoomId(roomId);
+        if (meetingRoom == null) {
+            String responseMessage = "미팅방을 찾을 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+
+        boolean roomIsFull = meetingRoom.getPresentMale() == meetingRoom.getCapacityMale() && meetingRoom.getPresentFemale() == meetingRoom.getCapacityFemale();
+        boolean userExists = meetingRoom.getParticipants().stream()
+                .anyMatch(participant -> participant.getUser().getUserId().equals(userId));
+
+        if (roomIsFull) {
+            String responseMessage = "미팅방이 가득 찼습니다.";
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMessage);
+        }
+
+        if (userExists) {
+            String responseMessage = "이미 해당 미팅방에 입장한 유저입니다.";
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMessage);
+        }
+
+        groupBlindService.enter(meetingRoom, user);
+
+        String responseMessage = "미팅방에 입장하였습니다.";
         return ResponseEntity.ok(responseMessage);
     }
 
     @PostMapping("group/{roomId}/exit")
-    public ResponseEntity exitroom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<?> exitroom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
-        groupBlindService.exit(groupBlindRepository.findByRoomId(roomId), userRepository.findByUserId(claims.getSubject()));
+        String userId = claims.getSubject();
 
-        // 응답처리
-        EntityModel<ExitRoomResponseDto> entityModel = EntityModel.of(new ExitRoomResponseDto((rq.getMember())));
-        return ResponseEntity.ok(entityModel);
+        // Find the user
+        User user = userRepository.findByUserId(userId);
+        if (user == null) {
+            String responseMessage = "유저를 찾을 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        if (groupBlindRoom == null) {
+            String responseMessage = "미팅방을 찾을 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+        }
+        Participant participant = groupBlindRoom.getParticipants().stream()
+                .filter(p -> p.getUser().getUserId().equals(userId))
+                .findFirst()
+                .orElse(null);
+
+        if (participant == null) {
+            String responseMessage = "미팅방에 참여한 유저가 아닙니다.";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+        }
+
+        groupBlindService.exit(groupBlindRoom, participant);
+
+        String responseMessage = "미팅방에서 나갔습니다.";
+        return ResponseEntity.ok(responseMessage);
     }
 
     @GetMapping("/group")
@@ -124,68 +173,21 @@ public class GroupBlindController {
 
 
     @PostMapping("/group/{roomId}/achieve")
-    public ResponseEntity<List<Map<String, String>>> startMeeting(@PathVariable Integer roomId, @RequestHeader("Authorization") String token) {
-        Claims claims = jwtProvider.parseJwtToken(token);
+    public ResponseEntity<?> startMeeting(@PathVariable Integer roomId, @RequestHeader("Authorization") String token) {
 
-        // userId가 본인일 경우에만 미팅 시작 가능하도록 검증
-        if (!roomId.equals(claims.get("roomId"))) {
-            String responseMessage = "미팅을 시작할 수 없습니다.";
-            return (ResponseEntity<List<Map<String, String>>>) ResponseEntity.status(HttpStatus.FORBIDDEN);
+        Claims claims = jwtProvider.parseJwtToken(token);
+        String userId = claims.getSubject();
+
+        User user = userRepository.findByUserId(userId);
+        if (user == null) {
+            String responseMessage = "유저를 찾을 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
         }
 
-        List<Map<String, String>> participantExternalIds = groupBlindService.startMeeting(roomId);
+        List<Map<String, String>> participantExternalIds = groupBlindService.startMeeting(roomId, userId);
         if (participantExternalIds == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(participantExternalIds);
     }
 }
-
-//    @PostMapping("group/{roomId}/start")
-//    public ResponseEntity<List<String>> startMeeting(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
-//        Claims claims = jwtProvider.parseJwtToken(token);
-//        List<String> participantExternalIds = groupBlindService.startMeeting(roomId, claims.getSubject());
-//        if (participantExternalIds != null) {
-//            return ResponseEntity.ok(participantExternalIds);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-//
-//    @GetMapping("group/{roomId}/external-ids")
-//    public ResponseEntity<List<String>> getParticipantExternalIds(@PathVariable Integer roomId) {
-//        List<String> externalIds = groupBlindService.getParticipantExternalIds(roomId);
-//        return ResponseEntity.ok(externalIds);
-//    }
-
-//}
-
-
-
-
-
-//    @GetMapping("group/{roomId}/info")
-//    public ResponseEntity<GroupInfoResponseDto> getInfo(@PathVariable Integer roomId) {
-//        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
-//        if (groupBlindRoom == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        List<Participant> participants = groupBlindRoom.getParticipants();
-//        List<UserInfoDto> members = participants.stream()
-//                .map(participant -> {
-//                    User user = participant.getUser();
-//                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
-//                })
-//                .collect(Collectors.toList());
-//
-//        GroupInfoResponseDto responseDto = new GroupInfoResponseDto(
-//                members,
-//                groupBlindRoom.getPresentMale(),
-//                groupBlindRoom.getPresentFemale(),
-//                groupBlindRoom.getGroupBlindIntroduction(),
-//                groupBlindRoom.getHostId(),
-//                groupBlindRoom.getTitle()
-//        );
-//        return ResponseEntity.ok(responseDto);
-//    }
