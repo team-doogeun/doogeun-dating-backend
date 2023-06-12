@@ -8,6 +8,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UserInfoDto {
+    private String userId;
     private int age;
     private DepartmentType department;
     private GenderType gender;

@@ -1,7 +1,6 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
-import com.project.dugeun.domain.user.domain.User;
 import lombok.Data;
 
 import lombok.*;
@@ -45,6 +44,7 @@ public class GroupBlindRoom {
 
     @Builder.Default
     @OneToMany(mappedBy = "groupBlindRoom", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(name = "participants", nullable = false)
     private List<Participant> participants = new ArrayList<>();
 
     public void addHost(Participant participant) {
@@ -55,11 +55,14 @@ public class GroupBlindRoom {
         participants.add(participant);
     }
 
+    public void removeGuest(Participant participant) {
+        participants.remove(participant);
+    }
+
     @Enumerated(EnumType.STRING)
     private GroupBlindCategory groupBlindCategory;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private GroupBlindStatus groupBlindStatus;
 
     @Enumerated(EnumType.STRING)

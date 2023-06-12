@@ -1,19 +1,25 @@
 package com.project.dugeun.domain.groupblind.application;
 
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindRole;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
+import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.RequiredArgsConstructor;
 import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -25,20 +31,20 @@ public class GroupBlindService {
 
     public Integer randomRoomId() {
 
-        Integer rand = (int)(Math.random() * 10000);
+        Integer rand = (int) (Math.random() * 10000);
         Integer roomId = null;
         GroupBlindRoom randomRoomId = groupBlindRepository.findByRoomId(rand);
 
         while (randomRoomId != null) {
-            roomId = (int)(Math.random() * 10000);
+            roomId = (int) (Math.random() * 10000);
         }
         roomId = rand;
         return roomId;
     }
 
     @Transactional
-    public GroupBlindRoom createMeetingRoom(RoomSaveRequestDto room,  String hostUserId) {
-        if(groupBlindRepository.findByTitle(room.getTitle())!=null){
+    public GroupBlindRoom createMeetingRoom(RoomSaveRequestDto room, String hostUserId) {
+        if (groupBlindRepository.findByTitle(room.getTitle()) != null) {
             throw new IllegalStateException("중복된 제목을 가진 미팅방이 있습니다.. ");
         }
 
@@ -54,8 +60,7 @@ public class GroupBlindService {
                 .capacityMale(room.getCapacityMale())
                 .capacityFemale(room.getCapacityFemale())
                 .groupBlindIntroduction(room.getGroupBlindIntroduction())
-                .groupBlindStatus(room.getStatus())
-                .groupBlindRole(GroupBlindRole.HOST)
+                .groupBlindStatus(GroupBlindStatus.NOT_DONE)
                 .hostId(hostUserId)
                 .build();
 
@@ -63,7 +68,6 @@ public class GroupBlindService {
         Participant hostParticipant = Participant.builder()
                 .user(host)
                 .groupBlindRoom(groupBlindRoom)
-//                .groupBlindRole(GroupBlindRole.HOST)
                 .build();
 
         groupBlindRoom.addHost(hostParticipant);
@@ -76,58 +80,54 @@ public class GroupBlindService {
     }
 
     @Transactional
-    public boolean deleteMeetingRoom(Integer roomId, String hostUserId) {
+    public boolean deleteMeetingRoom(Integer roomId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
 
-        Optional<GroupBlindRoom> groupBlindRoom = Optional.ofNullable(groupBlindRepository.findByRoomId(roomId));
+        // Delete the meeting room
+        groupBlindRepository.delete(groupBlindRoom);
+        return true;
+    }
 
-        if (groupBlindRoom.isPresent()) {
-            GroupBlindRoom meetingRoom = groupBlindRoom.get();
-
-            // Check if the user is the host of the meeting room
-            boolean isHost = meetingRoom.getParticipants().stream()
-                    .anyMatch(p -> p.getGroupBlindRole() == GroupBlindRole.HOST && p.getUser().getUserId().equals(hostUserId));
-
-            if (isHost) {
-                // Delete the meeting room
-                groupBlindRepository.delete(meetingRoom);
-                return true;
-            }
-        }
-        return false;
+    public boolean isHostOfMeetingRoom(Integer roomId, String userId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        return groupBlindRoom != null && groupBlindRoom.getHostId().equals(userId);
     }
 
     @Transactional
-    // 해당 미팅방 룸의 인원수를 증가시키고
-    public void enter(GroupBlindRoom blindRoom, User user){
+    public ResponseEntity<String> enter(GroupBlindRoom meetingRoom, User user) {
 
-        if(user.getGender().equals("남")){
-
-            blindRoom.setPresentMale(blindRoom.getPresentMale() + 1);
-
-        } else if (user.getGender().equals("여")) {
-            blindRoom.setPresentFemale(blindRoom.getPresentFemale() + 1);
+        if (user.getGender().equals(GenderType.MAN)) {
+            meetingRoom.setPresentMale(meetingRoom.getPresentMale() + 1);
+        } else if (user.getGender().equals(GenderType.WOMAN)) {
+            meetingRoom.setPresentFemale(meetingRoom.getPresentFemale() + 1);
         }
-        Participant guest = Participant.builder()
+
+        // Create a participant for the user and add it to the meeting room
+        Participant participant = Participant.builder()
                 .user(user)
-                .groupBlindRoom(blindRoom)
-                .groupBlindRole(GroupBlindRole.GUEST)
+                .groupBlindRoom(meetingRoom)
                 .build();
 
-        blindRoom.addGuest(guest);
+        meetingRoom.addGuest(participant);
+
+        // Save the updated meeting room
+        groupBlindRepository.save(meetingRoom);
+        String responseMessage = "미팅방 입장에 성공했습니다.";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMessage);
     }
 
     @Transactional
-    public void exit(GroupBlindRoom blindRoom, User user){
+    public void exit(GroupBlindRoom meetingRoom, Participant participant){
+        User user = participant.getUser();
 
-        if(user.getGender().equals("남")){
-
-            blindRoom.setPresentMale(blindRoom.getPresentMale() - 1);
-
-        } else if (user.getGender().equals("여")) {
-            blindRoom.setPresentFemale(blindRoom.getPresentFemale() - 1);
+        if (user.getGender().equals(GenderType.MAN)) {
+            meetingRoom.setPresentMale(meetingRoom.getPresentMale() - 1);
+        } else if (user.getGender().equals(GenderType.WOMAN)) {
+            meetingRoom.setPresentFemale(meetingRoom.getPresentFemale() - 1);
         }
 
-        blindRoom.getParticipants().removeIf(p -> p.getUser().equals(user));
+        meetingRoom.getParticipants().remove(participant);
+        groupBlindRepository.save(meetingRoom);
     }
 
     @Transactional(readOnly = true)
@@ -136,7 +136,62 @@ public class GroupBlindService {
     }
 
     @Transactional(readOnly = true)
-    public GroupBlindRoom getGroupBlindRoom(Integer roomId) {
-        return groupBlindRepository.findByRoomId(roomId);
+    public GroupInfoResponseDto getGroupInfo(Integer roomId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+
+        if (groupBlindRoom == null) {
+            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
+        }
+        List<Participant> participants = groupBlindRoom.getParticipants();
+        List<UserInfoDto> members = participants.stream()
+                .map(participant -> {
+                    User user = participant.getUser();
+                    return new UserInfoDto(user.getUserId(), user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
+                })
+                .collect(Collectors.toList());
+
+        return new GroupInfoResponseDto(
+                members,
+                groupBlindRoom.getRoomId(),
+                groupBlindRoom.getPresentMale(),
+                groupBlindRoom.getPresentFemale(),
+                groupBlindRoom.getGroupBlindIntroduction(),
+                groupBlindRoom.getHostId(),
+                groupBlindRoom.getTitle()
+        );
+    }
+
+    @Transactional
+    public List<Map<String, String>> startMeeting(Integer roomId, String userId) {
+        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        groupBlindRoom.setGroupBlindStatus(GroupBlindStatus.DONE);
+        if (groupBlindRoom == null) {
+            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
+        }
+
+        if (!groupBlindRoom.getHostId().equals(userId)) {
+            throw new IllegalStateException("미팅을 시작할 권한이 없습니다.");
+        }
+
+        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
+                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
+            throw new IllegalStateException("아직 충분한 참여자가 모이지 않았습니다.");
+        }
+
+        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
+                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
+            throw new IllegalStateException("남성 및 여성 참여자 수가 일치하지 않습니다.");
+        }
+
+        List<Map<String, String>> participantExternalIds = groupBlindRoom.getParticipants().stream()
+                .map(p -> {
+                    Map<String, String> participantMap = new HashMap<>();
+                    participantMap.put("userId", p.getUser().getUserId());
+                    participantMap.put("externalId", p.getUser().getExternalId());
+                    return participantMap;
+                })
+                .collect(Collectors.toList());
+
+        return participantExternalIds;
     }
 }

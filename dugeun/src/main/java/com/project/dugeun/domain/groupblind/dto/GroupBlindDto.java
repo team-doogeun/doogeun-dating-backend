@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.dto;
 
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ public class GroupBlindDto {
     private int presentFemale;
     private int capacityMale;
     private int capacityFemale;
+    private GroupBlindStatus groupBlindStatus;
 
 
     public GroupBlindDto(GroupBlindRoom room) {
@@ -24,5 +26,6 @@ public class GroupBlindDto {
         this.presentFemale = room.getPresentFemale();
         this.capacityMale = room.getCapacityMale();
         this.capacityFemale = room.getCapacityFemale();
+        this.groupBlindStatus = room.getGroupBlindStatus();
     }
 }
