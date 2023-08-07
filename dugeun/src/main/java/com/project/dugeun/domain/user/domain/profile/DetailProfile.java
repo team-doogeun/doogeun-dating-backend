@@ -30,16 +30,16 @@ public class DetailProfile {
     private DepartmentType department;
 
     @Enumerated(EnumType.STRING)
-    private CharacterType character1;
+    private CharacterType firstCharacter;
 
     @Enumerated(EnumType.STRING)
-    private EmotionType character2;
+    private EmotionType secondCharacter;
 
     @Enumerated(EnumType.STRING)
-    private HobbyType hobby1;
+    private HobbyType firstHobby;
 
     @Enumerated(EnumType.STRING)
-    private HobbyType hobby2;
+    private HobbyType secondHobby;
 
     @Enumerated(EnumType.STRING)
     private MbtiType mbti;

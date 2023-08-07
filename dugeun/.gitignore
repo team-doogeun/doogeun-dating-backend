@@ -40,4 +40,5 @@ out/
 application.properties
 application-test.properties
 application.yml
+application-local.yml
 

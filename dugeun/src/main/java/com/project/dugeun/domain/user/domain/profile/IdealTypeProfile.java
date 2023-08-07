@@ -30,19 +30,19 @@ public class IdealTypeProfile {
     private DepartmentType idealDepartment;
 
     @Enumerated(EnumType.STRING)
-    private CharacterType idealCharacter1;
+    private CharacterType firstIdealCharacter;
 
     @Enumerated(EnumType.STRING)
-    private EmotionType idealCharacter2;
+    private EmotionType secondIdealCharacter;
 
     @Enumerated(EnumType.STRING)
     private MbtiType idealMbti;
 
     @Enumerated(EnumType.STRING)
-    private HobbyType idealHobby1;
+    private HobbyType firstIdealHobby;
 
     @Enumerated(EnumType.STRING)
-    private HobbyType idealHobby2;
+    private HobbyType secondIdealHobby;
 
     @Enumerated(EnumType.STRING)
     private DrinkType idealDrink;

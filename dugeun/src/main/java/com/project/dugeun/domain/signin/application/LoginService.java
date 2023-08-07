@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.signin.application;
 
-import com.project.dugeun.domain.signin.dto.UserSigninRequestDto;
+import com.project.dugeun.domain.signin.dto.UserSignInRequestDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +12,13 @@ public class LoginService {
 
     private final UserRepository userRepository;
 
-    public Boolean login(UserSigninRequestDto loginRequest){
+    public Boolean login(UserSignInRequestDto loginRequest){
         String userId = loginRequest.getUserId();
         String password = loginRequest.getPassword();
 
         // userId를 이용해 사용자 정보를 조회합니다.
         User user = userRepository.findByUserId(userId);
-        boolean isValidPassword = validatePassword(user, password);
-
-        return isValidPassword;
+        return validatePassword(user, password);
         }
 
 

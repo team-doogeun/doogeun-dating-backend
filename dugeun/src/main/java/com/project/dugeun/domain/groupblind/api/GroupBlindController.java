@@ -1,7 +1,5 @@
 package com.project.dugeun.domain.groupblind.api;
 
-
-import com.project.dugeun.domain.base.rq.Rq;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
@@ -29,7 +27,6 @@ import java.util.stream.Collectors;
 @Setter
 public class GroupBlindController {
 
-    private final Rq rq;
     @Autowired
     private UserRepository userRepository;
     @Autowired
