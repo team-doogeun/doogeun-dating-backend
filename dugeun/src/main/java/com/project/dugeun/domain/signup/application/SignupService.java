@@ -3,33 +3,21 @@ package com.project.dugeun.domain.signup.application;
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.security.ShaUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SignupService {
-
 private final UserRepository userRepository;
-private final ShaUtil shaUtil;
-
-
-
-// 프론트 단에서  konkuk.ac.kr을 박아둬서 이 코드는 필요 x
-// public boolean isValidEmail(String email){
-//}
 
 @Transactional
 public User saveUser(UserSaveRequestDto user){
     User byUserId = userRepository.findByUserId(user.getUserId());
     if(byUserId != null){
         throw new IllegalStateException("이미 가입된 유저 아이디 입니다.. ");
-        // 에러 메시지
     }
     if(userRepository.findByStudentId(user.getStudentId())!=null){
         throw new IllegalStateException("이미 가입된 학번의 회원 입니다.. ");
@@ -54,7 +42,6 @@ public User saveUser(UserSaveRequestDto user){
                     .gender(user.getGender())
                     .detailProfile(user.getDetailProfile())
                     .idealTypeProfile(user.getIdealTypeProfile())
-//                    .password(shaUtil.sha256Encode(user.getPassword()))
                     .password(user.getPassword())
             .build());
        }
