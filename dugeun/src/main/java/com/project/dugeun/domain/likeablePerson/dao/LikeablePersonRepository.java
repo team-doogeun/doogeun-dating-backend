@@ -14,7 +14,4 @@ public interface LikeablePersonRepository extends JpaRepository<LikeablePerson,L
 
     LikeablePerson findByFromUserAndToUser(User fromUser, User toUser);
 
-
-
-
 }

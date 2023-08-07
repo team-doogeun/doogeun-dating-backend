@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,7 +21,6 @@ public class LikeablePersonService {
 
    @Transactional
     public void saveLike(String userId, String targetUserId) {
-
 
         User user1 = userRepository.findByUserId(userId);
         User user2 = userRepository.findByUserId(targetUserId);

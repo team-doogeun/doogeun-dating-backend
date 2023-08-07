@@ -49,7 +49,6 @@ public class ScoreCalculatorService {
         return subScore;
     }
 
-
     public int calculateAddressScore(User user1, User user2)
     {
         // 주소 계산 로직
@@ -83,7 +82,6 @@ public class ScoreCalculatorService {
 
                 subScore += 15;
                 subScore += calculatePriorityScore(user1, "성격");
-
 
             }
         }

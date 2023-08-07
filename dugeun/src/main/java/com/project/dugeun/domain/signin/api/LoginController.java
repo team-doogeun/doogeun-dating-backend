@@ -1,7 +1,7 @@
 package com.project.dugeun.domain.signin.api;
 
 import com.project.dugeun.domain.signin.application.LoginService;
-import com.project.dugeun.domain.signin.dto.UserSigninRequestDto;
+import com.project.dugeun.domain.signin.dto.UserSignInRequestDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
@@ -23,10 +23,9 @@ public class LoginController {
 
     //==토큰 생성 컨트롤러==//
     @PostMapping(value = "/login")
-    public TokenResponse createToken(@RequestBody UserSigninRequestDto loginRequest) throws Exception {
+    public TokenResponse<TokenDataResponse> createToken(@RequestBody UserSignInRequestDto loginRequest) throws Exception {
 
-
-       if(loginService.login(loginRequest)){
+       if(Boolean.TRUE.equals(loginService.login(loginRequest))){
 
            // == 토근 생성 진행 ==
            String token = jwtProvider.createToken(loginRequest.getUserId()); // 토큰 생성
@@ -35,22 +34,11 @@ public class LoginController {
            User user= userRepository.findByUserId(claims.getSubject());
 
            TokenDataResponse tokenDataResponse = new TokenDataResponse(token, user.getName() , claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
-           TokenResponse tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
+           return new TokenResponse<>("200", "OK", tokenDataResponse);
 
-
-           return tokenResponse;
        }
 
-       return new TokenResponse("444","no token", null);
-    }
-
-    //==토큰 인증 컨트롤러==//
-    @GetMapping(value = "/checkToken")
-    public TokenResponseNoData checkToken(@RequestHeader(value = "Authorization") String token) throws Exception {
-        Claims claims = jwtProvider.parseJwtToken(token);
-
-        TokenResponseNoData tokenResponseNoData = new TokenResponseNoData("200", "success");
-        return tokenResponseNoData;
+       return new TokenResponse<>("444","no token", null);
     }
 
     //==Response DTO==//
@@ -67,8 +55,8 @@ public class LoginController {
     //==Response DTO==//
     @Data
     @AllArgsConstructor
-    static class TokenResponseNoData<T> {
-
+    static class TokenResponseNoData
+    {
         private String code;
         private String msg;
     }
@@ -80,8 +68,8 @@ public class LoginController {
         private String token;
         private String name;
         private String subject;
-        private String issued_time;
-        private String expired_time;
+        private String issuedTime;
+        private String expiredTime;
     }
 
 }
