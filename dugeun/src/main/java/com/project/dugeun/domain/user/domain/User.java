@@ -38,6 +38,9 @@ public class User {
 
     private String confirmPassword;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name="external_id", unique = true)
     private String externalId; // 카카오아이디
 
