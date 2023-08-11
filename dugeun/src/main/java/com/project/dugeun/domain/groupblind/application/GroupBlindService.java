@@ -30,7 +30,6 @@ public class GroupBlindService {
     private final UserRepository userRepository;
 
     public Integer randomRoomId() {
-
         Integer rand = (int) (Math.random() * 10000);
         Integer roomId = null;
         GroupBlindRoom randomRoomId = groupBlindRepository.findByRoomId(rand);
@@ -44,7 +43,8 @@ public class GroupBlindService {
 
     @Transactional
     public GroupBlindRoom createMeetingRoom(RoomSaveRequestDto room, String hostUserId) {
-        if (groupBlindRepository.findByTitle(room.getTitle()) != null) {
+        GroupBlindRoom existingRoom = groupBlindRepository.findByTitle(room.getTitle());
+        if (existingRoom != null) {
             throw new IllegalStateException("중복된 제목을 가진 미팅방이 있습니다.. ");
         }
 
@@ -85,6 +85,7 @@ public class GroupBlindService {
 
         // Delete the meeting room
         groupBlindRepository.delete(groupBlindRoom);
+
         return true;
     }
 

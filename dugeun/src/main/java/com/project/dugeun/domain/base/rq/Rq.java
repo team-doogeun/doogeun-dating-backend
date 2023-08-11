@@ -69,6 +69,4 @@ public class Rq {
         req.setAttribute("historyBackErrorMsg", msg);
         return "common/js";
     }
-
-
 }

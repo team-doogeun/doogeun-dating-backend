@@ -1,7 +1,6 @@
 package com.project.dugeun.domain.groupblind.api;
 
 
-import com.project.dugeun.domain.base.rq.Rq;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
@@ -13,7 +12,6 @@ import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,15 +27,10 @@ import java.util.stream.Collectors;
 @Setter
 public class GroupBlindController {
 
-    private final Rq rq;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private GroupBlindRepository groupBlindRepository;
-    @Autowired
-    private GroupBlindService groupBlindService;
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final UserRepository userRepository;
+    private final GroupBlindRepository groupBlindRepository;
+    private final GroupBlindService groupBlindService;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("group/{userId}/new")
     public ResponseEntity createRoom(@PathVariable String userId, @RequestHeader(value = "Authorization") String token, @Valid @RequestBody RoomSaveRequestDto room) {
@@ -163,7 +156,7 @@ public class GroupBlindController {
 
 
     @GetMapping("/group/{roomId}/info")
-    public ResponseEntity<?> getInfo(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<?> getInfoRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
 
         Claims claims = jwtProvider.parseJwtToken(token);
 

@@ -3,7 +3,6 @@ package com.project.dugeun.domain.user.application;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
-import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
