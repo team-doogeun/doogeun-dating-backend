@@ -141,6 +141,11 @@ public class GroupBlindService {
     }
 
     @Transactional(readOnly = true)
+    public GroupBlindRoom getRoomByRoomId(Integer roomId) {
+        return groupBlindRepository.findByRoomId(roomId);
+    }
+
+    @Transactional(readOnly = true)
     public GroupInfoResponseDto getGroupInfo(Integer roomId) {
         GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
 
@@ -170,9 +175,6 @@ public class GroupBlindService {
     public List<Map<String, String>> startMeeting(Integer roomId, String userId) {
         GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
         groupBlindRoom.setGroupBlindStatus(GroupBlindStatus.DONE);
-        if (groupBlindRoom == null) {
-            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
-        }
 
         if (!groupBlindRoom.getHostId().equals(userId)) {
             throw new IllegalStateException("미팅을 시작할 권한이 없습니다.");
@@ -183,12 +185,7 @@ public class GroupBlindService {
             throw new IllegalStateException("아직 충분한 참여자가 모이지 않았습니다.");
         }
 
-        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
-                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
-            throw new IllegalStateException("남성 및 여성 참여자 수가 일치하지 않습니다.");
-        }
-
-        List<Map<String, String>> participantExternalIds = groupBlindRoom.getParticipants().stream()
+        return groupBlindRoom.getParticipants().stream()
                 .map(p -> {
                     Map<String, String> participantMap = new HashMap<>();
                     participantMap.put("userId", p.getUser().getUserId());
@@ -196,7 +193,5 @@ public class GroupBlindService {
                     return participantMap;
                 })
                 .collect(Collectors.toList());
-
-        return participantExternalIds;
     }
 }

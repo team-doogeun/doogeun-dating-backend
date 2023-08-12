@@ -34,9 +34,6 @@ public class UserService {
         toLikeablePersons.add(toLikeablePersonResponseDto);
 
        }
-
-
-
         return toLikeablePersons;
     }
 

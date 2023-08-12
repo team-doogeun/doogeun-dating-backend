@@ -27,9 +27,7 @@ import java.util.Map;
 @Setter
 public class GroupBlindController {
 
-    private final UserRepository userRepository;
     private final UserService userService;
-    private final GroupBlindRepository groupBlindRepository;
     private final GroupBlindService groupBlindService;
     private final JwtProvider jwtProvider;
 
@@ -84,7 +82,7 @@ public class GroupBlindController {
         }
 
         // Find the meeting room
-        GroupBlindRoom meetingRoom = groupBlindRepository.findByRoomId(roomId);
+        GroupBlindRoom meetingRoom = groupBlindService.getRoomByRoomId(roomId);
         if (meetingRoom == null) {
             return getStringResponsMessage("미팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
@@ -118,12 +116,12 @@ public class GroupBlindController {
         String userId = claims.getSubject();
 
         // Find the user
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
             return getStringResponsMessage("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        GroupBlindRoom groupBlindRoom = groupBlindService.getRoomByRoomId(roomId);
         if (groupBlindRoom == null) {
             return getStringResponsMessage("미팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
@@ -162,7 +160,7 @@ public class GroupBlindController {
         Claims claims = jwtProvider.parseJwtToken(token);
         String userId = claims.getSubject();
 
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
             return getStringResponsMessage("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
