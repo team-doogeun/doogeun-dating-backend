@@ -35,12 +35,6 @@ public class MatchController {
     public ResponseEntity<MatchResponseDto> getMatches(@PathVariable String userId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
 
-<<<<<<< HEAD
-        // userId와 넘겨받은 token의 subject(userId)와 같으면 인증완료
-        if(!userId.equals(claims.getSubject())){
-            String responseMessage = "해당하는 소개 상대를 확인할 수 없습니다";
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
-=======
         // 응답 헤더에 클레임 정보 추가
         HttpHeaders headers = new HttpHeaders();
         headers.set("user-id", claims.getSubject());
@@ -48,7 +42,6 @@ public class MatchController {
         // userId와 넘겨받은 token의 subject(userId)와 같으면 인증완료
         if (!userId.equals(claims.getSubject())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
->>>>>>> 6c7f031913d891aa59c6586cc081bcd15f8b4415
         }
 
         User user = userRepository.findByUserId(userId);

@@ -28,7 +28,6 @@ public class GroupBlindController {
     private final GroupBlindService groupBlindService;
     private final JwtProvider jwtProvider;
 
-
     @PostMapping("group/{userId}/new")
     public ResponseEntity createRoom(@PathVariable String userId, @RequestHeader(value = "Authorization") String token, @Valid @RequestBody RoomSaveRequestDto room) {
 
