@@ -34,7 +34,4 @@ public class Participant {
 
     @ManyToOne
     private GroupBlindRoom groupBlindRoom;
-
-    @Enumerated(EnumType.STRING)
-    private GroupBlindRole groupBlindRole;// 역할 ( 방장, 참가자 )
 }

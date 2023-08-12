@@ -3,7 +3,6 @@ package com.project.dugeun.domain.user.application;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
-import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -36,9 +34,6 @@ public class UserService {
         toLikeablePersons.add(toLikeablePersonResponseDto);
 
        }
-
-
-
         return toLikeablePersons;
     }
 
@@ -59,9 +54,13 @@ public class UserService {
     }
 
     public String findExternalId(String targetUserId) {
-       User user =  userRepository.findByUserId(targetUserId);
-
+        User user =  userRepository.findByUserId(targetUserId);
         return user.getExternalId();
+    }
+
+    public User findUserByUserId(String userId) {
+        User user =  userRepository.findByUserId(userId);
+        return user;
     }
 
 

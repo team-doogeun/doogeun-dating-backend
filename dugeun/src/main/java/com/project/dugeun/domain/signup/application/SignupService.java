@@ -36,7 +36,10 @@ public User saveUser(UserSaveRequestDto user){
    // 이메일 , 학번 예외처리 ( 같은 이메일 있으면 안되게 하기, 학번 가트면 처리 안되게 하기 )
     if(userRepository.findByEmail(user.getEmail())!=null){
         throw new IllegalStateException("이미 가입된 이메일 입니다.. ");
+    }
 
+    if (user.getEmail().equals("zox004@konkuk.ac.kr")) {
+        throw new IllegalStateException("불량 회원 입니다.");
     }
 
 

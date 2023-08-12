@@ -3,20 +3,14 @@ package com.project.dugeun.domain.user.api;
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
-import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
-import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
-import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
 import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
 import com.project.dugeun.domain.user.application.UserService;
-import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dto.*;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +24,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final FinalMatchService finalMatchService;
     private final LikeablePersonService likeablePersonService;
@@ -187,44 +180,3 @@ public class UserController {
         return ResponseEntity.ok(roomDto);
     }
 }
-
-
-
-
-//    @GetMapping("group/{roomId}/entering")
-//    public ResponseEntity<?> getEnteringRoomInfo(@PathVariable Integer roomId, @RequestHeader(value="Authorization") String token) {
-//        Claims claims = jwtProvider.parseJwtToken(token);
-//        GroupBlindRoom groupBlindRoom = groupBlindService.getGroupBlindRoom(roomId);
-//
-//        if (groupBlindRoom == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        Participant userParticipant = groupBlindRoom.getParticipants().stream()
-//                .filter(p -> p.getUser().getUserId().equals(claims.getSubject()))
-//                .findFirst()
-//                .orElse(null);
-//
-//        if (userParticipant == null) {
-//            String responseMessage = "미팅방에 참여한 유저가 아닙니다";
-//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
-//        }
-//
-//        List<Participant> participants = groupBlindRoom.getParticipants();
-//        List<UserInfoDto> members = participants.stream()
-//                .map(participant -> {
-//                    User user = participant.getUser();
-//                    return new UserInfoDto(user.getAge(), user.getDetailProfile().getDepartment(), user.getGender());
-//                })
-//                .collect(Collectors.toList());
-//
-//        GroupInfoResponseDto responseDto = new GroupInfoResponseDto(
-//                members,
-//                groupBlindRoom.getPresentMale(),
-//                groupBlindRoom.getPresentFemale(),
-//                groupBlindRoom.getGroupBlindIntroduction(),
-//                groupBlindRoom.getHostId(),
-//                groupBlindRoom.getTitle()
-//        );
-//        return ResponseEntity.ok(responseDto);
-//    }

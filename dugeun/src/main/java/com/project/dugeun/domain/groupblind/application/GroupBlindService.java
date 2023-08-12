@@ -4,6 +4,7 @@ import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
 import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
@@ -30,7 +31,6 @@ public class GroupBlindService {
     private final UserRepository userRepository;
 
     public Integer randomRoomId() {
-
         Integer rand = (int) (Math.random() * 10000);
         Integer roomId = null;
         GroupBlindRoom randomRoomId = groupBlindRepository.findByRoomId(rand);
@@ -44,7 +44,8 @@ public class GroupBlindService {
 
     @Transactional
     public GroupBlindRoom createMeetingRoom(RoomSaveRequestDto room, String hostUserId) {
-        if (groupBlindRepository.findByTitle(room.getTitle()) != null) {
+        GroupBlindRoom existingRoom = groupBlindRepository.findByTitle(room.getTitle());
+        if (existingRoom != null) {
             throw new IllegalStateException("중복된 제목을 가진 미팅방이 있습니다.. ");
         }
 
@@ -85,6 +86,7 @@ public class GroupBlindService {
 
         // Delete the meeting room
         groupBlindRepository.delete(groupBlindRoom);
+
         return true;
     }
 
@@ -131,8 +133,16 @@ public class GroupBlindService {
     }
 
     @Transactional(readOnly = true)
-    public List<GroupBlindRoom> getAllMeetingRooms() {
-        return groupBlindRepository.findAll();
+    public List<GroupBlindDto> getAllMeetingRooms() {
+        List<GroupBlindRoom> meetingRooms = groupBlindRepository.findAll();
+        return meetingRooms.stream()
+                .map(GroupBlindDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public GroupBlindRoom getRoomByRoomId(Integer roomId) {
+        return groupBlindRepository.findByRoomId(roomId);
     }
 
     @Transactional(readOnly = true)
@@ -165,9 +175,6 @@ public class GroupBlindService {
     public List<Map<String, String>> startMeeting(Integer roomId, String userId) {
         GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
         groupBlindRoom.setGroupBlindStatus(GroupBlindStatus.DONE);
-        if (groupBlindRoom == null) {
-            throw new IllegalStateException("미팅방을 찾을 수 없습니다.");
-        }
 
         if (!groupBlindRoom.getHostId().equals(userId)) {
             throw new IllegalStateException("미팅을 시작할 권한이 없습니다.");
@@ -178,12 +185,7 @@ public class GroupBlindService {
             throw new IllegalStateException("아직 충분한 참여자가 모이지 않았습니다.");
         }
 
-        if (groupBlindRoom.getCapacityMale() != groupBlindRoom.getPresentMale() ||
-                groupBlindRoom.getCapacityFemale() != groupBlindRoom.getPresentFemale()) {
-            throw new IllegalStateException("남성 및 여성 참여자 수가 일치하지 않습니다.");
-        }
-
-        List<Map<String, String>> participantExternalIds = groupBlindRoom.getParticipants().stream()
+        return groupBlindRoom.getParticipants().stream()
                 .map(p -> {
                     Map<String, String> participantMap = new HashMap<>();
                     participantMap.put("userId", p.getUser().getUserId());
@@ -191,7 +193,5 @@ public class GroupBlindService {
                     return participantMap;
                 })
                 .collect(Collectors.toList());
-
-        return participantExternalIds;
     }
 }

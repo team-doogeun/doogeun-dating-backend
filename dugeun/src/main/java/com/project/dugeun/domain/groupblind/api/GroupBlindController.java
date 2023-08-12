@@ -1,17 +1,15 @@
 package com.project.dugeun.domain.groupblind.api;
 
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
-import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.groupblind.dto.*;
-import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.domain.user.application.UserService;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -27,14 +24,10 @@ import java.util.stream.Collectors;
 @Setter
 public class GroupBlindController {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private GroupBlindRepository groupBlindRepository;
-    @Autowired
-    private GroupBlindService groupBlindService;
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final UserService userService;
+    private final GroupBlindService groupBlindService;
+    private final JwtProvider jwtProvider;
+
 
     @PostMapping("group/{userId}/new")
     public ResponseEntity createRoom(@PathVariable String userId, @RequestHeader(value = "Authorization") String token, @Valid @RequestBody RoomSaveRequestDto room) {
@@ -43,8 +36,7 @@ public class GroupBlindController {
 
         // userId가 본인일 겨우에만 해당 방 만들 수 있도록 검증
         if (!userId.equals(claims.getSubject())) {
-            String responseMessage = "미팅방을 만들 수 없습니다";
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+            return getStringResponsMessage("미팅방을 만들 수 없습니다", HttpStatus.FORBIDDEN);
         }
 
         GroupBlindRoom savedRoom = groupBlindService.createMeetingRoom(room, claims.getSubject());
@@ -63,8 +55,7 @@ public class GroupBlindController {
         // Check if the user is the host of the meeting room
         boolean isHost = groupBlindService.isHostOfMeetingRoom(roomId, claims.getSubject());
         if (!isHost) {
-            String responseMessage = "미팅방을 삭제할 수 있는 권한이 없습니다.";
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+            return getStringResponsMessage("미팅방을 삭제할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
 
         boolean deleted = groupBlindService.deleteMeetingRoom(roomId);
@@ -83,17 +74,15 @@ public class GroupBlindController {
         String userId = claims.getSubject();
 
         // Find the user
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
-            String responseMessage = "유저를 찾을 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+            return getStringResponsMessage("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
         // Find the meeting room
-        GroupBlindRoom meetingRoom = groupBlindRepository.findByRoomId(roomId);
+        GroupBlindRoom meetingRoom = groupBlindService.getRoomByRoomId(roomId);
         if (meetingRoom == null) {
-            String responseMessage = "미팅방을 찾을 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+            return getStringResponsMessage("미팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
         boolean roomIsFull = meetingRoom.getPresentMale() == meetingRoom.getCapacityMale() && meetingRoom.getPresentFemale() == meetingRoom.getCapacityFemale();
@@ -101,13 +90,11 @@ public class GroupBlindController {
                 .anyMatch(participant -> participant.getUser().getUserId().equals(userId));
 
         if (roomIsFull) {
-            String responseMessage = "미팅방이 가득 찼습니다.";
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMessage);
+            return getStringResponsMessage("미팅방이 가득 찼습니다.", HttpStatus.ACCEPTED);
         }
 
         if (userExists) {
-            String responseMessage = "이미 해당 미팅방에 입장한 유저입니다.";
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(responseMessage);
+            return getStringResponsMessage("이미 해당 미팅방에 입장한 유저입니다.", HttpStatus.ACCEPTED);
         }
 
         groupBlindService.enter(meetingRoom, user);
@@ -116,22 +103,25 @@ public class GroupBlindController {
         return ResponseEntity.ok(responseMessage);
     }
 
+    private ResponseEntity getStringResponsMessage(String s, HttpStatus notFound) {
+        String responseMessage = s;
+        return ResponseEntity.status(notFound).body(responseMessage);
+    }
+
     @PostMapping("group/{roomId}/exit")
     public ResponseEntity<?> exitroom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
         String userId = claims.getSubject();
 
         // Find the user
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
-            String responseMessage = "유저를 찾을 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+            return getStringResponsMessage("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
-        GroupBlindRoom groupBlindRoom = groupBlindRepository.findByRoomId(roomId);
+        GroupBlindRoom groupBlindRoom = groupBlindService.getRoomByRoomId(roomId);
         if (groupBlindRoom == null) {
-            String responseMessage = "미팅방을 찾을 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+            return getStringResponsMessage("미팅방을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
         Participant participant = groupBlindRoom.getParticipants().stream()
                 .filter(p -> p.getUser().getUserId().equals(userId))
@@ -139,8 +129,7 @@ public class GroupBlindController {
                 .orElse(null);
 
         if (participant == null) {
-            String responseMessage = "미팅방에 참여한 유저가 아닙니다.";
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseMessage);
+            return getStringResponsMessage("미팅방에 참여한 유저가 아닙니다.", HttpStatus.FORBIDDEN);
         }
 
         groupBlindService.exit(groupBlindRoom, participant);
@@ -151,19 +140,13 @@ public class GroupBlindController {
 
     @GetMapping("/group")
     public ResponseEntity<List<GroupBlindDto>> getMeetingRooms() {
-        List<GroupBlindRoom> meetingRooms = groupBlindService.getAllMeetingRooms();
-        List<GroupBlindDto> roomDto = meetingRooms.stream()
-                .map(GroupBlindDto::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(roomDto);
+        List<GroupBlindDto> meetingRooms = groupBlindService.getAllMeetingRooms();
+        return ResponseEntity.ok(meetingRooms);
     }
 
 
     @GetMapping("/group/{roomId}/info")
-    public ResponseEntity<?> getInfo(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
-
-        Claims claims = jwtProvider.parseJwtToken(token);
-
+    public ResponseEntity<?> getInfoRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         GroupInfoResponseDto responseDto = groupBlindService.getGroupInfo(roomId);
         return ResponseEntity.ok(responseDto);
     }
@@ -175,10 +158,9 @@ public class GroupBlindController {
         Claims claims = jwtProvider.parseJwtToken(token);
         String userId = claims.getSubject();
 
-        User user = userRepository.findByUserId(userId);
+        User user = userService.findUserByUserId(userId);
         if (user == null) {
-            String responseMessage = "유저를 찾을 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseMessage);
+            return getStringResponsMessage("유저를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
 
         List<Map<String, String>> participantExternalIds = groupBlindService.startMeeting(roomId, userId);

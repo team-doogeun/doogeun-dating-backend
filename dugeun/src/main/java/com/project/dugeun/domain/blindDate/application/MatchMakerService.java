@@ -80,6 +80,15 @@ public class MatchMakerService {
         user2.addToMatchings(match);
         matchRepository.save(match);
 
-    }
+<<<<<<< HEAD:dugeun/src/main/java/com/project/dugeun/domain/blindDate/application/MatchMaker.java
+            System.out.println("COMPATIBILITY SCORE!!");
+            System.out.println(selected.getUser1().getUserId() + " AND " + selected.getUser2().getUserId());
 
+            System.out.println(selected.getCompatibilityScore());
+
+        }
+        System.out.println(allMatches);
+=======
+>>>>>>> 6c7f031913d891aa59c6586cc081bcd15f8b4415:dugeun/src/main/java/com/project/dugeun/domain/blindDate/application/MatchMakerService.java
+    }
 }

@@ -18,7 +18,6 @@ public class GroupBlindDto {
     private int capacityFemale;
     private GroupBlindStatus groupBlindStatus;
 
-
     public GroupBlindDto(GroupBlindRoom room) {
         this.roomId = room.getRoomId();
         this.title = room.getTitle();
