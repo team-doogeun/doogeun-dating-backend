@@ -36,6 +36,9 @@ public class UserSaveRequestDto {
     private String externalId;
 
     @NotEmpty
+    private String uniName;
+
+    @NotEmpty
     private String studentId;
 
     @Email
