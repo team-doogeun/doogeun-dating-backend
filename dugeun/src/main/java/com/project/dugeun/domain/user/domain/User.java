@@ -38,8 +38,14 @@ public class User {
 
     private String confirmPassword;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name="external_id", unique = true)
     private String externalId; // 카카오아이디
+
+    @Column(name = "uni_name")
+    private String uniName; // 학교 이름
 
     @Column(name="student_id")
     private String studentId; // 학번

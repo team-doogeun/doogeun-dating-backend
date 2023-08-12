@@ -1,6 +1,9 @@
 package com.project.dugeun.domain.groupblind.api;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6c7f031913d891aa59c6586cc081bcd15f8b4415
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
@@ -27,9 +30,20 @@ import java.util.Map;
 @Setter
 public class GroupBlindController {
 
+<<<<<<< HEAD
     private final UserService userService;
     private final GroupBlindService groupBlindService;
     private final JwtProvider jwtProvider;
+=======
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private GroupBlindRepository groupBlindRepository;
+    @Autowired
+    private GroupBlindService groupBlindService;
+    @Autowired
+    private JwtProvider jwtProvider;
+>>>>>>> 6c7f031913d891aa59c6586cc081bcd15f8b4415
 
     @PostMapping("group/{userId}/new")
     public ResponseEntity createRoom(@PathVariable String userId, @RequestHeader(value = "Authorization") String token, @Valid @RequestBody RoomSaveRequestDto room) {

@@ -1,16 +1,4 @@
 package com.project.dugeun.blindDate.application;
-import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.blindDate.application.MatchMaker;
-import com.project.dugeun.domain.blindDate.dao.MatchRepository;
-import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
-import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.domain.user.domain.profile.DetailProfile;
-import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
-import com.project.dugeun.domain.user.domain.profile.category.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest

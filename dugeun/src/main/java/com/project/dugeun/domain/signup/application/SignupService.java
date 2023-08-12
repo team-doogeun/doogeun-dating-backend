@@ -3,33 +3,32 @@ package com.project.dugeun.domain.signup.application;
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.security.ShaUtil;
+import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SignupService {
-
 private final UserRepository userRepository;
-private final ShaUtil shaUtil;
+String userEmail;
+String userUniName;
 
-
-
-// 프론트 단에서  konkuk.ac.kr을 박아둬서 이 코드는 필요 x
-// public boolean isValidEmail(String email){
-//}
+@Value("${api.key}")
+private String apiKey;
 
 @Transactional
 public User saveUser(UserSaveRequestDto user){
     User byUserId = userRepository.findByUserId(user.getUserId());
     if(byUserId != null){
         throw new IllegalStateException("이미 가입된 유저 아이디 입니다.. ");
-        // 에러 메시지
     }
     if(userRepository.findByStudentId(user.getStudentId())!=null){
         throw new IllegalStateException("이미 가입된 학번의 회원 입니다.. ");
@@ -57,10 +56,37 @@ public User saveUser(UserSaveRequestDto user){
                     .gender(user.getGender())
                     .detailProfile(user.getDetailProfile())
                     .idealTypeProfile(user.getIdealTypeProfile())
-//                    .password(shaUtil.sha256Encode(user.getPassword()))
                     .password(user.getPassword())
             .build());
        }
+
+
+    public boolean startEmailVerification(String email, String uniName) throws IOException {
+        userEmail = email;
+        userUniName =uniName;
+        boolean isSend = false;
+        Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, true);
+        if(validation.get("success").equals("true"))
+        {
+            isSend = true;
+        }
+
+        return isSend;
+    }
+
+    public boolean checkCode(int code) throws IOException {
+
+    boolean isCorrect = false;
+    Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
+    if(validation.get("success").equals("true"))
+    {
+        isCorrect = true;
+    }
+    return isCorrect;
+    }
+
+
+
 }
 
 

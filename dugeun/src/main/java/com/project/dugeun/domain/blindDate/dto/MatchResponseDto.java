@@ -1,16 +1,11 @@
 package com.project.dugeun.domain.blindDate.dto;
 
-import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.category.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.http.StreamingHttpOutputMessage;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -20,7 +15,6 @@ public class MatchResponseDto {
 
     private String userId;
     private String name;
-
      private Integer age;
 
      private String studentId;
@@ -73,7 +67,8 @@ public class MatchResponseDto {
     private String thirdFilePathSec;
 
 
-    public MatchResponseDto(User user,User userSec){
+    public MatchResponseDto(User user,User userSec)
+    {
         this.userId = user.getUserId();
         this.name = user.getName();
         this.age =user.getAge();
@@ -82,14 +77,14 @@ public class MatchResponseDto {
         this.bodyType = user.getDetailProfile().getBodyType();
         this.addressType = user.getDetailProfile().getAddress();
         this.departmentType = user.getDetailProfile().getDepartment();
-        this.characterType = user.getDetailProfile().getCharacter1();
-        this.emotionType = user.getDetailProfile().getCharacter2();;
+        this.characterType = user.getDetailProfile().getFirstCharacter();
+        this.emotionType = user.getDetailProfile().getSecondCharacter();
         this.mbtiType = user.getDetailProfile().getMbti();
         this.basicFilePath = user.getBasicFilePath();
         this.secondFilePath = user.getSecondFilePath();
         this.thirdFilePath = user.getThirdFilePath();
-        this.hobby1 =user.getDetailProfile().getHobby1();
-        this.hobby2=user.getDetailProfile().getHobby2();
+        this.hobby1 =user.getDetailProfile().getFirstHobby();
+        this.hobby2=user.getDetailProfile().getSecondHobby();
 
         this.userIdSec = userSec.getUserId();
         this.nameSec = userSec.getName();
@@ -99,17 +94,14 @@ public class MatchResponseDto {
         this.bodyTypeSec = userSec.getDetailProfile().getBodyType();
         this.addressTypeSec = userSec.getDetailProfile().getAddress();
         this.departmentTypeSec = userSec.getDetailProfile().getDepartment();
-        this.characterTypeSec = userSec.getDetailProfile().getCharacter1();
-        this.emotionTypeSec = userSec.getDetailProfile().getCharacter2();;
+        this.characterTypeSec = userSec.getDetailProfile().getFirstCharacter();
+        this.emotionTypeSec = userSec.getDetailProfile().getSecondCharacter();
         this.mbtiTypeSec = userSec.getDetailProfile().getMbti();
         this.basicFilePathSec = userSec.getBasicFilePath();
         this.secondFilePathSec = userSec.getSecondFilePath();
         this.thirdFilePathSec = userSec.getThirdFilePath();
-        this.firstHobbySec = userSec.getDetailProfile().getHobby1();
-        this.secondHobbySec = userSec.getDetailProfile().getHobby2();
-
+        this.firstHobbySec = userSec.getDetailProfile().getFirstHobby();
+        this.secondHobbySec = userSec.getDetailProfile().getSecondHobby();
     }
-
-
 
 }

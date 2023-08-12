@@ -30,7 +30,13 @@ public class UserSaveRequestDto {
     private String confirmPassword;
 
     @NotEmpty
+    private String description;
+
+    @NotEmpty
     private String externalId;
+
+    @NotEmpty
+    private String uniName;
 
     @NotEmpty
     private String studentId;

@@ -18,6 +18,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven{url 'https://jitpack.io'}
 }
 
 dependencies {
@@ -54,6 +55,8 @@ dependencies {
 	// jwt
 	implementation "io.jsonwebtoken:jjwt:0.9.1"
 
+	// user authentication ( uni authentication)
+	implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
 
 	implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
 }

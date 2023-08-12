@@ -1,6 +1,5 @@
 package com.project.dugeun.domain.finalMatch.domain;
 
-
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class FinalMatch {
 
-
     @Id
     @Column(name="id",unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +27,6 @@ public class FinalMatch {
 
     @ManyToOne
     private User user2;
-
 
     @CreatedDate
     private LocalDateTime createDate;

@@ -15,6 +15,7 @@ public class UserSaveResponseDto {
     private String userId;
     private String name;
 
+
     public UserSaveResponseDto(User user){
         this.userId = user.getUserId();
         this.name = user.getName();

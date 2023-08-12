@@ -18,7 +18,8 @@ public class JwtProvider {
     private String secretKey;
 
     //==토큰 생성 메소드==//
-    public String createToken(String subject) {
+    public String createToken(String subject)
+    {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + Duration.ofDays(1).toMillis()); // 만료기간 1일
 
@@ -33,8 +34,9 @@ public class JwtProvider {
     }
 
     //==Jwt 토큰의 유효성 체크 메소드==//
-    public Claims parseJwtToken(String token) {
-        token = BearerRemove(token); // Bearer 제거
+    public Claims parseJwtToken(String token)
+    {
+        token = bearerRemove(token); // Bearer 제거
         return Jwts.parser()
                 .setSigningKey(Base64.getEncoder().encodeToString(secretKey.getBytes()))
                 .parseClaimsJws(token)
@@ -42,7 +44,8 @@ public class JwtProvider {
         }
 
     //==토큰 앞 부분('Bearer') 제거 메소드==//
-    private String BearerRemove(String token) {
+    private String bearerRemove(String token)
+    {
         return token.substring("Bearer ".length());
     }
 
