@@ -3,15 +3,26 @@ package com.project.dugeun.domain.signup.application;
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dao.UserRepository;
+import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SignupService {
 private final UserRepository userRepository;
+String userEmail;
+String userUniName;
+
+@Value("${api.key}")
+private String apiKey;
 
 @Transactional
 public User saveUser(UserSaveRequestDto user){
@@ -45,6 +56,34 @@ public User saveUser(UserSaveRequestDto user){
                     .password(user.getPassword())
             .build());
        }
+
+
+    public boolean startEmailVerification(String email, String uniName) throws IOException {
+        userEmail = email;
+        userUniName =uniName;
+        boolean isSend = false;
+        Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, true);
+        if(validation.get("success").equals("true"))
+        {
+            isSend = true;
+        }
+
+        return isSend;
+    }
+
+    public boolean checkCode(int code) throws IOException {
+
+    boolean isCorrect = false;
+    Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
+    if(validation.get("success").equals("true"))
+    {
+        isCorrect = true;
+    }
+    return isCorrect;
+    }
+
+
+
 }
 
 
