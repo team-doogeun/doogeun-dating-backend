@@ -57,9 +57,13 @@ public class UserService {
     }
 
     public String findExternalId(String targetUserId) {
-       User user =  userRepository.findByUserId(targetUserId);
-
+        User user =  userRepository.findByUserId(targetUserId);
         return user.getExternalId();
+    }
+
+    public User findUserByUserId(String userId) {
+        User user =  userRepository.findByUserId(userId);
+        return user;
     }
 
 

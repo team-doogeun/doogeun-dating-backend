@@ -4,6 +4,7 @@ import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.groupblind.domain.Participant;
+import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.groupblind.dto.GroupInfoResponseDto;
 import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
@@ -132,8 +133,11 @@ public class GroupBlindService {
     }
 
     @Transactional(readOnly = true)
-    public List<GroupBlindRoom> getAllMeetingRooms() {
-        return groupBlindRepository.findAll();
+    public List<GroupBlindDto> getAllMeetingRooms() {
+        List<GroupBlindRoom> meetingRooms = groupBlindRepository.findAll();
+        return meetingRooms.stream()
+                .map(GroupBlindDto::new)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
