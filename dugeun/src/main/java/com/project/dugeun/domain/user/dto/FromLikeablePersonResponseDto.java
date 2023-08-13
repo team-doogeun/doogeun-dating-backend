@@ -5,8 +5,6 @@ import com.project.dugeun.domain.user.domain.profile.category.DepartmentType;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.criteria.From;
-
 @Getter
 @Setter
 public class FromLikeablePersonResponseDto {
