@@ -23,8 +23,7 @@ public class DataProcessorScheduler {
     }
 
     @Transactional
-//    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
-    @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
+    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
     public void processMatchDate(){
         // user 디비에 있는 모든 유저들 로드해서 수행
        List<User> users = userRepository.findAll();
@@ -36,7 +35,7 @@ public class DataProcessorScheduler {
 
 
     @Transactional
-    @Scheduled(cron = "0 */5 * * * *") // 매일 5분 마다
+    @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
     public void processFinalMatchDate(){
 
         List<User> users = userRepository.findAll();

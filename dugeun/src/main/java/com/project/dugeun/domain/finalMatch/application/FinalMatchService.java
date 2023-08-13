@@ -46,33 +46,33 @@ public class FinalMatchService {
             }
 
 
-            if(finalMatchRepository.findByUser1AndUser2(user, toUser) != null || finalMatchRepository.findByUser1AndUser2(toUser, user) != null){
-                continue;
-            }
-
-
             toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
-                if(toUserLikeablePerson.getToUser().getUserId().equals(userId)){
+                if (toUserLikeablePerson != null && toUserLikeablePerson.getToUser() != null && toUserLikeablePerson.getToUser().getUserId() != null && (toUserLikeablePerson.getToUser().getUserId().equals(userId))) {
 
-                    // check if FinalMatch already exists
-                    FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
-                    Match introduceMatch = matchRepository.findByUser1AndUser2(user,toUser);
+                        // check if FinalMatch already exists
+                        FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
+                        Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
 
-                    if(existingMatch == null){
-                        // create new FinalMatch and save it
-                        FinalMatch finalMatch = new FinalMatch();
-                        FinalMatch anotherFinalMatch = new FinalMatch();
-                        finalMatch.setUser1(user);
-                        finalMatch.setUser2(toUser);
-                        anotherFinalMatch.setUser1(toUser);
-                        anotherFinalMatch.setUser2(user);
-                        finalMatchRepository.save(finalMatch);
-                        finalMatchRepository.save(anotherFinalMatch);
+                        if (existingMatch == null) {
+                            // create new FinalMatch and save it
+                            FinalMatch finalMatch = new FinalMatch();
+                            FinalMatch anotherFinalMatch = new FinalMatch();
+                            finalMatch.setUser1(user);
+                            finalMatch.setUser2(toUser);
+                            anotherFinalMatch.setUser1(toUser);
+                            anotherFinalMatch.setUser2(user);
+                            finalMatchRepository.save(finalMatch);
+                            finalMatchRepository.save(anotherFinalMatch);
 
-                        introduceMatch.setMatched(true);
-                    }
+
+                            if (introduceMatch != null) {
+                                introduceMatch.setMatched(true);
+                            }
+                        }
+
                 }
             }
+
 
             );
 
