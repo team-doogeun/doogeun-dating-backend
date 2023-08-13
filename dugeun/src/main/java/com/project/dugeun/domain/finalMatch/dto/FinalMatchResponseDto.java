@@ -1,7 +1,5 @@
-package com.project.dugeun.domain.user.dto;
+package com.project.dugeun.domain.finalMatch.dto;
 
-import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
-import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.DepartmentType;
 import lombok.Getter;

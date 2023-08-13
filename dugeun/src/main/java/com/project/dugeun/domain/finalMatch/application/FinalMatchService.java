@@ -8,7 +8,7 @@ import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.dto.FinalMatchResponseDto;
+import com.project.dugeun.domain.finalMatch.dto.FinalMatchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,6 @@ public class FinalMatchService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
-
 
 
     @Transactional(readOnly = false)

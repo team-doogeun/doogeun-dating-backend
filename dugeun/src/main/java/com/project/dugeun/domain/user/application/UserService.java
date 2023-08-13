@@ -34,7 +34,14 @@ public class UserService {
         toLikeablePersons.add(toLikeablePersonResponseDto);
 
        }
+
+
+
         return toLikeablePersons;
+    }
+    public User findUserByUserId(String userId) {
+        User user =  userRepository.findByUserId(userId);
+        return user;
     }
 
     public List<FromLikeablePersonResponseDto> getFromLikeablePersons(String userId) {
@@ -54,13 +61,9 @@ public class UserService {
     }
 
     public String findExternalId(String targetUserId) {
-        User user =  userRepository.findByUserId(targetUserId);
-        return user.getExternalId();
-    }
+       User user =  userRepository.findByUserId(targetUserId);
 
-    public User findUserByUserId(String userId) {
-        User user =  userRepository.findByUserId(userId);
-        return user;
+        return user.getExternalId();
     }
 
 

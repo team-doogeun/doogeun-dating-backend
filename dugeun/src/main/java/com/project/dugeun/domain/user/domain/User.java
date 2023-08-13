@@ -41,18 +41,18 @@ public class User {
     @Column(name = "description")
     private String description;
 
-    @Column(name="external_id", unique = true)
-    private String externalId; // 카카오아이디
-
     @Column(name = "uni_name")
     private String uniName; // 학교 이름
 
     @Column(name="student_id")
     private String studentId; // 학번
 
-
+    @Column(name="external_id", unique = true)
+    private String externalId; // 카카오아이디
     @Column(name="email")
     private String email;
+
+
 
     @Column(name="age")
     private Integer age;
@@ -109,12 +109,15 @@ public class User {
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
+                String description, String uniName,
                 Integer age, GenderType gender, DetailProfile detailProfile, IdealTypeProfile idealTypeProfile,
                 String basicFilePath, String secondFilePath, String thirdFilePath
     ){
         this.userId = userId;
         this.name = name;
         this.externalId = externalId;
+        this.description = description;
+        this.uniName = uniName;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.studentId = studentId;
@@ -130,7 +133,7 @@ public class User {
     }
 
     public static User createUser(UserSaveRequestDto userFormDto, PasswordEncoder passwordEncoder){
-        User user = User.builder()
+        return User.builder()
                 .name(userFormDto.getName())
                 .externalId(userFormDto.getExternalId())
                 .studentId(userFormDto.getStudentId())
@@ -143,7 +146,6 @@ public class User {
 
                 )
                 .build();
-        return user;
     }
 }
 
