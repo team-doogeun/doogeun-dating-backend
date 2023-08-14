@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MatchMakerService {
+public class MatchService {
 
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
@@ -81,5 +81,11 @@ public class MatchMakerService {
         matchRepository.save(match);
 
     }
+
+    public List<Match> getMatches(String userId){
+        User user = userRepository.findByUserId(userId);
+        return matchRepository.findByUser1(user);
+    }
+
 
 }

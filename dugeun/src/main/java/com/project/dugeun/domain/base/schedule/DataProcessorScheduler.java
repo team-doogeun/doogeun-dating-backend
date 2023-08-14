@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.base.schedule;
 
-import com.project.dugeun.domain.blindDate.application.MatchMakerService;
+import com.project.dugeun.domain.blindDate.application.MatchService;
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -13,12 +13,12 @@ import java.util.List;
 @Component
 public class DataProcessorScheduler {
     private final FinalMatchService finalMatchService;
-    private final MatchMakerService matchMakerService;
+    private final MatchService matchService;
     private final UserRepository userRepository;
 
-    public DataProcessorScheduler(FinalMatchService finalMatchService, MatchMakerService matchMakerService, UserRepository userRepository){
+    public DataProcessorScheduler(FinalMatchService finalMatchService, MatchService matchService, UserRepository userRepository){
         this.finalMatchService = finalMatchService;
-        this.matchMakerService = matchMakerService;
+        this.matchService = matchService;
         this.userRepository = userRepository;
     }
 
@@ -29,7 +29,7 @@ public class DataProcessorScheduler {
        List<User> users = userRepository.findAll();
        for(User user: users){
            // 모든 사용자에 대해 소개 상대 소개 초기화
-           matchMakerService.manageMatches(user);
+           matchService.manageMatches(user);
        }
     }
 
