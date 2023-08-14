@@ -38,11 +38,6 @@ public User saveUser(UserSaveRequestDto user){
         throw new IllegalStateException("이미 가입된 이메일 입니다.. ");
     }
 
-    if (user.getEmail().equals("zox004@konkuk.ac.kr")) {
-        throw new IllegalStateException("불량 회원 입니다.");
-    }
-
-
     return userRepository.save(User.builder()
             .userId(user.getUserId())
             .name(user.getName())

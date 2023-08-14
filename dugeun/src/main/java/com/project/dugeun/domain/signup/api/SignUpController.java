@@ -38,13 +38,24 @@ public class SignUpController {
             @RequestPart(value="basicFilePath",required = true) MultipartFile basicFilePath,
             @RequestPart(value="secondFilePath",required = true) MultipartFile secondFilePath,
             @RequestPart(value="thirdFilePath",required = true) MultipartFile thirdFilePath
-                                ) throws IOException {
-        String imgPath1 = s3Service.upload(basicFilePath);
-        user.setBasicFilePath(imgPath1);
-        String imgPath2 = s3Service.upload(secondFilePath);
-        user.setSecondFilePath(imgPath2);
-        String imgPath3 = s3Service.upload(thirdFilePath);
-        user.setThirdFilePath(imgPath3);
+    ) throws IOException {
+        String imgPath1 = null;
+        if (!basicFilePath.isEmpty()) {
+            imgPath1 = s3Service.upload(basicFilePath);
+            user.setBasicFilePath(imgPath1);
+        }
+
+        String imgPath2 = null;
+        if (!secondFilePath.isEmpty()) {
+            imgPath2 = s3Service.upload(secondFilePath);
+            user.setSecondFilePath(imgPath2);
+        }
+
+        String imgPath3 = null;
+        if (!thirdFilePath.isEmpty()) {
+            imgPath3 = s3Service.upload(thirdFilePath);
+            user.setThirdFilePath(imgPath3);
+        }
 
         User savedUser = signupService.saveUser(user);
         EntityModel<UserSaveResponseDto> entityModel = EntityModel.of(new UserSaveResponseDto(savedUser));
