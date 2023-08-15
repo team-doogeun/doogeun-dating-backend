@@ -29,55 +29,51 @@ public class FinalMatchService {
 
 
     @Transactional(readOnly = false)
-    public void saveFinalMatch(String userId){
-
+    public void saveFinalMatch(String userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) {
             throw new RuntimeException("User not found with userId: " + userId);
         }
 
-        List<LikeablePerson> likeablePeople  = likeablePersonRepository.findByFromUser(user);
-        for(LikeablePerson pair: likeablePeople){
+        List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromUser(user);
 
+        for (LikeablePerson pair : likeablePeople) {
             User toUser = pair.getToUser();
-            List<LikeablePerson> toUserLikeablePeople =  likeablePersonRepository.findByFromUser(toUser);
-            if(toUserLikeablePeople == null){
-                throw new RuntimeException("LikeablePerson not found with tmUser: " + user);
+
+            List<LikeablePerson> toUserLikeablePeople = likeablePersonRepository.findByFromUser(toUser);
+            if (toUserLikeablePeople == null) {
+                throw new RuntimeException("LikeablePerson not found with toUser: " + toUser);
             }
 
+            boolean userFound = toUserLikeablePeople.stream()
+                    .anyMatch(toUserLikeablePerson -> toUserLikeablePerson.getToUser() != null && toUserLikeablePerson.getToUser().getUserId() != null && toUserLikeablePerson.getToUser().getUserId().equals(userId));
 
-            toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
-                if (toUserLikeablePerson != null && toUserLikeablePerson.getToUser() != null && toUserLikeablePerson.getToUser().getUserId() != null && (toUserLikeablePerson.getToUser().getUserId().equals(userId))) {
+            if (userFound) {
 
-                        // check if FinalMatch already exists
-                        FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
-                        Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
+                // FinalMatch가 이미 있는 지 확인
+                FinalMatch existingMatch1 = finalMatchRepository.findByUser1AndUser2(user, toUser);
+                FinalMatch existingMatch2 = finalMatchRepository.findByUser1AndUser2(toUser, user);
 
-                        if (existingMatch == null) {
-                            // create new FinalMatch and save it
-                            FinalMatch finalMatch = new FinalMatch();
-                            FinalMatch anotherFinalMatch = new FinalMatch();
-                            finalMatch.setUser1(user);
-                            finalMatch.setUser2(toUser);
-                            anotherFinalMatch.setUser1(toUser);
-                            anotherFinalMatch.setUser2(user);
-                            finalMatchRepository.save(finalMatch);
-                            finalMatchRepository.save(anotherFinalMatch);
+                if (existingMatch1 == null && existingMatch2 == null) {
 
+                    FinalMatch finalMatch1 = new FinalMatch();
+                    finalMatch1.setUser1(user);
+                    finalMatch1.setUser2(toUser);
+                    finalMatchRepository.save(finalMatch1);
 
-                            if (introduceMatch != null) {
-                                introduceMatch.setMatched(true);
-                            }
-                        }
-
+                    Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
+                    Match introduceMatch2 = matchRepository.findByUser1AndUser2(toUser, user);
+                    if (introduceMatch != null ) {
+                        introduceMatch.setMatched(true);
+                        matchRepository.save(introduceMatch);  // 변경된 속성 저장
+                    }
+                    if (introduceMatch2 != null ) {
+                        introduceMatch2.setMatched(true);
+                        matchRepository.save(introduceMatch2); // 변경된 속성 저장
+                    }
                 }
             }
-
-
-            );
-
         }
-
     }
 
     public List<FinalMatchResponseDto> getFinalMatchedUser(String userId) {

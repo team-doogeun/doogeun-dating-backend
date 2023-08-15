@@ -10,7 +10,6 @@ public enum GenderType {
     MAN("남"),
     WOMAN("여");
 
-
     @Getter
     private final String value;
 
@@ -19,7 +18,8 @@ public enum GenderType {
     }
 
     @JsonCreator
-    public static GenderType from(String value){
+    public static GenderType from(String value)
+    {
         for(GenderType genderType: GenderType.values()){
             if(genderType.getValue().equals(value)){
                 return genderType;
@@ -29,7 +29,9 @@ public enum GenderType {
     }
 
     @JsonValue
-    public String getValue(){
+    public String getValue()
+    {
         return value;
     }
+
 }

@@ -22,8 +22,10 @@ public class DataProcessorScheduler {
         this.userRepository = userRepository;
     }
 
+
+//    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
     @Transactional
-    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
+    @Scheduled(cron = "0 */1 * * * *")
     public void processMatchDate(){
         // user 디비에 있는 모든 유저들 로드해서 수행
        List<User> users = userRepository.findAll();
