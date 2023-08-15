@@ -52,13 +52,11 @@ public class User {
     @Column(name="email")
     private String email;
 
-
-
     @Column(name="age")
     private Integer age;
 
     @Column(name="gender")
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @ManyToOne
