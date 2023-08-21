@@ -1,5 +1,6 @@
 package com.project.dugeun.domain.finalMatch.domain;
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,12 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class FinalMatch {
-
-    @Id
-    @Column(name="id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class FinalMatch extends BaseEntity {
 
     @ManyToOne
     private User user1;

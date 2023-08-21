@@ -1,5 +1,6 @@
 package com.project.dugeun.domain.blindDate.domain;
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +13,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Match {
-
-    @Id
-    @Column(name="id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Match extends BaseEntity {
 
     @ManyToOne
     private User user1;

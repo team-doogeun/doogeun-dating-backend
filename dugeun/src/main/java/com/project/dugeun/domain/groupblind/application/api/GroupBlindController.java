@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.groupblind.api;
+package com.project.dugeun.domain.groupblind.application.api;
 
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
