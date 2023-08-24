@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class FinalMatch extends BaseEntity {
-
     @ManyToOne
     private User user1;
 

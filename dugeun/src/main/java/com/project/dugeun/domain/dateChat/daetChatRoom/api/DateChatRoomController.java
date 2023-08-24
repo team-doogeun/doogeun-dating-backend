@@ -33,7 +33,7 @@ public class DateChatRoomController {
     private final DateChatMemberService dateChatMemberService;
     private final JwtProvider jwtProvider;
 
-    @GetMapping("/{userId}/{roomId}")
+    @GetMapping("/{userId}/{finalMatchId}")
     public ResponseEntity<DateChatRoomResponseDto> showRooms(@PathVariable String userId,@PathVariable String anotherUserId, @RequestHeader(value = "Authorization") String token){
 
         Claims claims = jwtProvider.parseJwtToken(token);

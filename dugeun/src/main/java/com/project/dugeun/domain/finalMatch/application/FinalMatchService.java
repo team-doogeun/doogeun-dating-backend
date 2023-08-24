@@ -81,7 +81,6 @@ public class FinalMatchService {
                     dateChatRoom.addChatUser(finalMatch.getUser1());
                     dateChatRoom.addChatUser(finalMatch.getUser2());
 
-
                 }
             }
         }
@@ -96,13 +95,10 @@ public class FinalMatchService {
 
 
         for(FinalMatch finalMatch:finalMatches){
+            FinalMatchResponseDto finalMatchResponseDto = FinalMatchResponseDto.fromEntity(finalMatch);
             matchedUsers.add(finalMatch.getUser2());
         }
 
-        for(User matchedUser: matchedUsers){
-            FinalMatchResponseDto finalMatchResponseDto = FinalMatchResponseDto.fromEntity(matchedUser);
-            finalMatchResponseDtos.add(finalMatchResponseDto);
-        }
 
         return finalMatchResponseDtos;
     }
