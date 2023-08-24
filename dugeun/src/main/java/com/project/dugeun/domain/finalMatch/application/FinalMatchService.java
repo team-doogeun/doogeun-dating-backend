@@ -2,6 +2,8 @@ package com.project.dugeun.domain.finalMatch.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.dateChat.daetChatRoom.dao.DateChatRoomRepository;
+import com.project.dugeun.domain.dateChat.daetChatRoom.domain.DateChatRoom;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
@@ -26,6 +28,7 @@ public class FinalMatchService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
+    private final DateChatRoomRepository dateChatRoomRepository;
 
 
     @Transactional(readOnly = false)
@@ -56,10 +59,10 @@ public class FinalMatchService {
 
                 if (existingMatch1 == null && existingMatch2 == null) {
 
-                    FinalMatch finalMatch1 = new FinalMatch();
-                    finalMatch1.setUser1(user);
-                    finalMatch1.setUser2(toUser);
-                    finalMatchRepository.save(finalMatch1);
+                    FinalMatch finalMatch = new FinalMatch();
+                    finalMatch.setUser1(user);
+                    finalMatch.setUser2(toUser);
+                    finalMatchRepository.save(finalMatch);
 
                     Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
                     Match introduceMatch2 = matchRepository.findByUser1AndUser2(toUser, user);
@@ -71,6 +74,14 @@ public class FinalMatchService {
                         introduceMatch2.setMatched(true);
                         matchRepository.save(introduceMatch2); // 변경된 속성 저장
                     }
+
+                    // 최종 매칭이 되면 자동으로 이에 해당되는 대화방이 자동으로 생성됨
+                    DateChatRoom dateChatRoom =  DateChatRoom.create(finalMatch);
+                    dateChatRoomRepository.save(dateChatRoom);
+                    dateChatRoom.addChatUser(finalMatch.getUser1());
+                    dateChatRoom.addChatUser(finalMatch.getUser2());
+
+
                 }
             }
         }
