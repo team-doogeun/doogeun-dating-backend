@@ -13,6 +13,7 @@ public class FinalMatchResponseDto {
     private int age;
     private DepartmentType department;
 
+
     public static FinalMatchResponseDto fromEntity(User user){
         FinalMatchResponseDto dto = new FinalMatchResponseDto();
         dto.setAge(user.getAge());

@@ -3,14 +3,19 @@ package com.project.dugeun.domain.dateChat.daetChatRoom.domain;
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.dateChat.dateChatMember.domain.DateChatMember;
+import com.project.dugeun.domain.dateChat.dateChatMessage.domain.DateChatMessage;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.user.domain.User;
+import com.project.dugeun.domain.user.domain.profile.category.CharacterType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -24,7 +29,11 @@ public class DateChatRoom extends BaseEntity {
 
     @OneToMany(mappedBy = "dateChatRoom", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @Builder.Default
-    private Set<DateChatMember> chatMembers = new HashSet<>();
+    private Set<DateChatMember> dateChatMembers = new HashSet<>();
+
+    @OneToMany(mappedBy = "dateChatRoom", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<DateChatMessage> dateChatMessages = new ArrayList<>();
+
 
     public static DateChatRoom create(FinalMatch finalMatch){
 
@@ -32,6 +41,17 @@ public class DateChatRoom extends BaseEntity {
                 .finalMatch(finalMatch)
                 .build();
     }
+
+    public void addChatUser(User user)
+    {
+        DateChatMember dateChatMember = DateChatMember.builder()
+                .user(user)
+                .dateChatRoom(this)
+                .build();
+
+        dateChatMembers.add(dateChatMember);
+    }
+
 
 
 }
