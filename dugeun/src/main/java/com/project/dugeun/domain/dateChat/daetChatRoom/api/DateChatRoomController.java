@@ -1,10 +1,13 @@
 package com.project.dugeun.domain.dateChat.daetChatRoom.api;
 
-import com.project.dugeun.domain.blindDate.dto.DateChatRoomResponseDto;
-import com.project.dugeun.domain.dateChat.daetChatRoom.application.DateChatRoomService;
 import com.project.dugeun.domain.dateChat.daetChatRoom.domain.DateChatRoom;
+import com.project.dugeun.domain.dateChat.daetChatRoom.dto.DateChatRoomResponseDto;
+import com.project.dugeun.domain.dateChat.daetChatRoom.application.DateChatRoomService;
 import com.project.dugeun.domain.dateChat.dateChatMember.application.DateChatMemberService;
+import com.project.dugeun.domain.dateChat.dateChatMember.domain.DateChatMember;
 import com.project.dugeun.domain.dateChat.dateChatMessage.application.DateChatMessageService;
+import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @Slf4j
@@ -31,10 +34,12 @@ public class DateChatRoomController {
     private final DateChatMessageService dateChatMessageService;
     private final SimpMessageSendingOperations template;
     private final DateChatMemberService dateChatMemberService;
+    private final FinalMatchService finalMatchService;
     private final JwtProvider jwtProvider;
 
+    // 마이페이지의 최종 매칭 화면에서 채팅방에 들어왔을 때
     @GetMapping("/{userId}/{finalMatchId}")
-    public ResponseEntity<DateChatRoomResponseDto> showRooms(@PathVariable String userId,@PathVariable String anotherUserId, @RequestHeader(value = "Authorization") String token){
+    public ResponseEntity<Object> startDateChatRoom(@PathVariable String userId, @PathVariable Long finalMatchId, @RequestHeader(value = "Authorization") String token){
 
         Claims claims = jwtProvider.parseJwtToken(token);
 
@@ -48,6 +53,39 @@ public class DateChatRoomController {
         }
 
 
+        Optional<FinalMatch> optionalFinalMatch = finalMatchService.findById(finalMatchId);
+        if (optionalFinalMatch.isPresent()) {
+            FinalMatch finalMatch = optionalFinalMatch.get();
+            DateChatRoom dateChatRoom = dateChatRoomService.createAndConnect(finalMatch);
+
+            DateChatMember firstUser = DateChatMember.builder()
+                    .user(finalMatch.getUser1())
+                    .dateChatRoom(dateChatRoom)
+                    .build();
+
+            DateChatMember secondUser = DateChatMember.builder()
+                    .user(finalMatch.getUser2())
+                    .dateChatRoom(dateChatRoom)
+                    .build();
+
+
+            DateChatRoomResponseDto dateChatRoomResponseDto = DateChatRoomResponseDto.builder()
+                    .createdAt(finalMatch.getCreateDate())
+                    .updatedAt(finalMatch.getModifyDate())
+                    .firstUser(firstUser)
+                    .secondUser(secondUser)
+                    .build();
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(dateChatRoomResponseDto);
+
+        } else {
+            // 예외 처리
+        }
+
+
+        return null;
     }
 
 

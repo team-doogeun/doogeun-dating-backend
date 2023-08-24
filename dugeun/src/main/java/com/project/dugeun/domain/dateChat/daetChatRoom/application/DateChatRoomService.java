@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -57,7 +58,16 @@ public class DateChatRoomService {
 
     // 모든 ChatRoom들을 가져와서 해당 userId가 속한 ChatRoom들 필털이
     public List<DateChatRoom> findRoomsByUserId(String userId){
-        List<DateChatRoom> rooms = dateChatRoomRepository.findAll();
+        List<DateChatRoom> allRooms = dateChatRoomRepository.findAll();
+        List<DateChatRoom> userRooms = new ArrayList<>();
+
+        for (DateChatRoom room : allRooms) {
+            if (room.containsUser(userId)) {
+                userRooms.add(room);
+            }
+        }
+
+        return userRooms;
     }
 
 }

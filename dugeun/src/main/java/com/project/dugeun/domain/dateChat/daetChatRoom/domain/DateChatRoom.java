@@ -39,6 +39,7 @@ public class DateChatRoom extends BaseEntity {
 
         return DateChatRoom.builder()
                 .finalMatch(finalMatch)
+                .id(finalMatch.getId()) // 해당 Finalmatch와 DatChatRoom의 id같도록 설정
                 .build();
     }
 
@@ -52,6 +53,14 @@ public class DateChatRoom extends BaseEntity {
         dateChatMembers.add(dateChatMember);
     }
 
+    public boolean containsUser(String userId) {
+        for (DateChatMember member : dateChatMembers) {
+            if (member.getUser().getUserId().equals(userId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

@@ -23,7 +23,7 @@ public class DateChatMessageDto {
     private String content;
 
     @JsonProperty("sender")
-    private UserDto sender;
+    private String userId;
 
     @JsonProperty("created_at")
     private LocalDateTime createdAt;

@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -77,14 +78,15 @@ public class FinalMatchService {
 
                     // 최종 매칭이 되면 자동으로 이에 해당되는 대화방이 자동으로 생성됨
                     DateChatRoom dateChatRoom =  DateChatRoom.create(finalMatch);
-                    dateChatRoomRepository.save(dateChatRoom);
                     dateChatRoom.addChatUser(finalMatch.getUser1());
                     dateChatRoom.addChatUser(finalMatch.getUser2());
+                    dateChatRoomRepository.save(dateChatRoom);
 
                 }
             }
         }
     }
+
 
     public List<FinalMatchResponseDto> getFinalMatchedUser(String userId) {
 
@@ -102,4 +104,11 @@ public class FinalMatchService {
 
         return finalMatchResponseDtos;
     }
+
+
+    public Optional<FinalMatch> findById(Long id){
+       return finalMatchRepository.findById(id);
+
+    }
+
 }
