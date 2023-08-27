@@ -36,7 +36,7 @@ public class FinalMatchService {
     public void saveFinalMatch(String userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) {
-            throw new RuntimeException("User not found with userId: " + userId);
+            throw new IllegalStateException("User not found with userId: " + userId);
         }
 
         List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromUser(user);
@@ -46,7 +46,7 @@ public class FinalMatchService {
 
             List<LikeablePerson> toUserLikeablePeople = likeablePersonRepository.findByFromUser(toUser);
             if (toUserLikeablePeople == null) {
-                throw new RuntimeException("LikeablePerson not found with toUser: " + toUser);
+                throw new IllegalStateException("LikeablePerson not found with toUser: " + toUser);
             }
 
             boolean userFound = toUserLikeablePeople.stream()
