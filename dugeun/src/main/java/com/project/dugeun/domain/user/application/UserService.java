@@ -36,7 +36,6 @@ public class UserService {
        }
 
 
-
         return toLikeablePersons;
     }
     public User findUserByUserId(String userId) {
@@ -56,9 +55,14 @@ public class UserService {
             fromLikeablePersons.add(fromLikeablePersonResponseDto);
         }
 
-
         return fromLikeablePersons;
     }
+
+
+    public void deleteUser(String userId){
+        userRepository.deleteByUserId(userId);
+    }
+
 
     public String findExternalId(String targetUserId) {
        User user =  userRepository.findByUserId(targetUserId);

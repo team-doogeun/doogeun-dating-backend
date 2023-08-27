@@ -36,4 +36,6 @@ public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findByGenderNotAndUserIdNot(String gender, String userId);
 
     List<User> findByGenderNotAndUserIdNotIn(GenderType gender, List<String> collect);
+
+    void deleteByUserId(String userId);
 }
