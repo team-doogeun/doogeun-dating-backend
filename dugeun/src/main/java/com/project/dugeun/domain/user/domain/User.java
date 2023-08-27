@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.user.domain;
 
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
@@ -20,12 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class User {
-
-    @Id
-    @Column(name="id", unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // 자동 생성되는 유저 id
+public class User extends BaseEntity {
 
     @Column(name="user_id", unique = true)
     private String userId; // 유저 아이디

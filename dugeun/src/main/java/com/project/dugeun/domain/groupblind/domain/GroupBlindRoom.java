@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.domain;
 
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import lombok.Data;
 
 import lombok.*;
@@ -15,12 +16,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class GroupBlindRoom {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "groupblind_id")
-    private Long id;
+public class GroupBlindRoom extends BaseEntity {
 
     @Column(nullable = false)
     private Integer roomId;

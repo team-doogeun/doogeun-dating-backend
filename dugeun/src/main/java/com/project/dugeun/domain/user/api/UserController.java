@@ -6,9 +6,9 @@ import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
-import com.project.dugeun.domain.user.dto.FromLikeablePersonResponseDto;
+import com.project.dugeun.domain.likeablePerson.dto.FromLikeablePersonResponseDto;
 import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
-import com.project.dugeun.domain.user.dto.ToLikeablePersonResponseDto;
+import com.project.dugeun.domain.likeablePerson.dto.ToLikeablePersonResponseDto;
 import com.project.dugeun.domain.user.application.UserService;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.dto.*;
@@ -75,6 +75,8 @@ public class UserController {
         List<FinalMatchResponseDto> finalMatchedUsers = finalMatchService.getFinalMatchedUser(userId);
         return ResponseEntity.ok(finalMatchedUsers);
     }
+
+
 
 
     @PostMapping("/blindDate/fromLike/like")
