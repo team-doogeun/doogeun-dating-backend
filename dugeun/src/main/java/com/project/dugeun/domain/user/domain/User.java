@@ -45,7 +45,7 @@ public class User extends BaseEntity {
 
     @Column(name="external_id", unique = true)
     private String externalId; // 카카오아이디
-    @Column(name="email")
+    @Column(name="email",unique = true)
     private String email;
 
     @Column(name="age")
