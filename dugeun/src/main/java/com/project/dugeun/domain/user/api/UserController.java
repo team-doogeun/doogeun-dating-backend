@@ -146,8 +146,6 @@ public class UserController {
     }
 
 
-
-
     @GetMapping("/mypage/group/{userId}/entering")
     public ResponseEntity<?> getEnteringMeetingRooms(@PathVariable String userId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
