@@ -21,6 +21,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")   //SockJS 연결 주소
                 .setAllowedOriginPatterns("*")
                 .setAllowedOrigins("http://localhost:8080")
+                .setAllowedOrigins("http://34.64.111.143:8080")
                 .setAllowedOrigins("https://www.doogeun.co.kr")// spring stomp CORS 설정하기
                 .setAllowedOriginPatterns("*")
                 .withSockJS();
