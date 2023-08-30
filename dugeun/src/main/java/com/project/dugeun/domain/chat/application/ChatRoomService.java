@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,7 +62,20 @@ public class ChatRoomService {
         return chatRooms;
     }
 
-    public Optional<ChatRoom> findChatRoomByTwoUser(User user,User anotherUser){
-       return chatRoomRepository.findByChatRoomJoinUserInAndChatRoomJoinUserIn(user,anotherUser);
+    public Optional<ChatRoom> findChatRoomByTwoUser(User user1, User user2) {
+        List<ChatRoom> chatRooms = chatRoomRepository.findByChatRoomJoinsUserIn(List.of(user1, user2));
+
+        for (ChatRoom chatRoom : chatRooms) {
+            List<User> usersInChatRoom = chatRoom.getChatRoomJoins()
+                    .stream()
+                    .map(ChatRoomJoin::getUser)
+                    .collect(Collectors.toList());
+
+            if (usersInChatRoom.contains(user1) && usersInChatRoom.contains(user2)) {
+                return Optional.of(chatRoom);
+            }
+        }
+
+        return Optional.empty();
     }
 }
