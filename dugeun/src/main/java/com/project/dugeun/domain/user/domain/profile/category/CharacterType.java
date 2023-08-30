@@ -30,4 +30,8 @@ public enum CharacterType {
     }
 
 
+    @JsonValue
+    public String getValue(){
+        return value;
+    }
     }

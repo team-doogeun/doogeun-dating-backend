@@ -38,5 +38,9 @@ public enum MbtiType {
         }
         return null;
     }
+    @JsonValue
+    public String getValue(){
+        return value;
+    }
 
 }

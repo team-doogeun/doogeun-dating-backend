@@ -25,6 +25,11 @@ public enum SmokeType {
         }
         return null;
     }
-
-
+    @JsonValue
+    public String getValue(){
+        return value;
     }
+
+
+
+}

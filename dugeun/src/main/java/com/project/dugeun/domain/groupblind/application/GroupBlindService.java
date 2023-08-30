@@ -72,9 +72,9 @@ public class GroupBlindService {
                 .build();
 
         groupBlindRoom.addHost(hostParticipant);
-        if (host.getGender().equals(GenderType.MAN)) {
+        if (host.getGender().getValue().equals("남")) {
             groupBlindRoom.setPresentMale(groupBlindRoom.getPresentMale() + 1);
-        } else if (host.getGender().equals(GenderType.WOMAN)) {
+        } else if (host.getGender().getValue().equals("여")) {
             groupBlindRoom.setPresentFemale(groupBlindRoom.getPresentFemale() + 1);
         }
         return groupBlindRepository.save(groupBlindRoom);
@@ -98,9 +98,9 @@ public class GroupBlindService {
     @Transactional
     public ResponseEntity<String> enter(GroupBlindRoom meetingRoom, User user) {
 
-        if (user.getGender().equals(GenderType.MAN)) {
+        if (user.getGender().getValue().equals("남")) {
             meetingRoom.setPresentMale(meetingRoom.getPresentMale() + 1);
-        } else if (user.getGender().equals(GenderType.WOMAN)) {
+        } else if (user.getGender().getValue().equals("여")) {
             meetingRoom.setPresentFemale(meetingRoom.getPresentFemale() + 1);
         }
 
@@ -122,9 +122,9 @@ public class GroupBlindService {
     public void exit(GroupBlindRoom meetingRoom, Participant participant){
         User user = participant.getUser();
 
-        if (user.getGender().equals(GenderType.MAN)) {
+        if (user.getGender().getValue().equals("남")) {
             meetingRoom.setPresentMale(meetingRoom.getPresentMale() - 1);
-        } else if (user.getGender().equals(GenderType.WOMAN)) {
+        } else if (user.getGender().getValue().equals("여")) {
             meetingRoom.setPresentFemale(meetingRoom.getPresentFemale() - 1);
         }
 

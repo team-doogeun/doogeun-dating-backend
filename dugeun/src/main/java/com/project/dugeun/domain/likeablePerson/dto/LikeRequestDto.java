@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @NoArgsConstructor
 public class LikeRequestDto {
-
     @NotEmpty
     private String userId; // 사용자 ID
     @NotEmpty
@@ -20,6 +19,5 @@ public class LikeRequestDto {
             throw new IllegalArgumentException("사용자 id와 대상 사용자 id가 필요합니다");
         }
     }
-
 
 }
