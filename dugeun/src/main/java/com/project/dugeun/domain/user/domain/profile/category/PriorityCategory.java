@@ -28,8 +28,5 @@ public enum PriorityCategory {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
+
 }

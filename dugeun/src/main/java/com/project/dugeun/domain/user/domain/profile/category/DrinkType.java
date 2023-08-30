@@ -27,9 +27,4 @@ public enum DrinkType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
-
 }

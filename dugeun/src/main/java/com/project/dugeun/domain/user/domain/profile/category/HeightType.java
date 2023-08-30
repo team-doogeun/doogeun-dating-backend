@@ -34,9 +34,4 @@ public enum HeightType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
-
     }

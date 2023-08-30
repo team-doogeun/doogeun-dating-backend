@@ -32,11 +32,5 @@ public enum BodyType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
-
-
 
 }

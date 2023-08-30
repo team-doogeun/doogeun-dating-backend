@@ -27,9 +27,6 @@ public enum DepartmentType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
+
 
     }

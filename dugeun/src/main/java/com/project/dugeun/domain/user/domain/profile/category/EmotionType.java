@@ -26,8 +26,5 @@ public enum EmotionType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
+
 }
