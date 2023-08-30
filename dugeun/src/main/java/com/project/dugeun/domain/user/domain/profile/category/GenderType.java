@@ -18,8 +18,7 @@ public enum GenderType {
     }
 
     @JsonCreator
-    public static GenderType from(String value)
-    {
+    public static GenderType from(String value){
         for(GenderType genderType: GenderType.values()){
             if(genderType.getValue().equals(value)){
                 return genderType;
@@ -28,4 +27,8 @@ public enum GenderType {
         return null;
     }
 
+    @JsonValue
+    public String getValue(){
+        return value;
+    }
 }

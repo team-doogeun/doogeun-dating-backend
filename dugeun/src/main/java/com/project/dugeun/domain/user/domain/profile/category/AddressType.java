@@ -26,6 +26,10 @@ public enum AddressType {
         }
         return null;
     }
+    @JsonValue
+    public String getValue(){
+        return value;
+    }
 
 
     // 점수 계산 알고리즘

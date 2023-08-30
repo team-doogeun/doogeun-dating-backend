@@ -33,5 +33,6 @@ public class LikeablePersonController {
         likeResponseDto.setSuccess(true);
 
         return ResponseEntity.ok().body(likeResponseDto);
+
    }
 }

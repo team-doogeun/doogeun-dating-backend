@@ -76,6 +76,10 @@ public enum HobbyType {
         return null;
     }
 
+    @JsonValue
+    public String getValue(){
+        return value;
 
+    }
 
     }

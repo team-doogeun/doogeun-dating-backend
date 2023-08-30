@@ -21,4 +21,5 @@ public class ToLikeablePersonResponseDto {
         dto.setUserId(likeablePerson.getToUser().getUserId());
         return dto;
     }
+
 }

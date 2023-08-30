@@ -26,11 +26,10 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final ScoreCalculatorService scoreCalculatorService;
 
-    public boolean checkMatch(User user1,User user2)
-    {
-        return matchRepository.existsByUser1AndUser2(user1,user2);
+    @Transactional
+    public boolean checkMatch(User user1, User user2) {
+        return matchRepository.existsByUser1AndUser2(user1, user2) || matchRepository.existsByUser1AndUser2(user2, user1);
     }
-
     @Transactional
     public void manageMatches(User user) {
 
@@ -83,16 +82,17 @@ public class MatchService {
     }
 
     @Transactional
-    public void saveMatch(User user1, User user2, int compatibilityScore)
-    {
-        Match match = new Match();
-        match.setUser1(user1);
-        match.setUser2(user2);
-        match.setCompatibilityScore(compatibilityScore);
-        match.setMatched(false);
-        user1.addToMatchings(match);
-        user2.addToMatchings(match);
-        matchRepository.save(match);
+    public void saveMatch(User user1, User user2, int compatibilityScore) {
+        if (!checkMatch(user1, user2)) {
+            Match match = new Match();
+            match.setUser1(user1);
+            match.setUser2(user2);
+            match.setCompatibilityScore(compatibilityScore);
+            match.setMatched(false);
+            user1.addToMatchings(match);
+            user2.addToMatchings(match);
+            matchRepository.save(match);
+        }
     }
 
     public List<Match> getMatches(String userId){

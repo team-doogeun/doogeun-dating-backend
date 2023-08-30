@@ -24,7 +24,7 @@ public class ChatRoomController {
     private final ChatRoomService chatRoomService;
 
     // 마이페이지의 최종 매칭에서 "좋아요"버튼 눌렀을 때
-    @RequestMapping(value = {"/finalMatch/personalChat"})
+    @PostMapping(value = {"/finalMatch/personalChat"})
     @ResponseBody
     public ResponseEntity<ChatRoomDetailDto> goChat(@RequestBody ChatRequestDto chatRequestDto, @RequestHeader(value="Authorization")String token) {
 

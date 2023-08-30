@@ -12,7 +12,6 @@ public enum AgeType {
     LATE_TWENTY("20대 후반"),
     EARLY_THIRTY("30대 초반");
 
-    @Getter
     private final String value;
 
     AgeType(String value){
