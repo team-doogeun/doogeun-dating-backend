@@ -29,9 +29,5 @@ public enum CharacterType {
         return null;
     }
 
-    @JsonValue
-    public String getValue(){
-        return value;
-    }
 
     }

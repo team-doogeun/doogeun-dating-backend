@@ -3,6 +3,7 @@ package com.project.dugeun.domain.user.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.chat.domain.ChatRoomJoin;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
@@ -90,6 +91,8 @@ public class User extends BaseEntity {
     @Builder.Default
     private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<ChatRoomJoin> chatRoomJoins = new ArrayList<>();
 
 
     public void addToMatchings(Match match){

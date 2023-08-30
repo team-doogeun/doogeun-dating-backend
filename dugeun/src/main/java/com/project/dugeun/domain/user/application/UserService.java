@@ -86,4 +86,8 @@ public class UserService {
     public List<GroupBlindRoom> getAchievedMeetingRooms(String userId) {
         return groupBlindRepository.findByHostIdAndGroupBlindStatus(userId, GroupBlindStatus.DONE);
     }
+
+    public User findUserByEmailMethod(String email) {
+      return userRepository.findByEmail(email);
+    }
 }
