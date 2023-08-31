@@ -74,6 +74,22 @@ public class UserController {
         return ResponseEntity.ok(finalMatchedUsers);
     }
 
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<UserResponseDto> getUserInfo(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
+        Claims claims =  jwtProvider.parseJwtToken(token);
+
+        if(!userId.equals(claims.getSubject())){
+            String responseMessage = "접근할 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
+        }
+
+        UserResponseDto userResponseDto = userService.getUserInfo(userId);
+        return ResponseEntity.ok(userResponseDto);
+
+    }
+
+
+
     @GetMapping("/{userId}/delete")
     public ResponseEntity<UserDeleteResponseDto> delete(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
         Claims claims =  jwtProvider.parseJwtToken(token);
