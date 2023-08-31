@@ -16,15 +16,6 @@ public class FinalMatchResponseDto {
     private DepartmentType department;
 
 
-    public static FinalMatchResponseDto fromEntity(FinalMatch finalMatch){
-        FinalMatchResponseDto dto = new FinalMatchResponseDto();
-        dto.setId(finalMatch.getId());
-        dto.setAge(finalMatch.getUser2().getAge());
-        dto.setDepartment(finalMatch.getUser2().getDetailProfile().getDepartment());
-        dto.setUserId(finalMatch.getUser2().getUserId());
-        return dto;
-    }
-
 
 }
 
