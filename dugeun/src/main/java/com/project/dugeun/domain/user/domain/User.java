@@ -74,10 +74,15 @@ public class User extends BaseEntity {
     @Column(name = "third_profile_image")
     private String thirdFilePath;
 
-    @OneToMany(mappedBy = "user1", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
     @OrderBy("score desc") // 점수 높은 순으로 정렬
     @Builder.Default
     private List<Match> matchings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
+    @OrderBy("score desc") // 점수 높은 순으로 정렬
+    @Builder.Default
+    private List<Match> anotherMatchings = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "fromUser")

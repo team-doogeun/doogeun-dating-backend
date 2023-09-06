@@ -17,8 +17,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -100,21 +102,30 @@ public class FinalMatchService {
 
     public List<FinalMatchResponseDto> getFinalMatchedUser(String userId) {
 
-        List<User> matchedUsers = new ArrayList<>();
         User user = userRepository.findByUserId(userId);
-        List<FinalMatch> finalMatches = finalMatchRepository.findByUser1(user);
+        List<FinalMatch> finalMatches = finalMatchRepository.findByUser1OrUser2(user, user);
         List<FinalMatchResponseDto> finalMatchResponseDtos = new ArrayList<>();
 
+        for (FinalMatch finalMatch : finalMatches) {
+            FinalMatchResponseDto finalMatchResponseDto = new FinalMatchResponseDto();
 
-        for(FinalMatch finalMatch:finalMatches){
-            FinalMatchResponseDto finalMatchResponseDto = FinalMatchResponseDto.fromEntity(finalMatch);
-            matchedUsers.add(finalMatch.getUser2());
+            if (Objects.equals(finalMatch.getUser1().getUserId(), userId)) {
+                finalMatchResponseDto.setUserId(finalMatch.getUser2().getUserId());
+                finalMatchResponseDto.setId(finalMatch.getId());
+                finalMatchResponseDto.setDepartment(finalMatch.getUser2().getDetailProfile().getDepartment());
+                finalMatchResponseDto.setAge(finalMatch.getUser2().getAge());
+            } else {
+                finalMatchResponseDto.setUserId(finalMatch.getUser1().getUserId());
+                finalMatchResponseDto.setId(finalMatch.getId());
+                finalMatchResponseDto.setDepartment(finalMatch.getUser1().getDetailProfile().getDepartment());
+                finalMatchResponseDto.setAge(finalMatch.getUser1().getAge());
+            }
+
+            finalMatchResponseDtos.add(finalMatchResponseDto);
         }
 
         return finalMatchResponseDtos;
     }
-
-
     public Optional<FinalMatch> findById(Long id){
        return finalMatchRepository.findById(id);
 
