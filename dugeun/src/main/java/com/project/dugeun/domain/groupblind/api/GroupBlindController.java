@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.groupblind.application.api;
+package com.project.dugeun.domain.groupblind.api;
 
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
@@ -43,19 +43,24 @@ public class GroupBlindController {
         EntityModel<RoomSaveResponseDto> entityModel = EntityModel.of(new RoomSaveResponseDto(savedRoom));
 
         return ResponseEntity.ok(entityModel);
-
     }
 
 
     @PostMapping("group/{roomId}/delete")
     public ResponseEntity<String> deleteRoom(@PathVariable Integer roomId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
+        GroupBlindRoom groupBlindRoom = groupBlindService.getRoomByRoomId(roomId);
 
         // Check if the user is the host of the meeting room
         boolean isHost = groupBlindService.isHostOfMeetingRoom(roomId, claims.getSubject());
         if (!isHost) {
+            if (groupBlindRoom == null) {
+                return getStringResponsMessage("해당 미팅방이 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+            }
             return getStringResponsMessage("미팅방을 삭제할 수 있는 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
+
+
 
         boolean deleted = groupBlindService.deleteMeetingRoom(roomId);
         if (deleted) {

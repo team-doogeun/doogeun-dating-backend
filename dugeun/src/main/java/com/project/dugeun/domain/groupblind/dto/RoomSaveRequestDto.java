@@ -1,5 +1,6 @@
 package com.project.dugeun.domain.groupblind.dto;
 
+import com.project.dugeun.domain.groupblind.domain.GroupBlindCategory;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class RoomSaveRequestDto {
 
     private GroupBlindStatus status;
 
+    private GroupBlindCategory groupBlindCategory;
 
     private String groupBlindIntroduction;
 }
