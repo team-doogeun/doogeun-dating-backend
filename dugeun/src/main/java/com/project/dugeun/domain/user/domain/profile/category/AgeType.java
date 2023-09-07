@@ -28,6 +28,10 @@ public enum AgeType {
         return null;
     }
 
+    @JsonValue
+    public String getValue(){
+        return value;
+    }
 
 
     }
