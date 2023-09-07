@@ -18,7 +18,6 @@ public class LoginController {
 
     private final LoginService loginService;
     private final JwtProvider jwtProvider;
-
     private final UserRepository userRepository;
 
     //==토큰 생성 컨트롤러==//
@@ -35,9 +34,7 @@ public class LoginController {
 
            TokenDataResponse tokenDataResponse = new TokenDataResponse(token, user.getName() , claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
            return new TokenResponse<>("200", "OK", tokenDataResponse);
-
        }
-
        return new TokenResponse<>("444","no token", null);
     }
 
@@ -55,8 +52,7 @@ public class LoginController {
     //==Response DTO==//
     @Data
     @AllArgsConstructor
-    static class TokenResponseNoData
-    {
+    static class TokenResponseNoData {
         private String code;
         private String msg;
     }
@@ -71,5 +67,4 @@ public class LoginController {
         private String issuedTime;
         private String expiredTime;
     }
-
 }

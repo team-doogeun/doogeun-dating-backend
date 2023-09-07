@@ -14,7 +14,7 @@ public enum GenderType {
     @Getter
     private final String value;
 
-    GenderType(String value){
+    GenderType(String value) {
         this.value = value;
     }
 
@@ -29,7 +29,7 @@ public enum GenderType {
     }
 
     @JsonValue
-    public String getValue(){
+    public String getValue() {
         return value;
     }
 }
