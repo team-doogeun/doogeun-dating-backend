@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
 @Getter
 @Builder
@@ -23,6 +24,8 @@ public class MatchResponseDto {
      private BodyType bodyType;
 
      private AddressType addressType;
+
+     private String uniName;
 
      private DepartmentType departmentType;
 
@@ -42,6 +45,8 @@ public class MatchResponseDto {
 
     private String userIdSec;
     private String nameSec;
+
+    private String uniNameSec;
 
     private String studentIdSec;
     private Integer ageSec;
@@ -73,6 +78,7 @@ public class MatchResponseDto {
         this.name = user.getName();
         this.age =user.getAge();
         this.studentId = user.getStudentId();
+        this.uniName = user.getUniName();
         this.height = user.getDetailProfile().getHeight();
         this.bodyType = user.getDetailProfile().getBodyType();
         this.addressType = user.getDetailProfile().getAddress();
@@ -86,10 +92,12 @@ public class MatchResponseDto {
         this.hobby1 =user.getDetailProfile().getFirstHobby();
         this.hobby2=user.getDetailProfile().getSecondHobby();
 
+
         this.userIdSec = userSec.getUserId();
         this.nameSec = userSec.getName();
         this.ageSec =userSec.getAge();
         this.studentIdSec = userSec.getStudentId();
+        this.uniNameSec = userSec.getUniName();
         this.heightSec= userSec.getDetailProfile().getHeight();
         this.bodyTypeSec = userSec.getDetailProfile().getBodyType();
         this.addressTypeSec = userSec.getDetailProfile().getAddress();
