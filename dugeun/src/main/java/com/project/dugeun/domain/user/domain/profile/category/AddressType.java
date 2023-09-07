@@ -26,7 +26,6 @@ public enum AddressType {
         }
         return null;
     }
-
     @JsonValue
     public String getValue(){
         return value;

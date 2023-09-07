@@ -2,19 +2,26 @@ package com.project.dugeun.domain.finalMatch.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.chat.dao.ChatRoomJoinRepository;
+import com.project.dugeun.domain.chat.dao.ChatRoomRepository;
+import com.project.dugeun.domain.chat.domain.ChatRoom;
+import com.project.dugeun.domain.chat.domain.ChatRoomJoin;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.dto.FinalMatchResponseDto;
+import com.project.dugeun.domain.finalMatch.dto.FinalMatchResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -26,78 +33,103 @@ public class FinalMatchService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
-
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomJoinRepository chatRoomJoinRepository;
 
 
     @Transactional(readOnly = false)
-    public void saveFinalMatch(String userId){
-
+    public void saveFinalMatch(String userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) {
-            throw new RuntimeException("User not found with userId: " + userId);
+            throw new IllegalStateException("User not found with userId: " + userId);
         }
 
-        List<LikeablePerson> likeablePeople  = likeablePersonRepository.findByFromUser(user);
-        for(LikeablePerson pair: likeablePeople){
+        List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromUser(user);
 
+        for (LikeablePerson pair : likeablePeople) {
             User toUser = pair.getToUser();
-            List<LikeablePerson> toUserLikeablePeople =  likeablePersonRepository.findByFromUser(toUser);
-            if(toUserLikeablePeople == null){
-                throw new RuntimeException("LikeablePerson not found with tmUser: " + user);
+
+            List<LikeablePerson> toUserLikeablePeople = likeablePersonRepository.findByFromUser(toUser);
+            if (toUserLikeablePeople == null) {
+                throw new IllegalStateException("LikeablePerson not found with toUser: " + toUser);
             }
 
+            boolean userFound = toUserLikeablePeople.stream()
+                    .anyMatch(toUserLikeablePerson -> toUserLikeablePerson.getToUser() != null && toUserLikeablePerson.getToUser().getUserId() != null && toUserLikeablePerson.getToUser().getUserId().equals(userId));
 
-            if(finalMatchRepository.findByUser1AndUser2(user, toUser) != null || finalMatchRepository.findByUser1AndUser2(toUser, user) != null){
-                continue;
-            }
+            if (userFound) {
 
+                // FinalMatch가 이미 있는 지 확인
+                FinalMatch existingMatch1 = finalMatchRepository.findByUser1AndUser2(user, toUser);
+                FinalMatch existingMatch2 = finalMatchRepository.findByUser1AndUser2(toUser, user);
 
-            toUserLikeablePeople.stream().forEach(toUserLikeablePerson -> {
-                if(toUserLikeablePerson.getToUser().getUserId().equals(userId)){
+                if (existingMatch1 == null && existingMatch2 == null) {
 
-                    // check if FinalMatch already exists
-                    FinalMatch existingMatch = finalMatchRepository.findByUser1AndUser2(user, toUser);
-                    Match introduceMatch = matchRepository.findByUser1AndUser2(user,toUser);
+                    FinalMatch finalMatch = new FinalMatch();
+                    finalMatch.setUser1(user);
+                    finalMatch.setUser2(toUser);
+                    finalMatchRepository.save(finalMatch);
 
-                    if(existingMatch == null){
-                        // create new FinalMatch and save it
-                        FinalMatch finalMatch = new FinalMatch();
-                        FinalMatch anotherFinalMatch = new FinalMatch();
-                        finalMatch.setUser1(user);
-                        finalMatch.setUser2(toUser);
-                        anotherFinalMatch.setUser1(toUser);
-                        anotherFinalMatch.setUser2(user);
-                        finalMatchRepository.save(finalMatch);
-                        finalMatchRepository.save(anotherFinalMatch);
-
+                    Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
+                    Match introduceMatch2 = matchRepository.findByUser1AndUser2(toUser, user);
+                    if (introduceMatch != null ) {
                         introduceMatch.setMatched(true);
+                        matchRepository.save(introduceMatch);  // 변경된 속성 저장
                     }
+                    if (introduceMatch2 != null ) {
+                        introduceMatch2.setMatched(true);
+                        matchRepository.save(introduceMatch2); // 변경된 속성 저장
+                    }
+
+                     // TODO -최종 매칭이 되면 자동으로 이에 해당되는 대화방&대화방 참여자가 자동으로 생성됨
+                    ChatRoom chatRoom = new ChatRoom();
+                    ChatRoomJoin chatRoomJoin = ChatRoomJoin.builder().chatRoom(chatRoom).user(user).build();
+                    ChatRoomJoin anotherChatRoomJoin = ChatRoomJoin.builder().chatRoom(chatRoom).user(toUser).build();
+                    chatRoom.getChatRoomJoins().add(chatRoomJoin);
+                    chatRoom.getChatRoomJoins().add(anotherChatRoomJoin);
+                    user.getChatRoomJoins().add(chatRoomJoin);
+                    toUser.getChatRoomJoins().add(anotherChatRoomJoin);
+                    chatRoomRepository.save(chatRoom);
+                    chatRoomJoinRepository.save(chatRoomJoin);
+
+
+
                 }
             }
-
-            );
-
         }
-
     }
+
 
     public List<FinalMatchResponseDto> getFinalMatchedUser(String userId) {
 
-        List<User> matchedUsers = new ArrayList<>();
         User user = userRepository.findByUserId(userId);
-        List<FinalMatch> finalMatches = finalMatchRepository.findByUser1(user);
+        List<FinalMatch> finalMatches = finalMatchRepository.findByUser1OrUser2(user, user);
         List<FinalMatchResponseDto> finalMatchResponseDtos = new ArrayList<>();
 
+        for (FinalMatch finalMatch : finalMatches) {
+            FinalMatchResponseDto finalMatchResponseDto = new FinalMatchResponseDto();
 
-        for(FinalMatch finalMatch:finalMatches){
-            matchedUsers.add(finalMatch.getUser2());
-        }
+            if (Objects.equals(finalMatch.getUser1().getUserId(), userId)) {
+                finalMatchResponseDto.setUserId(finalMatch.getUser2().getUserId());
+                finalMatchResponseDto.setId(finalMatch.getId());
+                finalMatchResponseDto.setDepartment(finalMatch.getUser2().getDetailProfile().getDepartment());
+                finalMatchResponseDto.setAge(finalMatch.getUser2().getAge());
+            } else {
+                finalMatchResponseDto.setUserId(finalMatch.getUser1().getUserId());
+                finalMatchResponseDto.setId(finalMatch.getId());
+                finalMatchResponseDto.setDepartment(finalMatch.getUser1().getDetailProfile().getDepartment());
+                finalMatchResponseDto.setAge(finalMatch.getUser1().getAge());
+            }
 
-        for(User matchedUser: matchedUsers){
-            FinalMatchResponseDto finalMatchResponseDto = FinalMatchResponseDto.fromEntity(matchedUser);
             finalMatchResponseDtos.add(finalMatchResponseDto);
         }
 
         return finalMatchResponseDtos;
     }
+    public Optional<FinalMatch> findById(Long id){
+       return finalMatchRepository.findById(id);
+
+    }
+
+
 }

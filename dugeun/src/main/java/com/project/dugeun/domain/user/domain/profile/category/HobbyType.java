@@ -23,7 +23,6 @@ public enum HobbyType {
     MUETIE("무에타이"),
     GUMDO("검도"),
     DANCE("댄스"),
-
     WALK("산책"),
     SWIM("수영"),
     WATERSKI("수상스키"),
@@ -60,9 +59,6 @@ public enum HobbyType {
 
 
 
-
-
-
     @Getter
     private final String value;
 
@@ -83,6 +79,7 @@ public enum HobbyType {
     @JsonValue
     public String getValue(){
         return value;
+
     }
 
     }

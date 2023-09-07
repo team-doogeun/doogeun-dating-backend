@@ -7,8 +7,8 @@ import lombok.Getter;
 public enum DepartmentType {
 
 
-    ENGINEERING("공과대학"), EDUCATION("사범대학"), SOCIAL_SCIENCE("사회과학대학"), BUSINESS("경영대학"), LIBERAL("문과대학"), SCIENCE("이과대학"), ARCHITECTURE("건축대학"),
-    REAL_ESTATE("부동산과학원"), KU_SCIENCE("KU융합과학기술원"), BIOLOGY("상허생명과학대학"), VETERINARY("수의과대학"), ART("예술디자인대학");
+    ENGINEERING("공학계열"), EDUCATION("교육계열"), SOCIAL_SCIENCE("사회계열"), LIBERAL("인문계열"), SCIENCE("자연계열"),
+     MEDICAL("의약계열"), ART("예체능계열");
 
     @Getter
     private final String value;
@@ -31,5 +31,6 @@ public enum DepartmentType {
     public String getValue(){
         return value;
     }
+
 
     }

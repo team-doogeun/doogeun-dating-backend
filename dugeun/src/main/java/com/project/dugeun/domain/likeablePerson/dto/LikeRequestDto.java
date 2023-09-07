@@ -7,13 +7,10 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @NoArgsConstructor
 public class LikeRequestDto {
-
     @NotEmpty
     private String userId; // 사용자 ID
-
     @NotEmpty
     private String targetUserId; // 좋아요를 받은 대상 사용자 ID
-
 
     public void valiedateAndProcess(){
 
@@ -22,6 +19,5 @@ public class LikeRequestDto {
             throw new IllegalArgumentException("사용자 id와 대상 사용자 id가 필요합니다");
         }
     }
-
 
 }

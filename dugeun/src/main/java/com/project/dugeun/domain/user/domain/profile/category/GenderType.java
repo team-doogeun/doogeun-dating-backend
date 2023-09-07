@@ -10,7 +10,6 @@ public enum GenderType {
     MAN("남"),
     WOMAN("여");
 
-
     @Getter
     private final String value;
 

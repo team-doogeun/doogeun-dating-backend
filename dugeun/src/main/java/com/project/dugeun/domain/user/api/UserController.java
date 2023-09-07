@@ -1,12 +1,17 @@
 package com.project.dugeun.domain.user.api;
 
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
+import com.project.dugeun.domain.finalMatch.dto.FinalMatchResponseDto;
 import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
+import com.project.dugeun.domain.likeablePerson.dto.FromLikeablePersonResponseDto;
 import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
+import com.project.dugeun.domain.likeablePerson.dto.ToLikeablePersonResponseDto;
 import com.project.dugeun.domain.user.application.UserService;
+import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dto.*;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
@@ -24,6 +29,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final FinalMatchService finalMatchService;
     private final LikeablePersonService likeablePersonService;
@@ -59,17 +65,46 @@ public class UserController {
     @GetMapping("/{userId}/finalMatches")
     public ResponseEntity<List<FinalMatchResponseDto>> getFinalMatches(@PathVariable String userId, @RequestHeader(value="Authorization")String token){
         Claims claims = jwtProvider.parseJwtToken(token);
+        if(!userId.equals(claims.getSubject())){
+            String responseMessage = "접근할 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
+        }
 
+        List<FinalMatchResponseDto> finalMatchedUsers = finalMatchService.getFinalMatchedUser(userId);
+        return ResponseEntity.ok(finalMatchedUsers);
+    }
+
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<UserResponseDto> getUserInfo(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
+        Claims claims =  jwtProvider.parseJwtToken(token);
 
         if(!userId.equals(claims.getSubject())){
             String responseMessage = "접근할 수 없습니다.";
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 
+        UserResponseDto userResponseDto = userService.getUserInfo(userId);
+        return ResponseEntity.ok(userResponseDto);
 
-        List<FinalMatchResponseDto> finalMatchedUsers = finalMatchService.getFinalMatchedUser(userId);
-        return ResponseEntity.ok(finalMatchedUsers);
     }
+
+
+
+    @GetMapping("/{userId}/delete")
+    public ResponseEntity<UserDeleteResponseDto> delete(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
+        Claims claims =  jwtProvider.parseJwtToken(token);
+
+        if(!userId.equals(claims.getSubject())){
+            String responseMessage = "접근할 수 없습니다.";
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
+        }
+
+        userService.deleteUser(userId);
+        UserDeleteResponseDto deleteResponseDto = UserDeleteResponseDto.builder().success(true).build();
+        return ResponseEntity.ok(deleteResponseDto);
+    }
+
+
 
 
     @PostMapping("/blindDate/fromLike/like")
@@ -126,6 +161,7 @@ public class UserController {
         return ResponseEntity.ok(roomDto);
     }
 
+
     @GetMapping("/mypage/group/{userId}/entering")
     public ResponseEntity<?> getEnteringMeetingRooms(@PathVariable String userId, @RequestHeader(value = "Authorization") String token) {
         Claims claims = jwtProvider.parseJwtToken(token);
@@ -180,3 +216,4 @@ public class UserController {
         return ResponseEntity.ok(roomDto);
     }
 }
+

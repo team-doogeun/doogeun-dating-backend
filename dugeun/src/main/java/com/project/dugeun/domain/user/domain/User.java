@@ -1,7 +1,9 @@
 package com.project.dugeun.domain.user.domain;
 
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.chat.domain.ChatRoomJoin;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
@@ -20,12 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class User {
-
-    @Id
-    @Column(name="id", unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; // 자동 생성되는 유저 id
+public class User extends BaseEntity {
 
     @Column(name="user_id", unique = true)
     private String userId; // 유저 아이디
@@ -41,24 +38,22 @@ public class User {
     @Column(name = "description")
     private String description;
 
-    @Column(name="external_id", unique = true)
-    private String externalId; // 카카오아이디
-
     @Column(name = "uni_name")
     private String uniName; // 학교 이름
 
     @Column(name="student_id")
     private String studentId; // 학번
 
-
-    @Column(name="email")
+    @Column(name="external_id", unique = true)
+    private String externalId; // 카카오아이디
+    @Column(name="email",unique = true)
     private String email;
 
     @Column(name="age")
     private Integer age;
 
     @Column(name="gender")
-//    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     @ManyToOne
@@ -79,10 +74,15 @@ public class User {
     @Column(name = "third_profile_image")
     private String thirdFilePath;
 
-    @OneToMany(mappedBy = "user1", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "user1", cascade = CascadeType.ALL)
     @OrderBy("score desc") // 점수 높은 순으로 정렬
     @Builder.Default
     private List<Match> matchings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user2", cascade = CascadeType.ALL)
+    @OrderBy("score desc") // 점수 높은 순으로 정렬
+    @Builder.Default
+    private List<Match> anotherMatchings = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "fromUser")
@@ -96,6 +96,8 @@ public class User {
     @Builder.Default
     private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<ChatRoomJoin> chatRoomJoins = new ArrayList<>();
 
 
     public void addToMatchings(Match match){
@@ -109,12 +111,15 @@ public class User {
 
     @Builder
     public User(String userId, String name, String externalId, String password,String confirmPassword, String studentId,String email,
+                String description, String uniName,
                 Integer age, GenderType gender, DetailProfile detailProfile, IdealTypeProfile idealTypeProfile,
                 String basicFilePath, String secondFilePath, String thirdFilePath
     ){
         this.userId = userId;
         this.name = name;
         this.externalId = externalId;
+        this.description = description;
+        this.uniName = uniName;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.studentId = studentId;
@@ -130,7 +135,7 @@ public class User {
     }
 
     public static User createUser(UserSaveRequestDto userFormDto, PasswordEncoder passwordEncoder){
-        User user = User.builder()
+        return User.builder()
                 .name(userFormDto.getName())
                 .externalId(userFormDto.getExternalId())
                 .studentId(userFormDto.getStudentId())
@@ -143,7 +148,6 @@ public class User {
 
                 )
                 .build();
-        return user;
     }
 }
 

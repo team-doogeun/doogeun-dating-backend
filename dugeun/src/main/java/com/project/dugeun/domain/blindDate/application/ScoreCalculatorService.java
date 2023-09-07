@@ -228,9 +228,8 @@ public class ScoreCalculatorService {
             score += this.calculateDrinkScore(user1,user2);
             score += this.calculateMbtIScore(user1,user2);
 
-        return score;
-    }
+             return score;
+        }
 
 
-
-    }
+ }

@@ -1,11 +1,9 @@
-package com.project.dugeun.domain.user.dto;
+package com.project.dugeun.domain.likeablePerson.dto;
 
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.domain.profile.category.DepartmentType;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.criteria.From;
 
 @Getter
 @Setter

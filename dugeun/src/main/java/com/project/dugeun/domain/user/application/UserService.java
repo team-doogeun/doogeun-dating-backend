@@ -6,8 +6,9 @@ import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.dto.FromLikeablePersonResponseDto;
-import com.project.dugeun.domain.user.dto.ToLikeablePersonResponseDto;
+import com.project.dugeun.domain.likeablePerson.dto.FromLikeablePersonResponseDto;
+import com.project.dugeun.domain.likeablePerson.dto.ToLikeablePersonResponseDto;
+import com.project.dugeun.domain.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,13 @@ public class UserService {
         toLikeablePersons.add(toLikeablePersonResponseDto);
 
        }
+
+
         return toLikeablePersons;
+    }
+    public User findUserByUserId(String userId) {
+        User user =  userRepository.findByUserId(userId);
+        return user;
     }
 
     public List<FromLikeablePersonResponseDto> getFromLikeablePersons(String userId) {
@@ -49,18 +56,20 @@ public class UserService {
             fromLikeablePersons.add(fromLikeablePersonResponseDto);
         }
 
-
         return fromLikeablePersons;
     }
 
-    public String findExternalId(String targetUserId) {
-        User user =  userRepository.findByUserId(targetUserId);
-        return user.getExternalId();
+
+    @Transactional
+    public void deleteUser(String userId){
+        userRepository.deleteByUserId(userId);
     }
 
-    public User findUserByUserId(String userId) {
-        User user =  userRepository.findByUserId(userId);
-        return user;
+
+    public String findExternalId(String targetUserId) {
+       User user =  userRepository.findByUserId(targetUserId);
+
+        return user.getExternalId();
     }
 
 
@@ -78,5 +87,28 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<GroupBlindRoom> getAchievedMeetingRooms(String userId) {
         return groupBlindRepository.findByHostIdAndGroupBlindStatus(userId, GroupBlindStatus.DONE);
+    }
+
+    public User findUserByEmailMethod(String email) {
+      return userRepository.findByEmail(email);
+    }
+
+    public UserResponseDto getUserInfo(String userId) {
+        User user = userRepository.findByUserId(userId);
+        UserResponseDto userResponseDto = new UserResponseDto();
+        userResponseDto.setUserId(user.getUserId());
+        userResponseDto.setName(user.getName());
+        userResponseDto.setDescription(user.getDescription());
+        userResponseDto.setExternalId(user.getExternalId());
+        userResponseDto.setUniName(user.getUniName());
+        userResponseDto.setStudentId(user.getStudentId());
+        userResponseDto.setEmail(user.getEmail());
+        userResponseDto.setAge(user.getAge());
+        userResponseDto.setGender(user.getGender());
+        userResponseDto.setDetailProfile(user.getDetailProfile());
+        userResponseDto.setIdealTypeProfile(user.getIdealTypeProfile());
+
+        return userResponseDto;
+
     }
 }

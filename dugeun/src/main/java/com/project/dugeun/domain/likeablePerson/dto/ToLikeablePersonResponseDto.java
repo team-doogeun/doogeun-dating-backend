@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.user.dto;
+package com.project.dugeun.domain.likeablePerson.dto;
 
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.domain.profile.category.DepartmentType;
@@ -21,4 +21,5 @@ public class ToLikeablePersonResponseDto {
         dto.setUserId(likeablePerson.getToUser().getUserId());
         return dto;
     }
+
 }

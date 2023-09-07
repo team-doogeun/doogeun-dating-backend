@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.likeablePerson.domain;
 
 
+import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,12 +18,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class LikeablePerson {
-
-    @Id
-    @Column(name="id",unique = true)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class LikeablePerson extends BaseEntity {
 
     @ManyToOne
     @Setter

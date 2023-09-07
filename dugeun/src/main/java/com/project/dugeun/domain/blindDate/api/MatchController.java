@@ -1,6 +1,6 @@
 package com.project.dugeun.domain.blindDate.api;
 
-import com.project.dugeun.domain.blindDate.application.MatchMakerService;
+import com.project.dugeun.domain.blindDate.application.MatchService;
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.blindDate.dto.MatchResponseDto;
@@ -22,17 +22,12 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class MatchController {
-
-    private final MatchMakerService matchMakerService;
-    private final UserRepository userRepository;
-    private final MatchRepository matchRepository;
-
+    private final MatchService matchService;
     private final JwtProvider jwtProvider;
 
-    // get a list of matches for a given use
-
     @GetMapping("/blindDate/{userId}/matches")
-    public ResponseEntity<MatchResponseDto> getMatches(@PathVariable String userId, @RequestHeader(value = "Authorization") String token) {
+    public ResponseEntity<MatchResponseDto> getMatches(@PathVariable String userId, @RequestHeader(value = "Authorization") String token)
+    {
         Claims claims = jwtProvider.parseJwtToken(token);
 
         // 응답 헤더에 클레임 정보 추가
@@ -44,12 +39,7 @@ public class MatchController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        User user = userRepository.findByUserId(userId);
-        List<Match> pair = matchRepository.findByUser1(user);
-
-        if (pair.size() < 2) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        List<Match> pair = matchService.getMatches(userId);
 
         User matchedUser1 = pair.get(0).getUser2();
         User matchedUser2 = pair.get(1).getUser2();
@@ -58,6 +48,7 @@ public class MatchController {
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(matchResponseDto);
+
     }
 
 }

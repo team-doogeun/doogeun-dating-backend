@@ -34,7 +34,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath externalId = createString("externalId");
 
-    public final EnumPath<com.project.dugeun.domain.user.domain.profile.category.GenderType> gender = createEnum("gender", com.project.dugeun.domain.user.domain.profile.category.GenderType.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
