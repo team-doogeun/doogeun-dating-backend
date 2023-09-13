@@ -7,11 +7,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://35.222.169.XX:9000")
-                .exposedHeaders("jwt-token")	//make client read header("jwt-token")
-        ;
+                .allowedOriginPatterns("http://localhost:8080","http://localhost:3000","http://34.64.111.143")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .exposedHeaders("Access-Control-Allow-Origin")
+                .exposedHeaders("jwt-token")
+                .allowCredentials(true);
     }
 }
