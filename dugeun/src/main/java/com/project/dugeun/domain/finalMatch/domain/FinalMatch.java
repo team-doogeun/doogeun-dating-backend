@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.finalMatch.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
+import com.project.dugeun.domain.chat.domain.ChatRoom;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,10 @@ public class FinalMatch extends BaseEntity {
 
     @CreatedDate
     private LocalDateTime createDate;
+
+    @OneToOne
+    @JoinColumn(name="chat_room")
+    private ChatRoom chatRoom;
 
     public void setUser(User user1,User user2){
         this.user1 = user1;

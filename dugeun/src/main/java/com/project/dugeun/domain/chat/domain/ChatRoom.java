@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.chat.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,4 +27,8 @@ public class ChatRoom extends BaseEntity {
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatRoomJoin> chatRoomJoins = new ArrayList<>();
+
+    @OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private FinalMatch finalMatch;
+
 }

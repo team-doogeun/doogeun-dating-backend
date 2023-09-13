@@ -89,9 +89,11 @@ public class FinalMatchService {
                     chatRoom.getChatRoomJoins().add(anotherChatRoomJoin);
                     user.getChatRoomJoins().add(chatRoomJoin);
                     toUser.getChatRoomJoins().add(anotherChatRoomJoin);
+                    finalMatch.setChatRoom(chatRoom);
+                    chatRoom.setFinalMatch(finalMatch);
                     chatRoomRepository.save(chatRoom);
                     chatRoomJoinRepository.save(chatRoomJoin);
-
+                    finalMatchRepository.save(finalMatch);
 
 
                 }
