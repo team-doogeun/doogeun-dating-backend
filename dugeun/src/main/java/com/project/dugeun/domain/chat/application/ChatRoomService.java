@@ -63,6 +63,11 @@ public class ChatRoomService {
     }
 
     public Optional<ChatRoom> findChatRoomByTwoUser(User user1, User user2) {
+
+        if (user1 == null || user2 == null) {
+            return Optional.empty();
+        }
+
         List<ChatRoom> chatRooms = chatRoomRepository.findByChatRoomJoinsUserIn(List.of(user1, user2));
 
         for (ChatRoom chatRoom : chatRooms) {
