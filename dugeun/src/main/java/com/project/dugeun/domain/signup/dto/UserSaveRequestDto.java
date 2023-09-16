@@ -62,4 +62,23 @@ public class UserSaveRequestDto {
     private String thirdFilePath;
 
 
+    public User toEntity() {
+        return User.builder()
+                .userId(this.userId)
+                .name(this.name)
+                .password(this.password)
+                .description(this.description)
+                .externalId(this.externalId)
+                .uniName(this.uniName)
+                .studentId(this.studentId)
+                .email(this.email)
+                .age(this.age)
+                .gender(this.gender)
+                .detailProfile(this.detailProfile)
+                .idealTypeProfile(this.idealTypeProfile)
+                .basicFilePath(this.basicFilePath)
+                .secondFilePath(this.secondFilePath)
+                .thirdFilePath(this.thirdFilePath)
+                .build();
+    }
 }

@@ -1,94 +1,136 @@
 package com.project.dugeun.domain.signup.application;
 
+import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import com.project.dugeun.domain.user.application.UserService;
+import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.*;
 import org.assertj.core.api.Assertions;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class SignupServiceTest {
 
-    @Autowired
-    SignupService signupService;
+    @InjectMocks
+    private SignupService signupService;
 
-    @Autowired
-    UserService userService;
+    @Mock
+    private UserRepository userRepository;
 
-    User user1 = null;
-    @BeforeEach
-    void beforeEach() {
 
-        // Given
-        // 테스트를 시작 할 때 마다 user1를 새로 생성
-         user1 = User.builder().userId("user1").age(25).description("nice to meet you").email("user1@konkuk.ac.kr")
-                .externalId("user1").gender(GenderType.MAN).basicFilePath("d").secondFilePath("d").thirdFilePath("d")
-                .name("user1").uniName("건국대학교").studentId("202011762")
-                .detailProfile(DetailProfile.builder()
-                        .address(AddressType.GANGDONG)
-                        .bodyType(BodyType.SLIM)
-                        .department(DepartmentType.EDUCATION)
-                        .drink(DrinkType.HEAVY)
-                        .firstCharacter(CharacterType.CHIC)
-                        .secondCharacter(EmotionType.EMOTIONAL)
-                        .firstHobby(HobbyType.BADMINTEN)
-                        .secondHobby(HobbyType.BIKE)
-                        .firstPriority(PriorityCategory.AGE)
-                        .secondPriority(PriorityCategory.ADDRESS)
-                        .thirdPriority(PriorityCategory.BODY)
-                        .height(177)
-                        .mbti(MbtiType.INTP)
-                        .smoke(SmokeType.NONE).build())
-                .idealTypeProfile(IdealTypeProfile.builder()
-                        .firstIdealCharacter(CharacterType.INSENSITIVE)
-                        .secondIdealCharacter(EmotionType.EMOTIONAL)
-                        .firstIdealHobby(HobbyType.BIKE)
-                        .secondIdealHobby(HobbyType.FASHION)
-                        .idealAge(AgeType.MIDDLE_TWENTY)
-                        .idealBodyType(BodyType.MUSCULAR)
-                        .idealDepartment(DepartmentType.ENGINEERING)
-                        .idealDrink(DrinkType.OFTEN)
-                        .idealMbti(MbtiType.ENFJ)
-                        .build())
-                .build();
+    @Nested
+    @DisplayName("회원가입(기본정보,상세정보,이상형정보 입력)")
+    class CreateUser {
+        @Nested
+        @DisplayName("정상 케이스")
+        class SuccessCase {
+
+            @Test
+            @DisplayName("새로운 회원 생성")
+            void createUserSuccess1(){
+                // Given: 사용자가 입력한 정보를 가지고 있는 DTO 객체 생성
+                UserSaveRequestDto dto = UserSaveRequestDto.builder()
+                        .userId("user1")
+                        .age(25)
+                        .description("nice to meet you")
+                        .email("user1@konkuk.ac.kr")
+                        .externalId("user1")
+                        .gender(GenderType.MAN)
+                        .basicFilePath("d")
+                        .secondFilePath("d")
+                        .thirdFilePath("d")
+                        .name("user1")
+                        .uniName("건국대학교")
+                        .studentId("202011762")
+                        .detailProfile(DetailProfile.builder()
+                                .address(AddressType.GANGDONG)
+                                .bodyType(BodyType.SLIM)
+                                .department(DepartmentType.EDUCATION)
+                                .drink(DrinkType.HEAVY)
+                                .firstCharacter(CharacterType.CHIC)
+                                .secondCharacter(EmotionType.EMOTIONAL)
+                                .firstHobby(HobbyType.BADMINTEN)
+                                .secondHobby(HobbyType.BIKE)
+                                .firstPriority(PriorityCategory.AGE)
+                                .secondPriority(PriorityCategory.ADDRESS)
+                                .thirdPriority(PriorityCategory.BODY)
+                                .height(177)
+                                .mbti(MbtiType.INTP)
+                                .smoke(SmokeType.NONE)
+                                .build())
+                        .idealTypeProfile(IdealTypeProfile.builder()
+                                .firstIdealCharacter(CharacterType.INSENSITIVE)
+                                .secondIdealCharacter(EmotionType.EMOTIONAL)
+                                .firstIdealHobby(HobbyType.BIKE)
+                                .secondIdealHobby(HobbyType.FASHION)
+                                .idealAge(AgeType.MIDDLE_TWENTY)
+                                .idealBodyType(BodyType.MUSCULAR)
+                                .idealDepartment(DepartmentType.ENGINEERING)
+                                .idealDrink(DrinkType.OFTEN)
+                                .idealMbti(MbtiType.ENFJ)
+                                .build())
+                        .build();
+
+                // Stub: 사용자 아이디, 학번, 이메일이 중복되지 않도록 설정
+
+                Mockito.when(userRepository.findByUserId(Mockito.anyString())).thenReturn(null);
+                Mockito.when(userRepository.findByStudentId(Mockito.anyString())).thenReturn(null);
+                Mockito.when(userRepository.findByEmail(Mockito.anyString())).thenReturn(null);
+
+                // Stub: 사용자 저장 시 생성된 사용자 객체 반환
+                Mockito.when(userRepository.save(Mockito.any())).thenReturn(dto.toEntity());
+
+                // When: 회원가입 서비스 호출
+                User savedUser = signupService.saveUser(dto);
+
+                // Then: 반환된 사용자 객체와 DTO 정보 비교
+                assertThat(savedUser).isNotNull();
+                assertThat(savedUser.getUserId()).isEqualTo(dto.getUserId());
+                // 나머지 필드에 대해서도 원하는대로 비교
+
+
+
+            }
+        }
+
+        @Nested
+        @DisplayName("비정상 케이스")
+        class FailCae{
+            @Test
+            @DisplayName("중복 회원 생성시 예외 발생 - 이메일 조회")
+            void createUserFail1(){
+
+            }
+        }
+
+
 
     }
 
-    @AfterEach
-    void afterEach(){
-        // 테스트가 끝날 때마다 user1 삭제
-        userService.deleteUser(user1.getUserId());
-    }
 
-   // Builder를 이용해서 멤버를 생성했을 때 올바르게 생성됐는지 테스트
-    @Test
-    @DisplayName("1. User Creation Test")
-    public void createUser(){
-
-        assertThat(user1.getUserId()).isEqualTo("user1");
-        assertThat(user1.getAge()).isEqualTo(25);
-        assertThat(user1.getDetailProfile().getDepartment()).isEqualTo(DepartmentType.EDUCATION);
-
-    }
-
-    @Test
-    @DisplayName("2. User Deletion Test")
-    public void deleteUser(){
-        // when - 유저가 삭제될 때
-        userService.deleteUser(user1.getUserId());
-        // then - 삭제된 유저를 찾을 때 null을 반환하는지 확인
-        User deletedUser = userService.findUserByUserId(user1.getUserId());
-        assertNull(deletedUser); // 유저가 삭제되었으므로 null 이어야 함
-    }
 
 }
