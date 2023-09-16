@@ -1,103 +1,100 @@
 package com.project.dugeun.domain.likeablePerson.application;
 
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
+import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
+import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.category.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class LikeablePersonServiceTest {
 
-    @Autowired
-    LikeablePersonService likeablePersonService;
-    User user1 = null;
-    User user2 = null;
-    Match match = null;
+    @InjectMocks
+    private LikeablePersonService likeablePersonService;
 
-    @BeforeEach
-    void beforeEach(){
-        // Given
-        // 테스트를 시작 할 때 마다 user1, user2를 새로 생성하고 match에 저장
-        user1 = User.builder().userId("user1").age(25).description("nice to meet you").email("user1@konkuk.ac.kr")
-                .externalId("user1").gender(GenderType.MAN).basicFilePath("d").secondFilePath("d").thirdFilePath("d")
-                .name("user1").uniName("건국대학교").studentId("202011762")
-                .detailProfile(DetailProfile.builder()
-                        .address(AddressType.GANGDONG)
-                        .bodyType(BodyType.SLIM)
-                        .department(DepartmentType.EDUCATION)
-                        .drink(DrinkType.HEAVY)
-                        .firstCharacter(CharacterType.CHIC)
-                        .secondCharacter(EmotionType.EMOTIONAL)
-                        .firstHobby(HobbyType.BADMINTEN)
-                        .secondHobby(HobbyType.BIKE)
-                        .firstPriority(PriorityCategory.AGE)
-                        .secondPriority(PriorityCategory.ADDRESS)
-                        .thirdPriority(PriorityCategory.BODY)
-                        .height(177)
-                        .mbti(MbtiType.INTP)
-                        .smoke(SmokeType.NONE).build())
-                .idealTypeProfile(IdealTypeProfile.builder()
-                        .firstIdealCharacter(CharacterType.INSENSITIVE)
-                        .secondIdealCharacter(EmotionType.EMOTIONAL)
-                        .firstIdealHobby(HobbyType.BIKE)
-                        .secondIdealHobby(HobbyType.FASHION)
-                        .idealAge(AgeType.MIDDLE_TWENTY)
-                        .idealBodyType(BodyType.MUSCULAR)
-                        .idealDepartment(DepartmentType.ENGINEERING)
-                        .idealDrink(DrinkType.OFTEN)
-                        .idealMbti(MbtiType.ENFJ)
-                        .build())
-                .build();
-        user2 = User.builder().userId("user2").age(24).description("happy dya").email("user2@konkuk.ac.kr")
-                .externalId("user2").gender(GenderType.WOMAN).basicFilePath("d").secondFilePath("d").thirdFilePath("d")
-                .name("user2").uniName("건국대학교").studentId("202011762")
-                .detailProfile(DetailProfile.builder()
-                        .address(AddressType.GANGDONG)
-                        .bodyType(BodyType.SLIM)
-                        .department(DepartmentType.EDUCATION)
-                        .drink(DrinkType.HEAVY)
-                        .firstCharacter(CharacterType.CHIC)
-                        .secondCharacter(EmotionType.EMOTIONAL)
-                        .firstHobby(HobbyType.BADMINTEN)
-                        .secondHobby(HobbyType.BIKE)
-                        .firstPriority(PriorityCategory.AGE)
-                        .secondPriority(PriorityCategory.ADDRESS)
-                        .thirdPriority(PriorityCategory.BODY)
-                        .height(177)
-                        .mbti(MbtiType.INTP)
-                        .smoke(SmokeType.NONE).build())
-                .idealTypeProfile(IdealTypeProfile.builder()
-                        .firstIdealCharacter(CharacterType.INSENSITIVE)
-                        .secondIdealCharacter(EmotionType.EMOTIONAL)
-                        .firstIdealHobby(HobbyType.BIKE)
-                        .secondIdealHobby(HobbyType.FASHION)
-                        .idealAge(AgeType.MIDDLE_TWENTY)
-                        .idealBodyType(BodyType.MUSCULAR)
-                        .idealDepartment(DepartmentType.ENGINEERING)
-                        .idealDrink(DrinkType.OFTEN)
-                        .idealMbti(MbtiType.ENFJ)
-                        .build())
-                .build();
+    @Mock
+    private UserRepository userRepository;
 
-        match.setUser1(user1);
-        match.setUser2(user2);
+    @Mock
+    private LikeablePersonRepository likeablePersonRepository;
 
-    }
+    @Nested
+    @DisplayName("LikeablePerson 관련 테스트")
+    class TestLikeablePerson {
 
-    @Test
-    @DisplayName("1.Send Like Test")
-    public void sendLike(){
+        @BeforeEach
+        void beforeEach(){}
 
+        @Nested
+        @DisplayName("정상 케이스")
+        class SuccessCase {
+            @Test
+            @DisplayName("좋아요 보내기 - 좋아요 데이터가 없는 경우")
+            void saveLikeTest_NewLike() {
+                // 사용자 데이터 생성
+                User user1 = new User();
+                user1.setUserId("user1");
+
+                User user2 = new User();
+                user2.setUserId("user2");
+
+                // 사용자 데이터 조회 시나리오 설정
+                when(userRepository.findByUserId("user1")).thenReturn(user1);
+                when(userRepository.findByUserId("user2")).thenReturn(user2);
+
+                // 좋아요 데이터가 없는 상황 설정
+                when(likeablePersonRepository.findByFromUserAndToUser(user1, user2)).thenReturn(null);
+
+                // 좋아요 저장 시도
+                likeablePersonService.saveLike("user1", "user2");
+
+                // 좋아요 데이터가 없으므로 저장 메소드가 호출되어야 합니다.
+                Mockito.verify(likeablePersonRepository, Mockito.times(1)).save(Mockito.any(LikeablePerson.class));
+            }
+
+
+        }
+
+        @Nested
+        @DisplayName("비정상 케이스")
+        class FailClass{
+            @Test
+            @DisplayName("좋아요 보내기 - 이미 좋아요 데이터가 있는 경우")
+             void saveLikeTest() {
+                // 사용자 데이터 생성
+                User user1 = new User();
+                user1.setUserId("user1");
+
+                User user2 = new User();
+                user2.setUserId("user2");
+
+                // 사용자 데이터 조회 시나리오 설정
+                when(userRepository.findByUserId("user1")).thenReturn(user1);
+                when(userRepository.findByUserId("user2")).thenReturn(user2);
+
+                // 이미 좋아요 데이터가 있는 상황 설정
+                when(likeablePersonRepository.findByFromUserAndToUser(user1, user2)).thenReturn(new LikeablePerson());
+
+                // 좋아요 저장 시도
+                likeablePersonService.saveLike("user1", "user2");
+
+                // 좋아요 데이터가 이미 존재하므로 저장 메소드가 호출되지 않아야 합니다.
+                Mockito.verify(likeablePersonRepository, Mockito.never()).save(Mockito.any(LikeablePerson.class));
+            }
+        }
 
     }
-
-
-
 }
