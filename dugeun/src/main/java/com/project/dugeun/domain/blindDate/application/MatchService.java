@@ -70,14 +70,14 @@ public class MatchService {
         }
     }
 
-    private User findRandomUser(GenderType gender, List<User> usersToExclude) {
+    public User findRandomUser(GenderType gender, List<User> usersToExclude) {
         List<User> availableUsers = userRepository.findByGenderNotAndUserIdNotIn(gender, usersToExclude.stream().map(User::getUserId).collect(Collectors.toList()));
 
         if (!availableUsers.isEmpty()) {
             int randomIndex = new Random().nextInt(availableUsers.size());
             return availableUsers.get(randomIndex);
         } else {
-            return null;
+            throw new IllegalStateException("소개 상대가 없습니다.");
         }
     }
 
