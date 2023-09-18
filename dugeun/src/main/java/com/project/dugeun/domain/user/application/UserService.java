@@ -40,8 +40,7 @@ public class UserService {
         return toLikeablePersons;
     }
     public User findUserByUserId(String userId) {
-        User user =  userRepository.findByUserId(userId);
-        return user;
+        return userRepository.findByUserId(userId);
     }
 
     public List<FromLikeablePersonResponseDto> getFromLikeablePersons(String userId) {
