@@ -39,6 +39,11 @@ public class MatchController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
+        // TODO - targetUserId가 requestUserId를 두근거린 유저인지 검증, 아니면 에러 처리
+
+
+        // TODO - targetUserId가 requestUserId가 두근거린 유저인지 검증, 아니면 에러 처리
+
         List<Match> pair = matchService.getMatches(userId);
 
         User matchedUser1 = pair.get(0).getUser2();
