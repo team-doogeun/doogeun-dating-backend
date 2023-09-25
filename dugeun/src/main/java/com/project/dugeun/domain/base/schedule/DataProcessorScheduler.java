@@ -34,6 +34,7 @@ public class DataProcessorScheduler {
        }
     }
 
+
     @Transactional
     @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
     public void processFinalMatchDate(){

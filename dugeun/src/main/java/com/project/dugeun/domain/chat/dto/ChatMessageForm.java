@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ChatMessageForm {
-    private Long ChatRoomId;
+    private Long chatRoomId;
     private String receiver; // receiver userId
     private String sender;  // sender userId
     private String message;

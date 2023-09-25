@@ -25,7 +25,7 @@ public class ChatRoomJoin extends BaseEntity {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
 

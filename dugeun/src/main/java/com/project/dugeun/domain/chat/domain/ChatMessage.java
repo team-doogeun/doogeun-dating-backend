@@ -24,16 +24,14 @@ public class ChatMessage extends BaseEntity {
     private String message;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id")
     private User writer;
 
-
     public ChatMessage(String message, LocalDateTime now, ChatRoom chatRoom, User userByUserId) {
-
 
     }
 }
