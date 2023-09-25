@@ -8,7 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LikeResponseDto {
-
     private Boolean success;
-
 }

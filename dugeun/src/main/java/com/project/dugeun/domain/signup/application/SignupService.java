@@ -74,14 +74,23 @@ public User saveUser(UserSaveRequestDto user){
 
     public boolean checkCode(int code) throws IOException {
 
-    boolean isCorrect = false;
-    Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
-    if(validation.get("success").equals("true"))
-    {
-        isCorrect = true;
+        boolean isCorrect = false;
+        Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
+        if(validation.get("success").equals("true"))
+        {
+            isCorrect = true;
+        }
+        return isCorrect;
     }
-    return isCorrect;
+
+    public boolean clearUsers() throws IOException {
+
+      Map<String, Object> validation = UnivCert.clear(apiKey);
+        return validation.get("success").equals("true");
     }
+
+
+
 
 
 

@@ -29,24 +29,25 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
     private final JwtProvider jwtProvider;
     private final FinalMatchService finalMatchService;
     private final LikeablePersonService likeablePersonService;
-    private final GroupBlindService groupBlindService;
-    // 나가 좋아요 한 상대들 확인
+
+
+    // 내가 좋아요 한 상대들 확인
     @GetMapping("/{userId}/blindDate/toLike")
     public ResponseEntity<List<ToLikeablePersonResponseDto>> getToLikeablePersons(@PathVariable String userId, @RequestHeader(value="Authorization")String token){
 
         Claims claims = jwtProvider.parseJwtToken(token);
 
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
             List<ToLikeablePersonResponseDto> toLikeablePersons = userService.getToLikeablePersons(userId);
             return ResponseEntity.ok(toLikeablePersons);
         }
+
+
 
         // 나를 좋아요 한 상대들 확인
     @GetMapping("/{userId}/blindDate/fromLike")
@@ -55,7 +56,7 @@ public class UserController {
         Claims claims = jwtProvider.parseJwtToken(token);
 
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
         List<FromLikeablePersonResponseDto> fromLikeablePersons = userService.getFromLikeablePersons(userId);
@@ -66,7 +67,7 @@ public class UserController {
     public ResponseEntity<List<FinalMatchResponseDto>> getFinalMatches(@PathVariable String userId, @RequestHeader(value="Authorization")String token){
         Claims claims = jwtProvider.parseJwtToken(token);
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 
@@ -79,7 +80,7 @@ public class UserController {
         Claims claims =  jwtProvider.parseJwtToken(token);
 
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 
@@ -95,7 +96,7 @@ public class UserController {
         Claims claims =  jwtProvider.parseJwtToken(token);
 
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 
@@ -115,7 +116,7 @@ public class UserController {
 
         Claims claims = jwtProvider.parseJwtToken(token);
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 
@@ -132,7 +133,7 @@ public class UserController {
 
         Claims claims = jwtProvider.parseJwtToken(token);
         if(!userId.equals(claims.getSubject())){
-            String responseMessage = "접근할 수 없습니다.";
+
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null); // 403 Forbidden 상태 반환
         }
 

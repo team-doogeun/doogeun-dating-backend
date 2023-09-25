@@ -16,7 +16,7 @@ public class LikeablePersonController {
     private final LikeablePersonService likeablePersonService;
     private final JwtProvider jwtProvider;
     // "두근"버튼을 누렀을 때
-    @PostMapping("blindDate/like")
+    @PostMapping("/blindDate/like")
     public ResponseEntity<LikeResponseDto> like(@RequestBody LikeRequestDto likeRequest, @RequestHeader(value="Authorization")String token){
         String userId = likeRequest.getUserId(); // 사용자 id
         String targetUserId = likeRequest.getTargetUserId(); // 좋아요를 받은 사용자 id

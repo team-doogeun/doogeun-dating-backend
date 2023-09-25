@@ -77,6 +77,15 @@ public class SignUpController {
                 .body(emailSendResponseDto);
     }
 
+    @PostMapping(value = "/api/clearEmail")
+    public ResponseEntity<EmailResetResponseDto> resetUsersVerification() throws IOException {
+      boolean isSuccess =  signupService.clearUsers();
+      EmailResetResponseDto emailResetResponseDto = new EmailResetResponseDto();
+      emailResetResponseDto.setSuccess(isSuccess);
+      System.out.println(isSuccess);
+      return ResponseEntity.ok().body(emailResetResponseDto);
+    }
+
 
     @PostMapping(value = "/api/code")
     public ResponseEntity<EmailVerificationResponseDto> receiveCode(@RequestBody EmailVerificationRequestDto emailVerificationRequestDto) throws IOException {
