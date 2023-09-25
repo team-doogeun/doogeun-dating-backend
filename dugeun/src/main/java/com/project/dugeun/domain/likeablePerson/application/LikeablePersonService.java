@@ -12,12 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LikeablePersonService {
-
-
     private final UserRepository userRepository;
-
    private  final LikeablePersonRepository likeablePersonRepository;
-
 
    @Transactional
     public void saveLike(String userId, String targetUserId) {
@@ -42,4 +38,19 @@ public class LikeablePersonService {
        likeablePersonRepository.save(likeResult);
 
 }
+
+    // 이 메서드를 호출하여 targetUserId가 requestUserId를 두근거린 유저인지 검증하고 에러 처리할 수 있습니다.
+    public boolean verifyRelationship(User user1, User user2) {
+        // requestUser와 targetUser를 이용하여 LikeablePerson 엔티티를 검색합니다.
+        LikeablePerson likeablePerson = likeablePersonRepository.findByFromUserAndToUser(user1, user2);
+
+        if (likeablePerson == null) {
+            // 관계가 없는 경우 예외 처리를 수행합니다.
+            throw new IllegalStateException("관계가 없습니다.");
+        }
+
+        // 여기에서 관계가 확인되었으므로 원하는 작업을 수행할 수 있습니다.
+        return true;
+    }
+
 }

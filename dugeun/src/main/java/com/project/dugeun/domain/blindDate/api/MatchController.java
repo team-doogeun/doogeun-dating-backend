@@ -4,6 +4,7 @@ import com.project.dugeun.domain.blindDate.application.MatchService;
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.blindDate.dto.MatchResponseDto;
+import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
@@ -24,6 +25,7 @@ import java.util.List;
 public class MatchController {
     private final MatchService matchService;
     private final JwtProvider jwtProvider;
+    private final LikeablePersonRepository likeablePersonRepository;
 
     @GetMapping("/blindDate/{userId}/matches")
     public ResponseEntity<MatchResponseDto> getMatches(@PathVariable String userId, @RequestHeader(value = "Authorization") String token)
@@ -39,10 +41,6 @@ public class MatchController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        // TODO - targetUserId가 requestUserId를 두근거린 유저인지 검증, 아니면 에러 처리
-
-
-        // TODO - targetUserId가 requestUserId가 두근거린 유저인지 검증, 아니면 에러 처리
 
         List<Match> pair = matchService.getMatches(userId);
 
