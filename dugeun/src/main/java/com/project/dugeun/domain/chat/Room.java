@@ -1,16 +1,12 @@
 package com.project.dugeun.domain.chat;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room {
@@ -18,5 +14,9 @@ public class Room {
     @GeneratedValue
     @Column(name ="room_id")
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name="final_match_id")
+    private FinalMatch finalMatch;
 
 }

@@ -5,6 +5,10 @@ import com.project.dugeun.domain.chat.dto.ChatRoomDetailResponseDto;
 import com.project.dugeun.domain.chat.dto.ChatStartRequestDto;
 import com.project.dugeun.domain.chat.dto.ChatStartResponseDto;
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
+import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.user.dao.UserRepository;
+import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -25,18 +29,19 @@ public class RoomController {
     private final ChatService chatService;
     private final JwtProvider jwtProvider;
     private final FinalMatchService finalMatchService;
-
+    private final UserRepository userRepository;
+    private final FinalMatchRepository finalMatchRepository;
 
     // 해당 채팅방 roomId, chatList 가져오기
     @GetMapping("/chatInfo")
-    public ResponseEntity<ChatRoomDetailResponseDto> joinRoom(@RequestBody ChatRoomDetailRequestDto chatRoomDetailRequestDto, @RequestHeader(value = "Authorization") String token) {
-        Long roomId = chatRoomDetailRequestDto.getRoomId();
+    public ResponseEntity<ChatRoomDetailResponseDto> joinRoom(@RequestParam("userId")String userId,@RequestParam("roomId")Long roomId, @RequestHeader(value = "Authorization") String token) {
+
         List<Chat> chatList = chatService.findAllChatByRoomId(roomId);
         Claims claims = jwtProvider.parseJwtToken(token);
         HttpHeaders headers = new HttpHeaders();
         headers.set("user-id", claims.getSubject());
 
-        if (!chatRoomDetailRequestDto.getUserId().equals(claims.getSubject())) {
+        if (!userId.equals(claims.getSubject())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
@@ -60,13 +65,14 @@ public class RoomController {
         if (!userId.equals(claims.getSubject())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
-        Long roomId = chatService.findAndMakeChatRoom(userId,anotherUserId);
 
+        Long roomId = chatService.findAndMakeChatRoom(userId, anotherUserId);
         ChatStartResponseDto chatStartResponseDto = new ChatStartResponseDto();
         chatStartResponseDto.setRoomId(roomId);
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(chatStartResponseDto);
+
 
     }
 
