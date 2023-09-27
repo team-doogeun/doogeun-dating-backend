@@ -1,6 +1,7 @@
 package com.project.dugeun.domain.groupblind.application;
 
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+import com.project.dugeun.domain.groupblind.domain.GroupBlindCategory;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.groupblind.domain.Participant;
@@ -10,6 +11,7 @@ import com.project.dugeun.domain.groupblind.dto.UserInfoDto;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import com.project.dugeun.domain.groupblind.dto.RoomSaveRequestDto;
 import org.springframework.http.HttpStatus;
@@ -54,6 +56,15 @@ public class GroupBlindService {
             throw new IllegalStateException("호스트 유저를 찾을 수 없습니다.");
         }
 
+        GroupBlindCategory category = null;
+        if (room.getCapacityMale().equals(2)) {
+            category = GroupBlindCategory.TWOTOTWO;
+        } else if (room.getCapacityMale().equals(3)) {
+            category = GroupBlindCategory.THREETOTHREE;
+        } else if (room.getCapacityMale().equals(4)) {
+            category = GroupBlindCategory.FOURTOFOUR;
+        }
+
 
         GroupBlindRoom groupBlindRoom = GroupBlindRoom.builder()
                 .roomId(randomRoomId())
@@ -62,6 +73,7 @@ public class GroupBlindService {
                 .capacityFemale(room.getCapacityFemale())
                 .groupBlindIntroduction(room.getGroupBlindIntroduction())
                 .groupBlindStatus(GroupBlindStatus.NOT_DONE)
+                .groupBlindCategory(category)
                 .hostId(hostUserId)
                 .build();
 
@@ -77,6 +89,7 @@ public class GroupBlindService {
         } else if (host.getGender().getValue().equals("여")) {
             groupBlindRoom.setPresentFemale(groupBlindRoom.getPresentFemale() + 1);
         }
+
         return groupBlindRepository.save(groupBlindRoom);
     }
 
@@ -102,6 +115,10 @@ public class GroupBlindService {
             meetingRoom.setPresentMale(meetingRoom.getPresentMale() + 1);
         } else if (user.getGender().getValue().equals("여")) {
             meetingRoom.setPresentFemale(meetingRoom.getPresentFemale() + 1);
+        } else if (meetingRoom.getCapacityMale() == meetingRoom.getPresentMale()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("남성 정원이 다 찼습니다.");
+        } else if (meetingRoom.getCapacityFemale() == meetingRoom.getPresentFemale()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("여성 정원이 다 찼습니다.");
         }
 
         // Create a participant for the user and add it to the meeting room
