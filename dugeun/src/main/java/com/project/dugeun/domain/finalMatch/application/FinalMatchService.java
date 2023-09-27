@@ -2,10 +2,6 @@ package com.project.dugeun.domain.finalMatch.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
-import com.project.dugeun.domain.chat.dao.ChatRoomJoinRepository;
-import com.project.dugeun.domain.chat.dao.ChatRoomRepository;
-import com.project.dugeun.domain.chat.domain.ChatRoom;
-import com.project.dugeun.domain.chat.domain.ChatRoomJoin;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
@@ -31,8 +27,6 @@ public class FinalMatchService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final UserRepository userRepository;
     private final MatchRepository matchRepository;
-    private final ChatRoomRepository chatRoomRepository;
-    private final ChatRoomJoinRepository chatRoomJoinRepository;
 
 
     @Transactional(readOnly = false)
@@ -75,20 +69,6 @@ public class FinalMatchService {
                         introduceMatch2.setMatched(true);
                         matchRepository.save(introduceMatch2); // 변경된 속성 저장
                     }
-
-                     // 최종 매칭이 되면 자동으로 이에 해당되는 대화방&대화방 참여자가 자동으로 생성됨
-                    ChatRoom chatRoom = new ChatRoom();
-                    ChatRoomJoin chatRoomJoin = ChatRoomJoin.builder().chatRoom(chatRoom).user(user).build();
-                    ChatRoomJoin anotherChatRoomJoin = ChatRoomJoin.builder().chatRoom(chatRoom).user(toUser).build();
-                    chatRoom.getChatRoomJoins().add(chatRoomJoin);
-                    chatRoom.getChatRoomJoins().add(anotherChatRoomJoin);
-                    user.getChatRoomJoins().add(chatRoomJoin);
-                    toUser.getChatRoomJoins().add(anotherChatRoomJoin);
-                    finalMatch.setChatRoom(chatRoom);
-                    chatRoom.setFinalMatch(finalMatch);
-                    chatRoomRepository.save(chatRoom);
-                    chatRoomJoinRepository.save(chatRoomJoin);
-                    finalMatchRepository.save(finalMatch);
 
 
                 }
