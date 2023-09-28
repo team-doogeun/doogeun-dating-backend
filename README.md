@@ -22,8 +22,11 @@
 
 
 ## 테이블 (다이어그램)  
+![image](https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/18291867-054a-46d5-bf1e-c965a531cf0e)
 
 ## API명세 
+아래 페이지에서 API명세서를 확인할 수 있습니다.
+https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 
 ## 사이트
 
