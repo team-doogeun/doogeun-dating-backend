@@ -87,8 +87,7 @@ public class UserController {
     }
 
 
-
-    @GetMapping("/{userId}/delete")
+    @DeleteMapping("/{userId}/delete")
     public ResponseEntity<UserDeleteResponseDto> delete(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
         Claims claims =  jwtProvider.parseJwtToken(token);
 
@@ -101,8 +100,6 @@ public class UserController {
         UserDeleteResponseDto deleteResponseDto = UserDeleteResponseDto.builder().success(true).build();
         return ResponseEntity.ok(deleteResponseDto);
     }
-
-
 
 
     @PostMapping("/blindDate/fromLike/like")

@@ -3,6 +3,7 @@ package com.project.dugeun.domain.user.application;
 import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
+import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
@@ -23,6 +24,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final GroupBlindRepository groupBlindRepository;
+    private final LikeablePersonRepository likeablePersonRepository;
     public List<ToLikeablePersonResponseDto> getToLikeablePersons(String userId) {
         User user = userRepository.findByUserId(userId);
 
@@ -61,7 +63,17 @@ public class UserService {
 
     @Transactional
     public void deleteUser(String userId){
+
+        // 사용자와 관련된 모든 LikeablePerson 레코드 가져오기
+        List<LikeablePerson> likeablePersonsToDelete = likeablePersonRepository.findByFromUserUserIdOrToUserUserId(userId, userId);
+
+        // 각 LikeablePerson 레코드 삭제
+        for (LikeablePerson likeablePerson : likeablePersonsToDelete) {
+            likeablePersonRepository.delete(likeablePerson);
+        }
+
         userRepository.deleteByUserId(userId);
+
     }
 
 

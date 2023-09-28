@@ -17,10 +17,10 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class FinalMatch extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user2;
 
     @CreatedDate

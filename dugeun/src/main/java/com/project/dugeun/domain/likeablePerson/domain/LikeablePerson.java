@@ -20,11 +20,11 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class LikeablePerson extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Setter
     private User fromUser; // 호감을 표시한 사람
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @Setter
     private User toUser; // 호감을 받은 사람
 
