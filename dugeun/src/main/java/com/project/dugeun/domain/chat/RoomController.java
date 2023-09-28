@@ -1,25 +1,15 @@
 package com.project.dugeun.domain.chat;
 
-import com.project.dugeun.domain.chat.dto.ChatRoomDetailRequestDto;
-import com.project.dugeun.domain.chat.dto.ChatRoomDetailResponseDto;
-import com.project.dugeun.domain.chat.dto.ChatStartRequestDto;
-import com.project.dugeun.domain.chat.dto.ChatStartResponseDto;
-import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
-import com.project.dugeun.domain.finalMatch.dao.FinalMatchRepository;
-import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
-import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.domain.user.domain.User;
+import com.project.dugeun.domain.chat.dto.*;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.loader.entity.NaturalIdEntityJoinWalker;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,15 +18,24 @@ public class RoomController {
 
     private final ChatService chatService;
     private final JwtProvider jwtProvider;
-    private final FinalMatchService finalMatchService;
-    private final UserRepository userRepository;
-    private final FinalMatchRepository finalMatchRepository;
 
     // 해당 채팅방 roomId, chatList 가져오기
     @GetMapping("/chatInfo")
     public ResponseEntity<ChatRoomDetailResponseDto> joinRoom(@RequestParam("userId")String userId,@RequestParam("roomId")Long roomId, @RequestHeader(value = "Authorization") String token) {
-
         List<Chat> chatList = chatService.findAllChatByRoomId(roomId);
+        List<ChatMessage> chatMessageList = new ArrayList<>();
+
+        // Chat 리스트를 반복하여 모든 Chat의 sender와 message를 senderMessageMap에 추가
+        for (Chat chat : chatList) {
+            ChatMessage chatInfo = ChatMessage.builder()
+                    .roomId(roomId)
+                    .sendDate(chat.getSendDate())
+                    .sender(chat.getSender())
+                    .message(chat.getMessage())
+                    .build();
+            chatMessageList.add(chatInfo); // ChatInfo를 리스트에 추가
+        }
+
         Claims claims = jwtProvider.parseJwtToken(token);
         HttpHeaders headers = new HttpHeaders();
         headers.set("user-id", claims.getSubject());
@@ -45,11 +44,11 @@ public class RoomController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
 
-        ChatRoomDetailResponseDto chatRoomDetailResponseDto =new ChatRoomDetailResponseDto(roomId,chatList);
+        ChatRoomDetailResponseDto chatRoomDetailResponseDto = new ChatRoomDetailResponseDto(roomId, chatMessageList);
 
         return ResponseEntity.ok()
-                        .headers(headers)
-                                .body(chatRoomDetailResponseDto);
+                .headers(headers)
+                .body(chatRoomDetailResponseDto);
 
     }
 
