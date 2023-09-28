@@ -1,7 +1,7 @@
 package com.project.dugeun.domain.finalMatch.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
-import com.project.dugeun.domain.chat.domain.ChatRoom;
+import com.project.dugeun.domain.chat.Room;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,18 +17,17 @@ import java.time.LocalDateTime;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class FinalMatch extends BaseEntity {
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user2;
 
     @CreatedDate
     private LocalDateTime createDate;
 
-    @OneToOne
-    @JoinColumn(name="chat_room")
-    private ChatRoom chatRoom;
+    @OneToOne(mappedBy = "finalMatch")
+    private Room room;
 
     public void setUser(User user1,User user2){
         this.user1 = user1;

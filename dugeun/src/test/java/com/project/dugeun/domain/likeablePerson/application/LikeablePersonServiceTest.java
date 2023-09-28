@@ -1,21 +1,15 @@
 package com.project.dugeun.domain.likeablePerson.application;
 
-import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.user.domain.profile.DetailProfile;
-import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
-import com.project.dugeun.domain.user.domain.profile.category.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.Mockito.when;
 

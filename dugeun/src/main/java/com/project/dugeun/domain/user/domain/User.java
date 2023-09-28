@@ -3,7 +3,8 @@ package com.project.dugeun.domain.user.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
-import com.project.dugeun.domain.chat.domain.ChatRoomJoin;
+import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
+import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
@@ -85,20 +86,31 @@ public class User extends BaseEntity {
     private List<Match> anotherMatchings = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "fromUser")
+    @OneToMany(mappedBy = "fromUser", cascade = CascadeType.ALL)
     @OrderBy("createDate desc") // 최근순으로
     @Builder.Default
     private List<LikeablePerson> toLikeablePerson = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "toUser")
+    @OneToMany(mappedBy = "toUser",cascade = CascadeType.ALL)
     @OrderBy("createDate desc") // 최근순으로
     @Builder.Default
     private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<ChatRoomJoin> chatRoomJoins = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Participant> participants= new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "user1",cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<FinalMatch> finalMatches= new ArrayList<>();
+
+    @OneToMany(mappedBy = "user2",cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<FinalMatch> anotherFinalMatches= new ArrayList<>();
 
     public void addToMatchings(Match match){
 

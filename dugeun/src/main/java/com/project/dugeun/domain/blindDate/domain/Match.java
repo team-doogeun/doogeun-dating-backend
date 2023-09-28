@@ -15,10 +15,10 @@ import javax.persistence.*;
 @Entity
 public class Match extends BaseEntity {
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user1;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user2;
 
     @Column(name="score")

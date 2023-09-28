@@ -29,7 +29,7 @@ public class Participant {
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     @ManyToOne

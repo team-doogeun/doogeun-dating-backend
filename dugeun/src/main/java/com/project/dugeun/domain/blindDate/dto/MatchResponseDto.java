@@ -88,8 +88,7 @@ public class MatchResponseDto {
         this.mbtiType = user.getDetailProfile().getMbti();
         this.basicFilePath = user.getBasicFilePath();
         this.secondFilePath = user.getSecondFilePath();
-        this.thirdFilePath = user.getThirdFilePath();
-        this.hobby1 =user.getDetailProfile().getFirstHobby();
+         this.hobby1 =user.getDetailProfile().getFirstHobby();
         this.hobby2=user.getDetailProfile().getSecondHobby();
 
 

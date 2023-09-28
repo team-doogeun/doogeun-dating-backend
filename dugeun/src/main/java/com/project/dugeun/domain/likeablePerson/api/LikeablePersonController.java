@@ -1,8 +1,8 @@
 package com.project.dugeun.domain.likeablePerson.api;
 
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
-import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
 import com.project.dugeun.domain.likeablePerson.dto.LikeResponseDto;
+import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

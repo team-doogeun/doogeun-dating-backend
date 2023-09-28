@@ -1,11 +1,9 @@
 package com.project.dugeun.domain.blindDate.api;
 
 import com.project.dugeun.domain.blindDate.application.MatchService;
-import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.blindDate.dto.MatchResponseDto;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
-import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;

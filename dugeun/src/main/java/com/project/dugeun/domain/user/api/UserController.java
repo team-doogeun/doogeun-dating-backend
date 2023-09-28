@@ -2,7 +2,6 @@ package com.project.dugeun.domain.user.api;
 
 import com.project.dugeun.domain.finalMatch.application.FinalMatchService;
 import com.project.dugeun.domain.finalMatch.dto.FinalMatchResponseDto;
-import com.project.dugeun.domain.groupblind.application.GroupBlindService;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.groupblind.dto.GroupBlindDto;
 import com.project.dugeun.domain.likeablePerson.application.LikeablePersonService;
@@ -10,8 +9,6 @@ import com.project.dugeun.domain.likeablePerson.dto.FromLikeablePersonResponseDt
 import com.project.dugeun.domain.likeablePerson.dto.LikeRequestDto;
 import com.project.dugeun.domain.likeablePerson.dto.ToLikeablePersonResponseDto;
 import com.project.dugeun.domain.user.application.UserService;
-import com.project.dugeun.domain.user.dao.UserRepository;
-import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.dto.*;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
@@ -90,8 +87,7 @@ public class UserController {
     }
 
 
-
-    @GetMapping("/{userId}/delete")
+    @DeleteMapping("/{userId}/delete")
     public ResponseEntity<UserDeleteResponseDto> delete(@PathVariable String userId,@RequestHeader(value="Authorization")String token){
         Claims claims =  jwtProvider.parseJwtToken(token);
 
@@ -104,8 +100,6 @@ public class UserController {
         UserDeleteResponseDto deleteResponseDto = UserDeleteResponseDto.builder().success(true).build();
         return ResponseEntity.ok(deleteResponseDto);
     }
-
-
 
 
     @PostMapping("/blindDate/fromLike/like")
