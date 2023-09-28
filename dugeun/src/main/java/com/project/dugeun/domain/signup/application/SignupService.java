@@ -64,7 +64,7 @@ public User saveUser(UserSaveRequestDto user){
         userUniName =uniName;
         boolean isSend = false;
         Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, true);
-        if(validation.get("success").equals("true"))
+        if(validation.get("success").equals(true))
         {
             isSend = true;
         }
@@ -76,7 +76,7 @@ public User saveUser(UserSaveRequestDto user){
 
         boolean isCorrect = false;
         Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
-        if(validation.get("success").equals("true"))
+        if(validation.get("success").equals(true))
         {
             isCorrect = true;
         }
@@ -86,11 +86,8 @@ public User saveUser(UserSaveRequestDto user){
     public boolean clearUsers() throws IOException {
 
       Map<String, Object> validation = UnivCert.clear(apiKey);
-        return validation.get("success").equals("true");
+        return validation.get("success").equals(true);
     }
-
-
-
 
 
 
