@@ -22,7 +22,8 @@
 
 
 ## 테이블 (다이어그램)  
-![image](https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/18291867-054a-46d5-bf1e-c965a531cf0e)
+![image](https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/d9531e44-57e6-4691-a1a7-be0e5108c3e4)
+
 
 ## API명세 
 아래 페이지에서 API명세서를 확인할 수 있습니다.
