@@ -7,6 +7,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
@@ -23,6 +25,7 @@ public class ChatController {
                 .roomId(roomId)
                 .sender(chat.getSender())
                 .message(chat.getMessage())
+                .sendDate(LocalDateTime.now())
                 .build();
     }
 
