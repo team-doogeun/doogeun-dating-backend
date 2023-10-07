@@ -1,5 +1,7 @@
-package com.project.dugeun.domain.chat;
+package com.project.dugeun.domain.chat.api;
 
+import com.project.dugeun.domain.chat.domain.Chat;
+import com.project.dugeun.domain.chat.application.ChatService;
 import com.project.dugeun.domain.chat.dto.*;
 import com.project.dugeun.security.JwtProvider;
 import io.jsonwebtoken.Claims;
@@ -75,22 +77,5 @@ public class RoomController {
 
     }
 
-    /**
-     * 채팅방 리스트 보기
-     */
-//    @GetMapping("/roomList")
-//    public String roomList(Model model) {
-//        List<Room> roomList = chatService.findAllRoom();
-//        model.addAttribute("roomList", roomList);
-//        return "chat/roomList";
-//    }
-
-    /**
-     * 방만들기 폼
-     */
-//    @GetMapping("/roomForm")
-//    public String roomForm() {
-//        return "chat/roomForm";
-//    }
 
 }

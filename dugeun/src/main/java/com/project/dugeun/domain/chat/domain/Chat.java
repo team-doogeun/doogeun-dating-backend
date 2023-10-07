@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.chat;
+package com.project.dugeun.domain.chat.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;

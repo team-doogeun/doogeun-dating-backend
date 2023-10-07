@@ -18,8 +18,6 @@ import java.util.Map;
 @Transactional(readOnly = true)
 public class SignupService {
 private final UserRepository userRepository;
-String userEmail;
-String userUniName;
 
 @Value("${api.key}")
 private String apiKey;
@@ -60,8 +58,6 @@ public User saveUser(UserSaveRequestDto user){
 
 
     public boolean startEmailVerification(String email, String uniName) throws IOException {
-        userEmail = email;
-        userUniName =uniName;
         boolean isSend = false;
         Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, true);
         if(validation.get("success").equals(true))
@@ -72,10 +68,10 @@ public User saveUser(UserSaveRequestDto user){
         return isSend;
     }
 
-    public boolean checkCode(int code) throws IOException {
+    public boolean checkCode(int code,String email,String univName) throws IOException {
 
         boolean isCorrect = false;
-        Map<String, Object> validation =UnivCert.certifyCode(apiKey,userEmail,userUniName,code);
+        Map<String, Object> validation =UnivCert.certifyCode(apiKey,email,univName,code);
         if(validation.get("success").equals(true))
         {
             isCorrect = true;
