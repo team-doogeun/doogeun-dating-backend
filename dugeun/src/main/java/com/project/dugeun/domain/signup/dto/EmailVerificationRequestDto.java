@@ -14,4 +14,10 @@ public class EmailVerificationRequestDto
     @NotEmpty
     private Integer code;
 
+    @NotEmpty
+    private String email;
+
+    @NotEmpty
+    private String univName;
+
 }

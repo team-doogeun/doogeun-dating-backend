@@ -40,13 +40,13 @@ public class UserController {
         if(!userId.equals(claims.getSubject())){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         }
-            List<ToLikeablePersonResponseDto> toLikeablePersons = userService.getToLikeablePersons(userId);
-            return ResponseEntity.ok(toLikeablePersons);
-        }
+        List<ToLikeablePersonResponseDto> toLikeablePersons = userService.getToLikeablePersons(userId);
+        return ResponseEntity.ok(toLikeablePersons);
+    }
 
 
 
-        // 나를 좋아요 한 상대들 확인
+    // 나를 좋아요 한 상대들 확인
     @GetMapping("/{userId}/blindDate/fromLike")
     public ResponseEntity<List<FromLikeablePersonResponseDto>> getFromLikeablePersons(@PathVariable String userId, @RequestHeader(value="Authorization")String token){
 
@@ -211,4 +211,3 @@ public class UserController {
         return ResponseEntity.ok(roomDto);
     }
 }
-

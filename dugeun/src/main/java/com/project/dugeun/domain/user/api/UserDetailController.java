@@ -12,10 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,9 +24,8 @@ public class UserDetailController {
     private final LikeablePersonService likeablePersonService;
 
     @GetMapping("/likeToMe/userDetail")
-    public ResponseEntity<DetailResponseDto> showToMeDetail(@RequestBody DetailRequestDto detailRequestDto, @RequestHeader(value = "Authorization") String token) {
-        String requestUserId = detailRequestDto.getRequestUserId();
-        String targetUserId = detailRequestDto.getTargetUserId();
+    public ResponseEntity<DetailResponseDto> showToMeDetail(@RequestParam("requestUserId")String requestUserId,@RequestParam("targetUserId")String targetUserId, @RequestHeader(value = "Authorization") String token) {
+
         Claims claims = jwtProvider.parseJwtToken(token);
         HttpHeaders headers = new HttpHeaders();
         headers.set("user-id", claims.getSubject());
@@ -57,9 +53,8 @@ public class UserDetailController {
     }
 
     @GetMapping("/likeFromMe/userDetail")
-    public ResponseEntity<DetailResponseDto> showFromMeDetail(@RequestBody DetailRequestDto detailRequestDto, @RequestHeader(value = "Authorization") String token) {
-        String requestUserId = detailRequestDto.getRequestUserId();
-        String targetUserId = detailRequestDto.getTargetUserId();
+    public ResponseEntity<DetailResponseDto> showFromMeDetail(@RequestParam("requestUserId")String requestUserId,@RequestParam("targetUserId")String targetUserId,@RequestHeader(value = "Authorization") String token) {
+
         Claims claims = jwtProvider.parseJwtToken(token);
         HttpHeaders headers = new HttpHeaders();
         headers.set("user-id", claims.getSubject());

@@ -1,4 +1,4 @@
-package com.project.dugeun.domain.chat;
+package com.project.dugeun.domain.chat.domain;
 
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
 import lombok.*;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor()
 public class Room {
     @Id
     @GeneratedValue

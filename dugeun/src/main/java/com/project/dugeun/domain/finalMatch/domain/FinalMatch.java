@@ -1,7 +1,7 @@
 package com.project.dugeun.domain.finalMatch.domain;
 
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
-import com.project.dugeun.domain.chat.Room;
+import com.project.dugeun.domain.chat.domain.Room;
 import com.project.dugeun.domain.user.domain.User;
 import lombok.Getter;
 import lombok.Setter;

@@ -90,7 +90,7 @@ public class SignUpController {
     @PostMapping(value = "/api/code")
     public ResponseEntity<EmailVerificationResponseDto> receiveCode(@RequestBody EmailVerificationRequestDto emailVerificationRequestDto) throws IOException {
         // 여기서 받은 code를 활용하여 필요한 처리 수행
-        boolean isCorrect = signupService.checkCode(emailVerificationRequestDto.getCode());
+        boolean isCorrect = signupService.checkCode(emailVerificationRequestDto.getCode(),emailVerificationRequestDto.getEmail(), emailVerificationRequestDto.getUnivName());
         EmailVerificationResponseDto emailVerificationResponseDto = new EmailVerificationResponseDto();
         emailVerificationResponseDto.setSuccess(isCorrect);
         return ResponseEntity.ok()

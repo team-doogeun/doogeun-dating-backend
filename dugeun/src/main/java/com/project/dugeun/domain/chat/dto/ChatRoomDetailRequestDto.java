@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatRoomDetailRequestDto {
-
     private String userId;
     private Long roomId;
 }
