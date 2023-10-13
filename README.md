@@ -20,7 +20,11 @@
 
 
 ## 🔧 Tools 
-
+- Spring boot
+- JPA
+- AWS RDS(MySql)
+- AWS S3
+- Google Cloud Platform(배포)
 
 ## 테이블 (다이어그램)  
 <img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/d9531e44-57e6-4691-a1a7-be0e5108c3e4">     
@@ -40,9 +44,9 @@ https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 - 학교 이메일 인증을 통한 대학생 인증
 - 상세 정보(취미,성격,키,체형,mbti,흡연 유무,음주 정도,이상형 우선순위등..) 입력받기
 - 이상형 정보(선호하는 상대의 취미,성격,키,체형,mbti,흡연 유무,음주 정도등...) 입력받기
-<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/28ec2e86-9536-4861-9215-5df18d6da0be">      
-<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/36507332-99c5-4e72-ba0e-ded105f21727">
-<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/005ee2bd-ffb4-4ba1-8ad5-c0712ba27ee0">      
+<img width="350" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/28ec2e86-9536-4861-9215-5df18d6da0be">      
+<img width="350" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/36507332-99c5-4e72-ba0e-ded105f21727">
+<img width="200" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/005ee2bd-ffb4-4ba1-8ad5-c0712ba27ee0">      
 
 ### 2. 소개팅 관련 기능 
 
