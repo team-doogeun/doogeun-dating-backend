@@ -1,9 +1,11 @@
 package com.project.dugeun.domain.blindDate.application;
 
 
+import ch.qos.logback.core.joran.action.IADataForComplexProperty;
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.AssertFalse;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -69,6 +71,7 @@ public class ScoreCalculatorService {
         ArrayList<String> idealHobbies = new ArrayList<>();
         ArrayList<String> targetHobbies = new ArrayList<>();
         int subScore = 0 ;
+        boolean flag = false;
 
         // 취미 계산 로직
         targetHobbies.add(user2.getDetailProfile().getFirstHobby().getValue());
@@ -80,9 +83,12 @@ public class ScoreCalculatorService {
         for(int i=0; i< targetHobbies.size(); i++){
             if(targetHobbies.contains(idealHobbies.get(i))){
 
-                subScore += 15;
-                subScore += calculatePriorityScore(user1, "성격");
-
+                subScore += 10;
+                // 취미가 2개나 똑같더라도 해당 함수는 1번만 적용되도록
+                if(!flag){
+                    subScore += calculatePriorityScore(user1, "취미");
+                    flag = true;
+                }
             }
         }
         return subScore;
@@ -211,10 +217,6 @@ public class ScoreCalculatorService {
 
     public int calculateCompatibility(User user1, User user2) {
         int score = 0;
-        if(Objects.equals(user1.getGender().getValue(), user2.getGender().getValue()))
-            {
-                score -= 100;
-            }
 
             score += this.calculateAgeScore(user1,user2);
             score += this.calculateDepartmentScore(user1,user2);

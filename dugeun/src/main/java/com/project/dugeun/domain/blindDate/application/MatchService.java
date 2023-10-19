@@ -26,7 +26,6 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final ScoreCalculatorService scoreCalculatorService;
 
-    @Transactional
     public boolean checkMatch(User user1, User user2) {
         return matchRepository.existsByUser1AndUser2(user1, user2) || matchRepository.existsByUser1AndUser2(user2, user1);
     }
@@ -34,7 +33,7 @@ public class MatchService {
     public void manageMatches(User user) {
 
         // 주어진 유저를 제외한 모두 유저들 불러오기
-        List<User> users = userRepository.findAllByUserIdNot(user.getUserId());
+        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender().getValue(), user.getUserId());
 
         for (User otherUser : users) {
             int compatibilityScore = scoreCalculatorService.calculateCompatibility(user, otherUser);

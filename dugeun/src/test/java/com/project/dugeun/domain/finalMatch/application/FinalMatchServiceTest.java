@@ -43,7 +43,7 @@ public class FinalMatchServiceTest {
     }
 
     @Test
-    @DisplayName("해당 유저에 해당도는 최종 매칭이 없을 때")
+    @DisplayName("해당 유저에 해당되는 최종 매칭이 없을 때")
     void testGetFinalMatchedUser_NoMatches() {
 
         String userId = "testUser";
