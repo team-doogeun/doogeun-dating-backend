@@ -15,7 +15,7 @@ public class Room {
     @Column(name ="room_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name="final_match_id")
     private FinalMatch finalMatch;
 
