@@ -98,7 +98,6 @@ public class User extends BaseEntity {
     private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
 
-
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @Builder.Default
     private List<Participant> participants= new ArrayList<>();
@@ -110,7 +109,7 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user2",cascade = CascadeType.ALL)
     @Builder.Default
-    private List<FinalMatch> anotherFinalMatches= new ArrayList<>();
+    private List<FinalMatch> anotherFinalMatches = new ArrayList<>();
 
     public void addToMatchings(Match match){
 
