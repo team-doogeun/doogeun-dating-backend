@@ -44,8 +44,10 @@ https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 - 상세 정보(취미,성격,키,체형,mbti,흡연 유무,음주 정도,이상형 우선순위등..) 입력받기
 - 이상형 정보(선호하는 상대의 취미,성격,키,체형,mbti,흡연 유무,음주 정도등...) 입력받기
 <img width="250" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/28ec2e86-9536-4861-9215-5df18d6da0be">      
-<img width="350" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/36507332-99c5-4e72-ba0e-ded105f21727">
-<img width="100" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/005ee2bd-ffb4-4ba1-8ad5-c0712ba27ee0">      
+<img width="150" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/ec8e9d63-1422-4a95-8f43-d1459828c417">
+<img width="150" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/d87af0d8-ee45-48a0-bccd-cacc2b854e9a">      
+
+
 
 ### 2. 소개팅 관련 기능 
 
@@ -60,7 +62,7 @@ https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 - 마이페이지의 최종 매칭 페이지에서 최종 매치 페이지에서 최종 매칭 확인
 - 최종 매칭 상대와 1:1 채팅
 - <img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/b3222b4a-4aec-4aec-a262-99e9e60163e2">      
-
+- 동영상 시연 🚀 -> https://www.youtube.com/watch?v=4c_djB9Qxvs 
 
 ### 3. 미팅 관련 기능 
 
