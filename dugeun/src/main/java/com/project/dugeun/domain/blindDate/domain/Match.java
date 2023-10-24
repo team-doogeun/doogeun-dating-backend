@@ -28,4 +28,8 @@ public class Match extends BaseEntity {
     @Column(name="result")
     private Boolean matched = false;
 
+    public boolean isMatched() {
+        return matched;
+    }
+
 }

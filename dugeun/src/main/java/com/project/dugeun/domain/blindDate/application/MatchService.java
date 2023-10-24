@@ -96,7 +96,14 @@ public class MatchService {
 
     public List<Match> getMatches(String userId){
         User user = userRepository.findByUserId(userId);
-        return matchRepository.findByUser1(user);
+        List<Match> nonFinalMatchedMatches = filterFinalMatches(matchRepository.findByUser1(user));
+        return nonFinalMatchedMatches;
+    }
+
+    public List<Match> filterFinalMatches(List<Match> matches){
+        return matches.stream()
+                .filter(match -> !match.isMatched())
+                .collect(Collectors.toList());
     }
 
 }

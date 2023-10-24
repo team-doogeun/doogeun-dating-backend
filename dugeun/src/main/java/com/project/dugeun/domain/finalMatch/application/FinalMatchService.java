@@ -68,10 +68,7 @@ public class FinalMatchService {
                         introduceMatch2.setMatched(true);
                         matchRepository.save(introduceMatch2); // 변경된 속성 저장
                     }
-
-
                 }
-
 
             }
             else {
