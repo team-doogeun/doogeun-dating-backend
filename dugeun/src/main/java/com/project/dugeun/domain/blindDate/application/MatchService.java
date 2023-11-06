@@ -43,7 +43,7 @@ public class MatchService {
             }
         }
 
-        List<Match> matchList = matchRepository.findByUser1(user);
+        List<Match> matchList = filter(matchRepository.findByUser1(user));
 
         //  기준 점수에 충족되는 상대가 2명이 되지 않으면 임의로 한 명 소개해주는 로직 ( 1명일 때 )
         if (matchList.size() == 1)
@@ -90,6 +90,7 @@ public class MatchService {
             match.setMatched(false);
             user1.addToMatchings(match);
             user2.addToMatchings(match);
+            match.setIntroduced(true);
             matchRepository.save(match);
         }
     }
@@ -99,4 +100,21 @@ public class MatchService {
         return matchRepository.findByUser1(user);
     }
 
+    public List<Match> filter(List<Match> matches){
+        List<Match> noFinalMatchedMatches =   filterFinalMatches(matches);
+        List<Match> noRecentlyIntroducedMatches = filterIntroducedMatches(noFinalMatchedMatches);
+        return noRecentlyIntroducedMatches;
+    }
+
+    public List<Match> filterFinalMatches(List<Match> matches){
+        return matches.stream()
+                .filter(match -> !match.isMatched())
+                .collect(Collectors.toList());
+    }
+
+    public List<Match> filterIntroducedMatches(List<Match> matches){
+        return matches.stream()
+                .filter(match -> !match.isIntroduced())
+                .collect(Collectors.toList());
+    }
 }

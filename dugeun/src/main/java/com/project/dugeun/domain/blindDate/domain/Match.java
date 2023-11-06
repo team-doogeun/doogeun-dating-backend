@@ -5,7 +5,6 @@ import com.project.dugeun.domain.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -27,5 +26,17 @@ public class Match extends BaseEntity {
     @Builder.Default
     @Column(name="result")
     private Boolean matched = false;
+
+    @Column(name = "introduced", columnDefinition = "TINYINT(1) default 0")
+    private Boolean introduced ;
+
+
+    public boolean isMatched() {
+        return matched;
+    }
+
+    public boolean isIntroduced() {
+        return introduced;
+    }
 
 }
