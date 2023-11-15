@@ -10,38 +10,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
-public class DataProcessorScheduler {
-    private final FinalMatchService finalMatchService;
-    private final MatchService matchService;
-    private final UserRepository userRepository;
-
-    public DataProcessorScheduler(FinalMatchService finalMatchService, MatchService matchService, UserRepository userRepository){
-        this.finalMatchService = finalMatchService;
-        this.matchService = matchService;
-        this.userRepository = userRepository;
-    }
-
-    @Transactional
-    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
-    public void processMatchDate(){
-        // user 디비에 있는 모든 유저들 로드해서 수행
-       List<User> users = userRepository.findAll();
-       for(User user: users){
-           // 모든 사용자에 대해 소개 상대 소개 초기화
-           matchService.manageMatches(user);
-       }
-    }
-
-
-    //@Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
-    @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
-    @Transactional
-    public void processFinalMatchDate(){
-        List<User> users = userRepository.findAll();
-        for(User user: users){
-            finalMatchService.saveFinalMatch(user.getUserId());
-        }
-    }
-
-}
+//@Component
+//public class DataProcessorScheduler {
+//    private final FinalMatchService finalMatchService;
+//    private final MatchService matchService;
+//    private final UserRepository userRepository;
+//
+//    public DataProcessorScheduler(FinalMatchService finalMatchService, MatchService matchService, UserRepository userRepository){
+//        this.finalMatchService = finalMatchService;
+//        this.matchService = matchService;
+//        this.userRepository = userRepository;
+//    }
+//
+//    @Transactional
+//    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
+//    public void processMatchDate(){
+//        // user 디비에 있는 모든 유저들 로드해서 수행
+//       List<User> users = userRepository.findAll();
+//       for(User user: users){
+//           // 모든 사용자에 대해 소개 상대 소개 초기화
+//           matchService.manageMatches(user);
+//       }
+//    }
+//
+//
+//    //@Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
+//    @Scheduled(cron = "0 */1 * * * *") // 매일 1분 마다
+//    @Transactional
+//    public void processFinalMatchDate(){
+//        List<User> users = userRepository.findAll();
+//        for(User user: users){
+//            finalMatchService.saveFinalMatch(user.getUserId());
+//        }
+//    }
+//
+//}

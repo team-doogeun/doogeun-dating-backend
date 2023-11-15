@@ -26,14 +26,19 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final ScoreCalculatorService scoreCalculatorService;
 
+
     public boolean checkMatch(User user1, User user2) {
         return matchRepository.existsByUser1AndUser2(user1, user2) || matchRepository.existsByUser1AndUser2(user2, user1);
     }
+
+
+
+
     @Transactional
     public void manageMatches(User user) {
 
         // 주어진 유저를 제외한 모두 유저들 불러오기
-        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender().getValue(), user.getUserId());
+        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender(), user.getUserId());
 
         for (User otherUser : users) {
             int compatibilityScore = scoreCalculatorService.calculateCompatibility(user, otherUser);
@@ -68,6 +73,26 @@ public class MatchService {
             saveMatch(user, secondRandomUser, 0);
         }
     }
+
+    public List<Match> calculateMatches(User user){
+        List<Match> matchList = new ArrayList<>();
+        // 주어진 유저를 제외한 모두 유저들 불러오기
+        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender(), user.getUserId());
+
+        for (User otherUser : users) {
+            int compatibilityScore = scoreCalculatorService.calculateCompatibility(user, otherUser);
+
+            if (compatibilityScore >= 50 && !checkMatch(user, otherUser)) {
+                Match match = new Match();
+                match.setUser1(user);
+                match.setUser2(otherUser);
+                match.setCompatibilityScore(compatibilityScore);
+                matchList.add(match);
+            }
+        }
+        return matchList;
+    }
+
 
     public User findRandomUser(GenderType gender, List<User> usersToExclude) {
         List<User> availableUsers = userRepository.findByGenderNotAndUserIdNotIn(gender, usersToExclude.stream().map(User::getUserId).collect(Collectors.toList()));
