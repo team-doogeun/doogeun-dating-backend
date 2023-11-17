@@ -26,48 +26,32 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final ScoreCalculatorService scoreCalculatorService;
 
+
     public boolean checkMatch(User user1, User user2) {
         return matchRepository.existsByUser1AndUser2(user1, user2) || matchRepository.existsByUser1AndUser2(user2, user1);
     }
-    @Transactional
-    public void manageMatches(User user) {
 
+
+    @Transactional(readOnly = false)
+    public List<Match> calculateMatches(User user){
+        List<Match> matchList = new ArrayList<>();
         // 주어진 유저를 제외한 모두 유저들 불러오기
-        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender().getValue(), user.getUserId());
+        List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender(), user.getUserId());
 
         for (User otherUser : users) {
             int compatibilityScore = scoreCalculatorService.calculateCompatibility(user, otherUser);
 
             if (compatibilityScore >= 50 && !checkMatch(user, otherUser)) {
-                saveMatch(user, otherUser, compatibilityScore);
+                Match match = new Match();
+                match.setUser1(user);
+                match.setUser2(otherUser);
+                match.setCompatibilityScore(compatibilityScore);
+                matchList.add(match);
             }
         }
-
-        List<Match> matchList = filter(matchRepository.findByUser1(user));
-
-        //  기준 점수에 충족되는 상대가 2명이 되지 않으면 임의로 한 명 소개해주는 로직 ( 1명일 때 )
-        if (matchList.size() == 1)
-        {
-            List<User> usersToExclude = new ArrayList<>();
-            usersToExclude.add(user);
-            User randomUser = findRandomUser(user.getGender(), usersToExclude);
-            saveMatch(user, randomUser, 0); // compatibility 점수는 일단 0점으로 부여
-        }
-
-        ///  기준 점수에 충족되는 상대가 0명이면 임의로 두 명 소개해주는 로직 ( 0명일 때 )
-        if (matchList.isEmpty())
-        {
-            List<User> usersToExclude = new ArrayList<>();
-            usersToExclude.add(user);
-            User firstRandomUser = findRandomUser(user.getGender(), usersToExclude);
-
-            usersToExclude.add(firstRandomUser);
-            User secondRandomUser = findRandomUser(user.getGender(), usersToExclude);
-
-            saveMatch(user, firstRandomUser, 0);
-            saveMatch(user, secondRandomUser, 0);
-        }
+        return matchList;
     }
+
 
     public User findRandomUser(GenderType gender, List<User> usersToExclude) {
         List<User> availableUsers = userRepository.findByGenderNotAndUserIdNotIn(gender, usersToExclude.stream().map(User::getUserId).collect(Collectors.toList()));
@@ -81,7 +65,7 @@ public class MatchService {
     }
 
     @Transactional
-    public void saveMatch(User user1, User user2, int compatibilityScore) {
+    public void saveMatch(User user1, User user2, int compatibilityScore){
         if (!checkMatch(user1, user2)) {
             Match match = new Match();
             match.setUser1(user1);
@@ -97,7 +81,9 @@ public class MatchService {
 
     public List<Match> getMatches(String userId){
         User user = userRepository.findByUserId(userId);
-        return matchRepository.findByUser1(user);
+        List<Match> noFinalMatchedMatches =   filterFinalMatches(matchRepository.findByUser1(user));
+        List<Match> noRecentlyIntroducedMatches = filterIntroducedMatches(noFinalMatchedMatches);
+        return noRecentlyIntroducedMatches;
     }
 
     public List<Match> filter(List<Match> matches){

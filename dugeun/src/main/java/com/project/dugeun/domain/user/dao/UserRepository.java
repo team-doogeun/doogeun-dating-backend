@@ -34,7 +34,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(value = "SELECT * FROM user WHERE gender != :gender ORDER BY RAND() LIMIT 1", nativeQuery = true)
     User findRandomUserByGenderNot(@Param("gender") GenderType gender);
 
-    List<User> findByGenderNotAndUserIdNot(String gender, String userId);
+    List<User> findByGenderNotAndUserIdNot(GenderType gender, String userId);
 
     List<User> findByGenderNotAndUserIdNotIn(GenderType gender, List<String> collect);
 
