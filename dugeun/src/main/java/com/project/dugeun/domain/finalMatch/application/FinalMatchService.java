@@ -29,7 +29,8 @@ public class FinalMatchService {
 
 
     @Transactional(readOnly = false)
-    public void saveFinalMatch(String userId) {
+    public List<FinalMatch> confirmFinalMatch(String userId) {
+        List<FinalMatch> finalMatchList =  new ArrayList<>();
         User user = userRepository.findByUserId(userId);
 
         List<LikeablePerson> likeablePeople = likeablePersonRepository.findByFromUser(user);
@@ -47,16 +48,17 @@ public class FinalMatchService {
 
             if (userFound) {
                 // FinalMatch가 이미 있는 지 확인
-                FinalMatch existingMatch1 = finalMatchRepository.findByUser1AndUser2(user, toUser);
-                FinalMatch existingMatch2 = finalMatchRepository.findByUser1AndUser2(toUser, user);
+                FinalMatch existingFinalMatch1 = finalMatchRepository.findByUser1AndUser2(user, toUser);
+                FinalMatch existingFinalMatch2 = finalMatchRepository.findByUser1AndUser2(toUser, user);
 
 
-                if (existingMatch1 == null && existingMatch2 == null) {
+                if (existingFinalMatch1 == null && existingFinalMatch2 == null) {
 
                     FinalMatch finalMatch = new FinalMatch();
                     finalMatch.setUser1(user);
                     finalMatch.setUser2(toUser);
-                    finalMatchRepository.save(finalMatch);
+                    finalMatchList.add(finalMatch);
+//                    finalMatchRepository.save(finalMatch);
 
                     Match introduceMatch = matchRepository.findByUser1AndUser2(user, toUser);
                     Match introduceMatch2 = matchRepository.findByUser1AndUser2(toUser, user);
@@ -75,6 +77,8 @@ public class FinalMatchService {
                 throw new IllegalStateException("해당 Final Match가 이미 존재합니다.");
             }
         }
+
+        return finalMatchList;
     }
 
 

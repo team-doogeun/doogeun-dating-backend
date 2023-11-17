@@ -24,33 +24,33 @@ import java.util.Map;
 @Configuration
 @EnableBatchProcessing
 @RequiredArgsConstructor
-public class ChunkJobConfig {
+public class MatchJobConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
     private final MatchService matchService;
 
     @Bean
-    public Job ChunkJob() throws Exception {
-        return jobBuilderFactory.get("ChunkJob0")
-                .start(step())
+    public Job matchJob() throws Exception {
+        return jobBuilderFactory.get("matchChunkJob")
+                .start(matchStep())
                 .build();
     }
 
     @Bean
     @JobScope
-    public Step step() throws Exception {
+    public Step matchStep() throws Exception {
         return stepBuilderFactory.get("step")
                 .<User, List<Match>>chunk(2)
-                .reader(reader())
-                .processor(processor())
-                .writer(writerList())
+                .reader(matchReader())
+                .processor(matchProcessor())
+                .writer(matchListWriter())
                 .build();
     }
 
     @Bean
     @StepScope
-    public JpaPagingItemReader<User> reader() throws Exception{
+    public JpaPagingItemReader<User> matchReader() throws Exception{
         Map<String,Object> parameterValues = new HashMap<>();
         log.info("ItemReader 실행됨");
         return new JpaPagingItemReaderBuilder<User>()
@@ -64,7 +64,7 @@ public class ChunkJobConfig {
 
     @Bean
     @StepScope
-    public ItemProcessor<User, List<Match>> processor()
+    public ItemProcessor<User, List<Match>> matchProcessor()
     {
         log.info("ItemProcessor 실행됨");
         return new ItemProcessor<User, List<Match>>() {
@@ -80,7 +80,7 @@ public class ChunkJobConfig {
 
     @Bean
     @StepScope
-    public JpaItemWriter<List<Match>> writer()
+    public JpaItemWriter<List<Match>> matchWriter()
     {
 
         log.info("ItemWriter 실행됨");
@@ -91,7 +91,7 @@ public class ChunkJobConfig {
 
     @Bean
     @StepScope
-    public JpaItemListWriter<Match> writerList(){
+    public JpaItemListWriter<Match> matchListWriter(){
         JpaItemWriter<Match> writer  = new JpaItemWriter<>();
         writer.setEntityManagerFactory(entityManagerFactory);
 

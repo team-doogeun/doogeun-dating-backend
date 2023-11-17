@@ -39,7 +39,7 @@ public class FinalMatchServiceTest {
         when(likeablePersonRepository.findByFromUser(user)).thenReturn(null);
 
 
-        assertThrows(NullPointerException.class, () -> finalMatchService.saveFinalMatch(userId));
+        assertThrows(NullPointerException.class, () -> finalMatchService.confirmFinalMatch(userId));
     }
 
     @Test

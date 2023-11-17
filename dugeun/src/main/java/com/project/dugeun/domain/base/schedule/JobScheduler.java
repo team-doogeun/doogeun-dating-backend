@@ -23,10 +23,13 @@ public class JobScheduler {
     private JobLauncher jobLauncher;
 
     @Autowired
-    private Job job;
+    private Job matchJob;
+
+    @Autowired
+    private Job finalMatchJob;
 
     @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
-    public void jobScheduled() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
+    public void matchJobScheduled() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException {
 
         Map<String, JobParameter> jobParametersMap = new HashMap<>();
@@ -40,7 +43,7 @@ public class JobScheduler {
 
         JobParameters parameters = new JobParameters(jobParametersMap);
 
-        JobExecution jobExecution = jobLauncher.run(job, parameters);
+        JobExecution jobExecution = jobLauncher.run(matchJob, parameters);
 
         while (jobExecution.isRunning()) {
             log.info("...");
@@ -56,4 +59,37 @@ public class JobScheduler {
         log.info("Job getFailureExceptions: " + jobExecution.getFailureExceptions());
 
     }
+
+    @Scheduled(cron = "0 */10 * ? * *")
+    public void finalMatchJobScheduled() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
+            JobRestartException, JobInstanceAlreadyCompleteException {
+
+        Map<String, JobParameter> jobParametersMap = new HashMap<>();
+
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
+        Date time = new Date();
+
+        String time1 = format1.format(time);
+
+        jobParametersMap.put("date",new JobParameter(time1));
+
+        JobParameters parameters = new JobParameters(jobParametersMap);
+
+        JobExecution jobExecution = jobLauncher.run(finalMatchJob, parameters);
+
+        while (jobExecution.isRunning()) {
+            log.info("...");
+        }
+
+        log.info("Job Execution: " + jobExecution.getStatus());
+        log.info("Job getJobConfigurationName: " + jobExecution.getJobConfigurationName());
+        log.info("Job getJobId: " + jobExecution.getJobId());
+        log.info("Job getExitStatus: " + jobExecution.getExitStatus());
+        log.info("Job getJobInstance: " + jobExecution.getJobInstance());
+        log.info("Job getStepExecutions: " + jobExecution.getStepExecutions());
+        log.info("Job getLastUpdated: " + jobExecution.getLastUpdated());
+        log.info("Job getFailureExceptions: " + jobExecution.getFailureExceptions());
+
+    }
+
 }
