@@ -4,15 +4,11 @@ import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
-
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
