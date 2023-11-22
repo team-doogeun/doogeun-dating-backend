@@ -1,17 +1,15 @@
 package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.user.domain.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class ScoreCalculatorService {
 
+    @Autowired
     private MatchingScoreStrategyFactory strategyFactory;
 
-    public ScoreCalculatorService(MatchingScoreStrategyFactory strategyFactory){
-        this.strategyFactory = strategyFactory;
-    }
 
     public int calculateCompatibility(User user1, User user2)
     {

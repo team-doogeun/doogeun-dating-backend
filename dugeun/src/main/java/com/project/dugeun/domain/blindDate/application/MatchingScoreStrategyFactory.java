@@ -1,7 +1,8 @@
 package com.project.dugeun.domain.blindDate.application;
 
-import ch.qos.logback.core.joran.spi.ElementSelector;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MatchingScoreStrategyFactory {
     public MatchingScoreStrategy getStrategy(String strategyType){
         if(strategyType.equals("age")){
