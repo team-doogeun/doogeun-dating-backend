@@ -2,6 +2,7 @@ package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.blindDate.dao.MatchRepository;
 import com.project.dugeun.domain.blindDate.domain.Match;
+import com.project.dugeun.domain.blindDate.domain.TraitType;
 import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
@@ -33,9 +34,12 @@ public class MatchService {
         List<Match> matchList = new ArrayList<>();
         // 주어진 유저를 제외한 모두 유저들 불러오기
         List<User> users = userRepository.findByGenderNotAndUserIdNot(user.getGender(), user.getUserId());
-
+        int compatibilityScore = 0;
         for (User otherUser : users) {
-            int compatibilityScore = scoreCalculatorService.calculateCompatibility(user, otherUser);
+            for(TraitType trait:TraitType.values())
+            {
+             compatibilityScore += scoreCalculatorService.calculateCompatibility(user, otherUser,trait.name());
+            }
 
             if (compatibilityScore >= 50 && !checkMatch(user, otherUser)) {
                 Match match = new Match();
