@@ -2,7 +2,7 @@
 # 두근프로젝트
 
 ## 서비스 소개
-<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/10598f67-6d43-4ae1-9d0f-050456590c70">     
+<img width="800" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/10598f67-6d43-4ae1-9d0f-050456590c70">     
 
 
 **‘두근’,** 팀명이자 프로젝트명으로 단어 자체가 가지는 의미처럼 저희 서비스를 이용하며 학생들이 서로 두근 거리며 즐거운 경험을 하였으면 하는 마음으로 이번 프로젝트를 기획했습니다.
