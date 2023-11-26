@@ -7,20 +7,21 @@ import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class SignupService {
 private final UserRepository userRepository;
+private final CertService certService;
 
-@Value("${api.key}")
-private String apiKey;
 
 @Transactional
 public User saveUser(UserSaveRequestDto user){
@@ -56,34 +57,6 @@ public User saveUser(UserSaveRequestDto user){
             .build());
        }
 
-
-    public boolean startEmailVerification(String email, String uniName) throws IOException {
-        boolean isSend = false;
-        Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, true);
-        if(validation.get("success").equals(true))
-        {
-            isSend = true;
-        }
-
-        return isSend;
-    }
-
-    public boolean checkCode(int code,String email,String univName) throws IOException {
-
-        boolean isCorrect = false;
-        Map<String, Object> validation =UnivCert.certifyCode(apiKey,email,univName,code);
-        if(validation.get("success").equals(true))
-        {
-            isCorrect = true;
-        }
-        return isCorrect;
-    }
-
-    public boolean clearUsers() throws IOException {
-
-      Map<String, Object> validation = UnivCert.clear(apiKey);
-        return validation.get("success").equals(true);
-    }
 
 
 
