@@ -73,7 +73,7 @@ public class SignUpController {
     }
 
     @PostMapping(value = "/api/sendEmail")
-    public ResponseEntity<EmailSendResponseDto> receiveEmail(@RequestBody EmailSendRequestDto emailSendRequestDto) throws IOException {
+    public ResponseEntity<EmailSendResponseDto> sendEmail(@RequestBody EmailSendRequestDto emailSendRequestDto) throws IOException {
         // 여기서 받은 email을 활용하여 필요한 처리 수행
         boolean isSend = certService.startEmailVerification(emailSendRequestDto.getEmail(), emailSendRequestDto.getUniName());
         EmailSendResponseDto emailSendResponseDto = new EmailSendResponseDto();
@@ -95,9 +95,10 @@ public class SignUpController {
 
 
     @PostMapping(value = "/api/code")
-    public ResponseEntity<EmailVerificationResponseDto> receiveCode(@RequestBody EmailVerificationRequestDto emailVerificationRequestDto) throws IOException {
+    public ResponseEntity<EmailVerificationResponseDto> verifyCode(@RequestBody EmailVerificationRequestDto emailVerificationRequestDto) throws IOException {
         // 여기서 받은 code를 활용하여 필요한 처리 수행
         boolean isCorrect = certService.checkCode(emailVerificationRequestDto.getCode(),emailVerificationRequestDto.getEmail(), emailVerificationRequestDto.getUnivName());
+        certService.validateAndChangeUserStatus(isCorrect,emailVerificationRequestDto);
         EmailVerificationResponseDto emailVerificationResponseDto = new EmailVerificationResponseDto();
         emailVerificationResponseDto.setSuccess(isCorrect);
         return ResponseEntity.ok()

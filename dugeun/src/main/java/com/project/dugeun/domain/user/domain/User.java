@@ -30,7 +30,7 @@ public class User extends BaseEntity {
     private String userId; // 유저 아이디
 
     @Column(name = "user_status")
-    private UserStatus userStatus;
+    private UserStatus userStatus = UserStatus.PROGRESS;
 
     @Column(name="name",nullable = false,unique = true,length = 30)
     private String name; // 유저 닉네임
