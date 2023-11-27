@@ -20,17 +20,19 @@ public class CertService {
 
     @Async
     public CompletableFuture<Boolean> sendVerificationEmailAsync(String email, String uniName) {
+
+        boolean isSend = false;
         try {
-            boolean isSend = startEmailVerification(email, uniName);
+             isSend = startEmailVerification(email, uniName);
             return CompletableFuture.completedFuture(isSend);
         } catch (IOException e) {
-            // 예외 처리
+            log.error("CertService error");
             return CompletableFuture.completedFuture(false);
         }
     }
 
     public boolean startEmailVerification(String email, String uniName) throws IOException {
-        boolean isSend = false;
+        Boolean isSend = false;
         Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, false);
         if(validation.get("success").equals(true))
         {
