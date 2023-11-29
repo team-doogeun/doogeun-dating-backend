@@ -9,6 +9,7 @@ import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
+import com.project.dugeun.domain.user.domain.profile.UserStatus;
 import com.project.dugeun.domain.user.domain.profile.category.GenderType;
 import com.project.dugeun.domain.signup.dto.UserSaveRequestDto;
 import lombok.*;
@@ -27,6 +28,9 @@ public class User extends BaseEntity {
 
     @Column(name="user_id", unique = true)
     private String userId; // 유저 아이디
+
+    @Column(name = "user_status")
+    private UserStatus userStatus = UserStatus.PROGRESS;
 
     @Column(name="name",nullable = false,unique = true,length = 30)
     private String name; // 유저 닉네임

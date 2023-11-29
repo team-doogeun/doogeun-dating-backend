@@ -9,6 +9,7 @@ import com.project.dugeun.domain.user.dao.UserRepository;
 import com.project.dugeun.domain.user.domain.User;
 import com.project.dugeun.domain.likeablePerson.dto.FromLikeablePersonResponseDto;
 import com.project.dugeun.domain.likeablePerson.dto.ToLikeablePersonResponseDto;
+import com.project.dugeun.domain.user.domain.profile.UserStatus;
 import com.project.dugeun.domain.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,16 @@ public class UserService {
         return fromLikeablePersons;
     }
 
+    public String checkUserState(String userId){
+        User user = userRepository.findByUserId(userId);
+        if(user.getUserStatus().equals(UserStatus.COMPLETED)){
+            return "completed";
+        } else if (user.getUserStatus().equals(UserStatus.PROGRESS)) {
+            return "progress";
+
+        }
+        return null;
+    }
 
     @Transactional
     public void deleteUser(String userId){
