@@ -22,20 +22,18 @@ private final CertService certService;
 public User saveUser(UserSaveRequestDto user){
 
     log.info("메일 보내기 Thread 호출 전");
-    final CompletableFuture<Boolean> certEmailResult = certService.sendVerificationEmailAsync(user.getEmail(),user.getUniName());
-    certEmailResult.thenAccept(
-            result -> {
-                log.info("메일 보내기 Thread 응답 결과 {}",result);
-                if(!result){
-                    log.warn("이메일 보내기 실패");
-                    return ;
+    certService.sendVerificationEmailAsync(user.getEmail(), user.getUniName())
+            .exceptionally(ex -> {
+                log.error("Email verification failed to send for: {}", user.getEmail(), ex);
+                // 이메일 전송 실패 시 처리할 로직 추가
+                return false;
+            })
+            .thenAccept(isSend -> {
+                if (isSend) {
+                    log.info("Email verification started for: {}", user.getEmail());
+                    // 이메일 전송 성공 시 처리할 로직 추가
                 }
-                log.info("이메일 보내기 성공");
-                // 여기서 다른 작업 추가해도 됨
-                log.info("메일 보내기 Thread 호출 후");
-                
-            }
-    );
+            });
 
     log.info("해당 아이디 관련 유저 조회 호출 전 ");
     User byUserId = userRepository.findByUserId(user.getUserId());
