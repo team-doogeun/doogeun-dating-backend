@@ -14,9 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-
 import java.util.concurrent.CompletableFuture;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -108,6 +106,8 @@ class SignupServiceTest {
                 // 나머지 필드에 대해서도 원하는대로 비교
 
             }
+
+
         }
 
         @Nested
@@ -168,6 +168,11 @@ class SignupServiceTest {
                 // Then: 예외 발생 확인
                 assertThat(exception.getMessage()).isEqualTo("이미 가입된 유저 아이디 입니다..");
             }
+
+
+
+
+
         }
 
     }
