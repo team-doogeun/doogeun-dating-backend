@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class CertService {
 
     private  final UserRepository userRepository;
+    private final UnivCertService univCertService;
 
     @Value("${api.key}")
     private String apiKey;
@@ -43,7 +44,7 @@ public class CertService {
 
     public boolean startEmailVerification(String email, String uniName) throws IOException {
         Boolean isSend = false;
-        Map<String, Object> validation = UnivCert.certify(apiKey, email, uniName, false);
+        Map<String, Object> validation = univCertService.certify(email, uniName);
         if(validation.get("success").equals(true))
         {
             isSend = true;
@@ -55,7 +56,7 @@ public class CertService {
     public boolean checkCode(int code,String email,String univName) throws IOException {
 
         boolean isCorrect = false;
-        Map<String, Object> validation =UnivCert.certifyCode(apiKey,email,univName,code);
+        Map<String, Object> validation = univCertService.certifyCode(email,univName,code);
         if(validation.get("success").equals(true))
         {
             isCorrect = true;
