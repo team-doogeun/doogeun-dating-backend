@@ -1,7 +1,7 @@
 pipeline {
   agent any
   tools {
-    gradle 'gradle'  // 여기서 'gradle'은 Jenkins Global Tool Configuration에 설정된 이름과 일치해야 합니다.
+    gradle 'gradle '  // 여기서 'gradle'은 Jenkins Global Tool Configuration에 설정된 이름과 일치해야 합니다.
     jdk 'JDK11'
   }
   stages {      
