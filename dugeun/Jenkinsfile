@@ -16,7 +16,7 @@ stage('Build with Gradle') {
     stage('Copy Artifact') {
       steps { 
         sh 'pwd'
-        sh 'cp -r target/*.jar docker'
+        sh 'cp -r dugeun/target/*.jar docker'
       }
     }
     stage('Build docker image') {
