@@ -7,8 +7,10 @@ pipeline {
   stages {      
     stage('Build with Gradle') {
       steps { 
-        sh 'pwd'      
-        sh './gradlew clean build'
+        sh 'pwd'
+        dir('dugeun/'){
+        sh './gradlew clean build'          
+        }
       }
     }
     stage('Copy Artifact') {
