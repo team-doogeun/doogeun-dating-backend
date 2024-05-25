@@ -1,0 +1,32 @@
+pipeline {
+  agent any
+  tools {
+    gradle 'gradle '  // 여기서 'gradle'은 Jenkins Global Tool Configuration에 설정된 이름과 일치해야 합니다.
+    jdk 'JDK11'
+  }
+  stages {      
+    stage('Build with Gradle') {
+      steps { 
+        sh 'pwd'      
+        sh './gradlew clean build'
+      }
+    }
+    stage('Copy Artifact') {
+      steps { 
+        sh 'pwd'
+        sh 'cp -r target/*.jar docker'
+      }
+    }
+    stage('Build docker image') {
+      steps {
+        script {         
+          def customImage = docker.build('project/doogeun', "./docker")
+          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+            customImage.push("${env.BUILD_NUMBER}")
+          }                     
+        }
+      }
+    }
+  }
+}
+
