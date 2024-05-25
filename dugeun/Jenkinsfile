@@ -5,14 +5,14 @@ pipeline {
     jdk 'JDK11'
   }
   stages {      
-    stage('Build with Gradle') {
-      steps { 
-        sh 'pwd'
-        dir('dugeun/'){
-        sh './gradlew clean build'          
-        }
-      }
+stage('Build with Gradle') {
+  steps { 
+    sh 'pwd'
+    dir('dugeun/'){
+      sh 'gradle clean build' // 시스템에 설치된 gradle 사용 또는 Jenkins에 설정된 gradle 사용
     }
+  }
+}
     stage('Copy Artifact') {
       steps { 
         sh 'pwd'
