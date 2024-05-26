@@ -10,6 +10,7 @@ stage('Build with Gradle') {
     sh 'pwd'
     dir('dugeun/'){
       sh 'gradle clean build -x test' // 시스템에 설치된 gradle 사용 또는 Jenkins에 설정된 gradle 사용
+      sh 'ls -l dugeun/target/' 
     }
   }
 }
