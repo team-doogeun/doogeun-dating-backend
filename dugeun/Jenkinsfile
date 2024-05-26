@@ -24,7 +24,7 @@ stage('Build with Gradle') {
       steps {
         script {         
           def customImage = docker.build('seol11796/dugeun', "./dugeun/docker")
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+          docker.withRegistry('https://registry.hub.docker.com', 'dugen-jenkins') {
             customImage.push("${env.BUILD_NUMBER}")
           }                     
         }
