@@ -2,26 +2,29 @@ pipeline {
   agent any
   tools {
     gradle 'gradle '  // 여기서 'gradle'은 Jenkins Global Tool Configuration에 설정된 이름과 일치해야 합니다.
-    jdk 'JDK11'
+    jdk 'JDK17'
   }
   stages {      
-    stage('Build with Gradle') {
-      steps { 
-        sh 'pwd'      
-        sh './gradlew clean build'
-      }
+stage('Build with Gradle') {
+  steps { 
+    sh 'pwd'
+    dir('dugeun/'){
+      sh 'gradle clean build -x test' // 시스템에 설치된 gradle 사용 또는 Jenkins에 설정된 gradle 사용
+      sh 'ls -l build/libs/'
     }
+  }
+}
     stage('Copy Artifact') {
       steps { 
-        sh 'pwd'
-        sh 'cp -r target/*.jar docker'
+      sh 'pwd'
+      sh 'cp -r dugeun/build/libs/*.jar dugeun/docker/'
       }
     }
     stage('Build docker image') {
       steps {
         script {         
-          def customImage = docker.build('project/doogeun', "./docker")
-          docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+          def customImage = docker.build('seol11796/dugeun', "./dugeun/docker")
+          docker.withRegistry('https://registry.hub.docker.com', 'dugen-jenkins') {
             customImage.push("${env.BUILD_NUMBER}")
           }                     
         }
