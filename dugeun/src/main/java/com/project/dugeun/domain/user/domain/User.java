@@ -4,9 +4,9 @@ package com.project.dugeun.domain.user.domain;
 import com.project.dugeun.domain.base.baseEntity.BaseEntity;
 import com.project.dugeun.domain.blindDate.domain.Match;
 import com.project.dugeun.domain.finalMatch.domain.FinalMatch;
-import com.project.dugeun.domain.groupblind.domain.Participant;
+//import com.project.dugeun.domain.groupblind.domain.Participant;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
+//import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
 import com.project.dugeun.domain.user.domain.profile.DetailProfile;
 import com.project.dugeun.domain.user.domain.profile.IdealTypeProfile;
 import com.project.dugeun.domain.user.domain.profile.UserStatus;
@@ -20,10 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Builder
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
+@Table(name = "app_user")
 public class User extends BaseEntity {
 
     @Column(name="user_id", unique = true)
@@ -61,9 +63,9 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
-    @ManyToOne
-    @JoinColumn(name = "group_blind_room")
-    private GroupBlindRoom groupBlindRoom;
+//    @ManyToOne
+//    @JoinColumn(name = "group_blind_room")
+//    private GroupBlindRoom groupBlindRoom;
 
     @Embedded
     private DetailProfile detailProfile;
@@ -102,9 +104,9 @@ public class User extends BaseEntity {
     private List<LikeablePerson> fromLikeablePerson = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Participant> participants= new ArrayList<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+//    @Builder.Default
+//    private List<Participant> participants= new ArrayList<>();
 
 
     @OneToMany(mappedBy = "user1",cascade = CascadeType.ALL)
