@@ -5,7 +5,7 @@ import com.project.dugeun.domain.signup.application.CertService;
 import com.project.dugeun.domain.signup.application.SignupService;
 import com.project.dugeun.domain.signup.dto.*;
 import com.project.dugeun.domain.user.domain.User;
-import com.project.dugeun.domain.signup.application.S3Service;
+//import com.project.dugeun.domain.signup.application.S3Service;
 
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 @ResponseBody
 public class SignUpController {
-    private final S3Service s3Service;
+//    private final S3Service s3Service;
     private final SignupService signupService;
     private final CertService certService;
 
@@ -43,19 +43,19 @@ public class SignUpController {
     ) throws IOException {
         String imgPath1 = null;
         if (!basicFilePath.isEmpty()) {
-            imgPath1 = s3Service.upload(basicFilePath);
+//            imgPath1 = s3Service.upload(basicFilePath);
             user.setBasicFilePath(imgPath1);
         }
 
         String imgPath2 = null;
         if (!secondFilePath.isEmpty()) {
-            imgPath2 = s3Service.upload(secondFilePath);
+//            imgPath2 = s3Service.upload(secondFilePath);
             user.setSecondFilePath(imgPath2);
         }
 
         String imgPath3 = null;
         if (!thirdFilePath.isEmpty()) {
-            imgPath3 = s3Service.upload(thirdFilePath);
+//            imgPath3 = s3Service.upload(thirdFilePath);
             user.setThirdFilePath(imgPath3);
         }
 

@@ -1,8 +1,8 @@
 package com.project.dugeun.domain.user.application;
 
-import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
-import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
+//import com.project.dugeun.domain.groupblind.dao.GroupBlindRepository;
+//import com.project.dugeun.domain.groupblind.domain.GroupBlindRoom;
+//import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
 import com.project.dugeun.domain.likeablePerson.dao.LikeablePersonRepository;
 import com.project.dugeun.domain.likeablePerson.domain.LikeablePerson;
 import com.project.dugeun.domain.user.dao.UserRepository;
@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
-    private final GroupBlindRepository groupBlindRepository;
+//    private final GroupBlindRepository groupBlindRepository;
     private final LikeablePersonRepository likeablePersonRepository;
     public List<ToLikeablePersonResponseDto> getToLikeablePersons(String userId) {
         User user = userRepository.findByUserId(userId);
@@ -95,21 +95,21 @@ public class UserService {
     }
 
 
-    @Transactional(readOnly = true)
-    public List<GroupBlindRoom> getHostMeetingRooms(String hostUserId) {
-        return groupBlindRepository.findByHostId(hostUserId);
-    }
-
-
-    @Transactional(readOnly = true)
-    public List<GroupBlindRoom> getEnteringMeetingRooms(String userId) {
-        return groupBlindRepository.findByHostId(userId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<GroupBlindRoom> getAchievedMeetingRooms(String userId) {
-        return groupBlindRepository.findByHostIdAndGroupBlindStatus(userId, GroupBlindStatus.DONE);
-    }
+//    @Transactional(readOnly = true)
+//    public List<GroupBlindRoom> getHostMeetingRooms(String hostUserId) {
+//        return groupBlindRepository.findByHostId(hostUserId);
+//    }
+//
+//
+//    @Transactional(readOnly = true)
+//    public List<GroupBlindRoom> getEnteringMeetingRooms(String userId) {
+//        return groupBlindRepository.findByHostId(userId);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public List<GroupBlindRoom> getAchievedMeetingRooms(String userId) {
+//        return groupBlindRepository.findByHostIdAndGroupBlindStatus(userId, GroupBlindStatus.DONE);
+//    }
 
     public User findUserByEmailMethod(String email) {
       return userRepository.findByEmail(email);

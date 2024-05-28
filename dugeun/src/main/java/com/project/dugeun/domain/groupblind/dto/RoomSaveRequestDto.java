@@ -1,3 +1,4 @@
+
 package com.project.dugeun.domain.groupblind.dto;
 
 import com.project.dugeun.domain.groupblind.domain.GroupBlindStatus;
