@@ -18,7 +18,6 @@
 <img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/d9531e44-57e6-4691-a1a7-be0e5108c3e4">     
 
 ## API명세 
-아래 페이지에서 API명세서를 확인할 수 있습니다.
 https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 
 
