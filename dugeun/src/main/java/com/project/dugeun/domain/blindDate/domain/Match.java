@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+@Builder
 @Table(name = "blind_date")
 @Getter
 @Setter
