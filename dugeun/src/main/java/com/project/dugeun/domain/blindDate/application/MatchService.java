@@ -38,6 +38,7 @@ public class MatchService {
         for (User otherUser : users) {
             for(TraitType trait:TraitType.values())
             {
+
              compatibilityScore += scoreCalculatorService.calculateCompatibility(user, otherUser,trait.name());
             }
 

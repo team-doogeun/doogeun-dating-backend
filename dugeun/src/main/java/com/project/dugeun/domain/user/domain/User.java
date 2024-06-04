@@ -62,10 +62,10 @@ public class User extends BaseEntity {
     @Column(name="gender")
     @Enumerated(EnumType.STRING)
     private GenderType gender;
-
-//    @ManyToOne
 //    @JoinColumn(name = "group_blind_room")
 //    private GroupBlindRoom groupBlindRoom;
+
+//    @ManyToOne
 
     @Embedded
     private DetailProfile detailProfile;

@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Builder
 @Table(name = "blind_date")
 @Getter
 @Setter
@@ -24,7 +23,6 @@ public class Match extends BaseEntity {
     @Column(name="score")
     private int compatibilityScore;
 
-    @Builder.Default
     @Column(name="result")
     private Boolean matched = false;
 

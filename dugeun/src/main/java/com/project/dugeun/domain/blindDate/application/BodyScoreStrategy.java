@@ -2,13 +2,14 @@ package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class BodyScoreStrategy implements MatchingScoreStrategy{
 
-    @Autowired
-    private PriorityCalculator priorityCalculator;
+    PriorityCalculator priorityCalculator = new PriorityCalculator();
 
     @Override
     public int calculateScore(User user1, User user2){

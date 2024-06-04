@@ -28,7 +28,8 @@ public class JobScheduler {
     @Autowired
     private Job finalMatchJob;
 
-    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
+//    @Scheduled(cron = "0 0 02 * * ?") // 매일 `새벽 2시 마다
+    @Scheduled(cron = "0 * * * * ?") // 매분마다
     public void matchJobScheduled() throws JobParametersInvalidException, JobExecutionAlreadyRunningException,
             JobRestartException, JobInstanceAlreadyCompleteException {
 
