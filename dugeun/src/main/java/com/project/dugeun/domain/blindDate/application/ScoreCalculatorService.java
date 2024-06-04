@@ -1,10 +1,12 @@
 package com.project.dugeun.domain.blindDate.application;
 
 import com.project.dugeun.domain.user.domain.User;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Setter
 public class ScoreCalculatorService {
 
     @Autowired
@@ -15,7 +17,6 @@ public class ScoreCalculatorService {
     {
         strategy = strategyFactory.getStrategy(trait);
         return strategy.calculateScore(user1,user2);
-
     }
 
  }
