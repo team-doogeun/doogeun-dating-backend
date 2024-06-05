@@ -1,12 +1,14 @@
 package com.project.dugeun.domain.blindDate.application;
 import com.project.dugeun.domain.user.domain.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.Objects;
 
+@RequiredArgsConstructor
 @Component
 public class AddressScoreStrategy implements MatchingScoreStrategy{
 
-    PriorityCalculator priorityCalculator = new PriorityCalculator();
+    private final PriorityCalculator priorityCalculator;
 
     @Override
     public int calculateScore(User user1, User user2){

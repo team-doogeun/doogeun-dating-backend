@@ -1,16 +1,14 @@
 package com.project.dugeun.domain.blindDate.application;
-
 import com.project.dugeun.domain.user.domain.User;
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 
+@RequiredArgsConstructor
 @Component
 public class HobbyScoreStrategy implements MatchingScoreStrategy{
 
-    PriorityCalculator priorityCalculator = new PriorityCalculator();
+    private final PriorityCalculator priorityCalculator;
 
     @Override
     public int calculateScore(User user1, User user2){

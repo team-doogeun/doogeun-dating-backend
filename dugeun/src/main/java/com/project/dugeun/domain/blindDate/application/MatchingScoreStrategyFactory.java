@@ -1,32 +1,46 @@
 package com.project.dugeun.domain.blindDate.application;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+@RequiredArgsConstructor
 @Component
 public class MatchingScoreStrategyFactory {
+
+    private final AddressScoreStrategy addressScoreStrategy;
+    private final AgeScoreStrategy ageScoreStrategy;
+    private final BodyScoreStrategy bodyScoreStrategy;
+    private final CharacterScoreStrategy characterScoreStrategy;
+    private final DepartmentScoreStrategy departmentScoreStrategy;
+    private final DrinkScoreStrategy drinkScoreStrategy;
+    private final EmotionScoreStrategy emotionScoreStrategy;
+    private final HeightScoreStrategy heightScoreStrategy;
+    private final HobbyScoreStrategy hobbyScoreStrategy;
+    private final MbtiScoreStrategy mbtiScoreStrategy;
+    private final SmokeScoreStrategy smokeScoreStrategy;
+
     public MatchingScoreStrategy getStrategy(String strategyType){
         if(strategyType.equals("AGE")){
-            return new AgeScoreStrategy();
+            return ageScoreStrategy;
         } else if (strategyType.equals("ADDRESS")) {
-            return new AddressScoreStrategy();
+            return addressScoreStrategy;
         } else if (strategyType.equals("BODY")) {
-            return new BodyScoreStrategy();
+            return bodyScoreStrategy;
         } else if(strategyType.equals("CHARACTER")){
-            return new CharacterScoreStrategy();
+            return characterScoreStrategy;
         } else if(strategyType.equals("DEPARTMENT")){
-            return new DepartmentScoreStrategy();
+            return departmentScoreStrategy;
         } else if(strategyType.equals("DRINK")){
-            return new DrinkScoreStrategy();
+            return drinkScoreStrategy;
         } else if(strategyType.equals("EMOTION")){
-            return new EmotionScoreStrategy();
+            return emotionScoreStrategy;
         } else if(strategyType.equals("HEIGHT")){
-            return new HeightScoreStrategy();
+            return heightScoreStrategy;
         } else if(strategyType.equals("HOBBY")){
-            return new HobbyScoreStrategy();
+            return hobbyScoreStrategy;
         } else if(strategyType.equals("MBTI")){
-            return new MbtiScoreStrategy();
+            return mbtiScoreStrategy;
         } else if(strategyType.equals("SMOKE")){
-            return new SmokeScoreStrategy();
+            return smokeScoreStrategy;
         }
         return null;
         }
