@@ -65,4 +65,67 @@ https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 - 최종 매칭 상대와 1:1 채팅 (예정)
 <img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/b42ccf1e-6f53-4995-9ef0-d1e3cefb6ce6">       
 
-   
+## 👩‍💻 Skills
+## 외부 대학생 인증 API 비동기 처리 
+회원 가입을 진행하는 순서는 다음과 같습니다.
+- 데이터베이스를 조회하여 사용자가 존재하는 지 먼저 체크합니다.
+- 사용자가 존재하지 않으면 데이터베이스의 사용자를 임시 저장합니다.
+<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/f18c6790-6217-4e44-ac1b-8128e1ff0cae">
+
+#### 비동기 처리 적용한 이유
+1. **성능 개선** 사용자 인증 메일 작업이 처리되는 동안 다른 작업 수행 가능하도록 하여 사용자 경험을 향상시킵니다. 
+2. **시스템 안정** 별도의 스레드에서 작업을 수행하기 때문에 작업 실패 시 전체 시스템에 큰 영향이 없습니다. 
+
+ **AsyncConifg**
+```java
+@EnableAsync
+@Configuration
+public class AsyncConfig {
+    @Bean
+    public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(30);
+        executor.setQueueCapacity(50);
+        executor.setThreadNamePrefix("UNI-VERIFICATION");
+        executor.initialize();
+        return executor;
+    }
+
+}
+```
+위와 같은 쓰레드풀 설정을 진행하여 기본 요청 수, 대기 queue 사이즈, queue 사이즈 초과 시 추가할 쓰레드 개수 등을 지정합니다. 
+
+ **CertService**
+```java
+@Async
+public CompletableFuture<Boolean> sendVerificationEmailAsync(String email, String uniName) {
+    try {
+        boolean isSend = startEmailVerification(email, uniName);
+        return CompletableFuture.completedFuture(isSend);
+    } catch (IOException e) {
+        // 예외 처리
+        return CompletableFuture.completedFuture(false);
+    }
+}
+```
+```java
+certService.sendVerificationEmailAsync(user.getEmail(), user.getUniName())
+    .exceptionally(ex -> {
+        log.error("Email verification failed to send for: {}", user.getEmail(), ex);
+        return false;
+    })
+    .thenAccept(isSend -> {
+        if (isSend) {
+            log.info("Email verification started for: {}", user.getEmail());
+        }
+    });
+```
+이메일 발송을 비동기적으로 처리. 이제 이메일 발송은 회원가입 요청과 별개로 백그라운드에서 실행된다. 
+
+
+
+
+
+
+
