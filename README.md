@@ -121,11 +121,155 @@ certService.sendVerificationEmailAsync(user.getEmail(), user.getUniName())
         }
     });
 ```
-이메일 발송을 비동기적으로 처리. 이제 이메일 발송은 회원가입 요청과 별개로 백그라운드에서 실행된다. 
+이메일 발송을 비동기적으로 처리. 이제 이메일 발송은 회원가입 요청과 별개로 백그라운드에서 실행됩니다.
+
+## Spring의 Stomp를 이용한 1:1 채팅 구현
+<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/cdc77bdc-b8b2-4a92-8447-204634c17427">
+
+#### 동작 원리
+1. 클라이언트(Sender)가 메시지를 보내면 stomp통신으로 서버에 메세지가 전달됩니다.
+2. Controller의 @MessageMapping에 의해 메시지를 받습니다.
+3. Controller의 @SendTo으로 특정 topic을(/1) 구독(/room)하는 클라이언트에게 메세지를 보냅니다. (구독은 /room으로 보면 되고 특정 topic은 채팅 방 id인 /1로 보면 된다. →/room/1}
+   
+ **WebSocketConfig**
+```java
+@Configuration
+@EnableWebSocketMessageBroker
+@RequiredArgsConstructor
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws-stomp")
+                 .setAllowedOriginPatterns("*")
+                 .withSockJS();
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        config.enableSimpleBroker("/room"); 
+        config.setApplicationDestinationPrefixes("/send"); 
+    }
 
 
+}
 
+```
+ **ChatController**
+```java
+@Controller
+@RequiredArgsConstructor
+public class ChatController {
 
+    private final ChatService chatService;
 
+    @MessageMapping("/{roomId}")
+    @SendTo("/room/{roomId}")   
+    public ChatMessage test(@DestinationVariable Long roomId, ChatMessage message) {
 
+        //채팅 저장
+        Chat chat = chatService.createChat(roomId, message.getSender(), message.getMessage());
+        return ChatMessage.builder()
+                .roomId(roomId)
+                .sender(chat.getSender())
+                .message(chat.getMessage())
+                .sendDate(LocalDateTime.now())
+                .build();
+    }
 
+}
+```
+
+## Spring Batch + Spring Scheduler 적용을 통한 대용량 데이터 처리 
+#### Spring Batch 적용 이유 
+1. **예외 사항과 비정상 동작에 대한 방어** Match(소개 상대)를 계산하는 로직의 경우 모든 사용자들에 대해 수행이 되는데, 전체 사용자가 300명이라고 할 때, 290번째 데이터까지는 잘 진행되다가 291번째에 오류가 발생하여 배치 작업이 실패로 돌아간 경우, 다시 1번째 작업부터 시작하여야 하는데 이것의 매우 비효율적입니다.Spring 배치는 이런 상황에서 정확하게 실패가 발생한 290번째부터 다시 배치 작업을 수행하도록 합니다.
+2. **비즈니스 로직과 분리** @Scheduled에너테이션이 붙은 메서드는 스프링의 TaskScheduler에 의해 관리되며, 이는 별도의 스레드에서 실행됩니다. finalMatchJobScheduled() 메서드는 스케줄링에 따라 10분마다 호출되며, 이런 호출이 발생할 때마다 TaskScheduler는 이 메서드를 실행하기 위하여 새로운 스레드를 생성하기 때문에 비즈니스 로직과는 분리됩니다.
+
+<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/d71bc7b0-11e4-4296-9d81-cf900ce9ae49">
+<img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/a9b0a3c5-6700-4350-b512-e813bcad4c72">
+
+**MatchJobConfig**
+```java
+@Slf4j
+@Configuration
+@EnableBatchProcessing
+@RequiredArgsConstructor
+public class MatchJobConfig {
+    private final JobBuilderFactory jobBuilderFactory;
+    private final StepBuilderFactory stepBuilderFactory;
+    private final EntityManagerFactory entityManagerFactory;
+    private final MatchService matchService;
+
+    @Bean
+    public Job matchJob() throws Exception {
+        return jobBuilderFactory.get("matchChunkJob")
+                .start(matchStep())
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step matchStep() throws Exception {
+        return stepBuilderFactory.get("step")
+                .<User, List<Match>>chunk(2)
+                .reader(matchReader())
+                .processor(matchProcessor())
+                .writer(matchListWriter())
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public JpaPagingItemReader<User> matchReader() throws Exception{
+        Map<String,Object> parameterValues = new HashMap<>();
+        log.info("ItemReader 실행됨");
+        return new JpaPagingItemReaderBuilder<User>()
+                .pageSize(2)
+                .parameterValues(parameterValues)
+                .queryString("SELECT m FROM User m")
+                .entityManagerFactory(entityManagerFactory)
+                .name("JpaPagingItemReader")
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public ItemProcessor<User, List<Match>> matchProcessor()
+    {
+        log.info("ItemProcessor 실행됨");
+        return new ItemProcessor<User, List<Match>>() {
+            @Override
+            public List<Match> process(User user) throws Exception
+            {
+                // 해당 user의 다른 사용자들에 대한 match 점수들 계산해서 얻어낸 match들 return
+                return matchService.calculateMatches(user);
+            }
+
+        };
+    }
+
+    @Bean
+    @StepScope
+    public JpaItemWriter<List<Match>> matchWriter()
+    {
+
+        log.info("ItemWriter 실행됨");
+        return new JpaItemWriterBuilder<List<Match>>()
+                .entityManagerFactory(entityManagerFactory)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public JpaItemListWriter<Match> matchListWriter(){
+        JpaItemWriter<Match> writer  = new JpaItemWriter<>();
+        writer.setEntityManagerFactory(entityManagerFactory);
+
+        JpaItemListWriter<Match> jpaItemListWriter = new JpaItemListWriter<>(writer);
+        jpaItemListWriter.setEntityManagerFactory(entityManagerFactory);
+        return jpaItemListWriter;
+
+    }
+
+}
+```
