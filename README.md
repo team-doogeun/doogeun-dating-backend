@@ -48,7 +48,6 @@ https://caramel-beast-94d.notion.site/api-72d47c6a90fb4264a220edd1e62c6c4d?pvs=4
 - 마이페이지의 최종 매칭 페이지에서 최종 매치 페이지에서 최종 매칭 확인
 - 최종 매칭 상대와 1:1 채팅
 - <img width="478" alt="스크린샷 2023-09-08 오후 4 38 08" src="https://github.com/team-doogeun/doogeun-dating-backend/assets/89733207/b3222b4a-4aec-4aec-a262-99e9e60163e2">      
-- 동영상 시연 🚀 -> https://www.youtube.com/watch?v=4c_djB9Qxvs 
 
 
 ### 3. 미팅 관련 기능 
